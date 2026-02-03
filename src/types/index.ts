@@ -87,6 +87,17 @@ export type ProductTypeType = {
   };
 };
 
+export type BrandType = {
+  id: number;
+  name: string;
+  slug: string;
+  createdAt: Date | string;
+  updatedAt: Date | string;
+  _count?: {
+    products: number;
+  };
+};
+
 export type User = {
   id: string;
   firstName: string;

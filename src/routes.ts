@@ -19,7 +19,6 @@ import { createBrowserRouter } from "react-router";
 import AdminLayout from "@/components/layouts/admin-layout";
 import AdminCategoriesPage from "@/pages/admin/categories";
 import { loader as adminLoader } from "@/pages/admin/loader";
-import AdminMaterialsPage from "@/pages/admin/materials";
 import AdminOrdersPage from "@/pages/admin/orders";
 import AdminPostsPage from "@/pages/admin/posts";
 import AdminPostCreatePage from "@/pages/admin/posts/create";
@@ -31,8 +30,21 @@ import AdminPostEditPage from "@/pages/admin/posts/update";
 import { action as adminUpdatePostAction } from "@/pages/admin/posts/update/action";
 import { loader as adminEditPostLoader } from "@/pages/admin/posts/update/loader";
 import AdminProductsPage from "@/pages/admin/products";
+import AdminProductCreatePage from "@/pages/admin/products/create";
+import { action as adminCreateProductAction } from "@/pages/admin/products/create/action";
+import AdminProductDetailPage from "@/pages/admin/products/detail";
+import { loader as adminProductDetailLoader } from "@/pages/admin/products/detail/loader";
+import { loader as adminProductsLoader } from "@/pages/admin/products/loader";
+import AdminProductEditPage from "@/pages/admin/products/update";
+import { action as adminUpdateProductAction } from "@/pages/admin/products/update/action";
+import { loader as adminEditProductLoader } from "@/pages/admin/products/update/loader";
+import AdminProductVariantsPage from "@/pages/admin/products/variants";
+import { loader as adminProductVariantsLoader } from "@/pages/admin/products/variants/loader";
+import AdminProductVariantCreatePage from "@/pages/admin/products/variants/create";
+import { action as adminCreateProductVariantAction } from "@/pages/admin/products/variants/create/action";
+import AdminProductVariantDetailPage from "@/pages/admin/products/variants/detail";
+import { loader as adminProductVariantDetailLoader } from "@/pages/admin/products/variants/detail/loader";
 import AdminSettingsPage from "@/pages/admin/settings";
-import AdminTypesPage from "@/pages/admin/types";
 import AdminUsersPage from "@/pages/admin/users";
 import AdminUserCreateDialog from "@/pages/admin/users/create";
 import { action as adminCreateUserAction } from "@/pages/admin/users/create/action";
@@ -64,6 +76,16 @@ import { loader as productLoader } from "@/pages/products/detail/loader";
 import { loader as productsLoader } from "@/pages/products/loader";
 import { loader as rootLoader } from "@/pages/root/loader";
 
+import AdminBrandsPage from "@/pages/admin/brands";
+import AdminBrandCreateDialog from "@/pages/admin/brands/create";
+import { action as adminCreateBrandAction } from "@/pages/admin/brands/create/action";
+import AdminBrandDeleteDialog from "@/pages/admin/brands/delete";
+import { action as adminDeleteBrandAction } from "@/pages/admin/brands/delete/action";
+import { loader as adminDeleteBrandLoader } from "@/pages/admin/brands/delete/loader";
+import { loader as adminBrandsLoader } from "@/pages/admin/brands/loader";
+import AdminBrandEditDialog from "@/pages/admin/brands/update";
+import { action as adminUpdateBrandAction } from "@/pages/admin/brands/update/action";
+import { loader as adminEditBrandLoader } from "@/pages/admin/brands/update/loader";
 import AdminCategoryCreateDialog from "@/pages/admin/categories/create";
 import { action as adminCreateCategoryAction } from "@/pages/admin/categories/create/action";
 import AdminCategoryDeleteDialog from "@/pages/admin/categories/delete";
@@ -73,24 +95,6 @@ import { loader as adminCategoriesLoader } from "@/pages/admin/categories/loader
 import AdminCategoryEditDialog from "@/pages/admin/categories/update";
 import { action as adminUpdateCategoryAction } from "@/pages/admin/categories/update/action";
 import { loader as adminEditCategoryLoader } from "@/pages/admin/categories/update/loader";
-import AdminMaterialCreateDialog from "@/pages/admin/materials/create";
-import { action as adminCreateMaterialAction } from "@/pages/admin/materials/create/action";
-import AdminMaterialDeleteDialog from "@/pages/admin/materials/delete";
-import { action as adminDeleteMaterialAction } from "@/pages/admin/materials/delete/action";
-import { loader as adminDeleteMaterialLoader } from "@/pages/admin/materials/delete/loader";
-import { loader as adminMaterialsLoader } from "@/pages/admin/materials/loader";
-import AdminMaterialEditDialog from "@/pages/admin/materials/update";
-import { action as adminUpdateMaterialAction } from "@/pages/admin/materials/update/action";
-import { loader as adminEditMaterialLoader } from "@/pages/admin/materials/update/loader";
-import AdminTypeCreateDialog from "@/pages/admin/types/create";
-import { action as adminCreateTypeAction } from "@/pages/admin/types/create/action";
-import AdminTypeDeleteDialog from "@/pages/admin/types/delete";
-import { action as adminDeleteTypeAction } from "@/pages/admin/types/delete/action";
-import { loader as adminDeleteTypeLoader } from "@/pages/admin/types/delete/loader";
-import { loader as adminTypesLoader } from "@/pages/admin/types/loader";
-import AdminTypeEditDialog from "@/pages/admin/types/update";
-import { action as adminUpdateTypeAction } from "@/pages/admin/types/update/action";
-import { loader as adminEditTypeLoader } from "@/pages/admin/types/update/loader";
 
 export const router = createBrowserRouter([
   {
@@ -226,53 +230,114 @@ export const router = createBrowserRouter([
       },
       {
         path: "products",
-        Component: AdminProductsPage,
-      },
-      {
-        path: "materials",
-        Component: AdminMaterialsPage,
-        loader: adminMaterialsLoader,
         children: [
           {
+            index: true,
+            Component: AdminProductsPage,
+            loader: adminProductsLoader,
+          },
+          {
             path: "create",
-            Component: AdminMaterialCreateDialog,
-            action: adminCreateMaterialAction,
+            Component: AdminProductCreatePage,
+            action: adminCreateProductAction,
+          },
+          {
+            path: ":slug",
+            Component: AdminProductDetailPage,
+            loader: adminProductDetailLoader,
           },
           {
             path: ":slug/edit",
-            Component: AdminMaterialEditDialog,
-            loader: adminEditMaterialLoader,
-            action: adminUpdateMaterialAction,
+            Component: AdminProductEditPage,
+            loader: adminEditProductLoader,
+            action: adminUpdateProductAction,
           },
           {
-            path: ":slug/delete",
-            Component: AdminMaterialDeleteDialog,
-            loader: adminDeleteMaterialLoader,
-            action: adminDeleteMaterialAction,
+            path: ":slug/variants",
+            Component: AdminProductVariantsPage,
+            loader: adminProductVariantsLoader,
           },
-        ],
+          {
+            path: ":slug/variants/create",
+            Component: AdminProductVariantCreatePage,
+            action: adminCreateProductVariantAction,
+          },
+          {
+            path: ":slug/variants/:variantSlug",
+            Component: AdminProductVariantDetailPage,
+            loader: adminProductVariantDetailLoader,
+          },
+        ]
       },
+      // {
+      //   path: "materials",
+      //   Component: AdminMaterialsPage,
+      //   loader: adminMaterialsLoader,
+      //   children: [
+      //     {
+      //       path: "create",
+      //       Component: AdminMaterialCreateDialog,
+      //       action: adminCreateMaterialAction,
+      //     },
+      //     {
+      //       path: ":slug/edit",
+      //       Component: AdminMaterialEditDialog,
+      //       loader: adminEditMaterialLoader,
+      //       action: adminUpdateMaterialAction,
+      //     },
+      //     {
+      //       path: ":slug/delete",
+      //       Component: AdminMaterialDeleteDialog,
+      //       loader: adminDeleteMaterialLoader,
+      //       action: adminDeleteMaterialAction,
+      //     },
+      //   ],
+      // },
+      // {
+      //   path: "types",
+      //   Component: AdminTypesPage,
+      //   loader: adminTypesLoader,
+      //   children: [
+      //     {
+      //       path: "create",
+      //       Component: AdminTypeCreateDialog,
+      //       action: adminCreateTypeAction,
+      //     },
+      //     {
+      //       path: ":slug/edit",
+      //       Component: AdminTypeEditDialog,
+      //       loader: adminEditTypeLoader,
+      //       action: adminUpdateTypeAction,
+      //     },
+      //     {
+      //       path: ":slug/delete",
+      //       Component: AdminTypeDeleteDialog,
+      //       loader: adminDeleteTypeLoader,
+      //       action: adminDeleteTypeAction,
+      //     },
+      //   ],
+      // },
       {
-        path: "types",
-        Component: AdminTypesPage,
-        loader: adminTypesLoader,
+        path: "brands",
+        Component: AdminBrandsPage,
+        loader: adminBrandsLoader,
         children: [
           {
             path: "create",
-            Component: AdminTypeCreateDialog,
-            action: adminCreateTypeAction,
+            Component: AdminBrandCreateDialog,
+            action: adminCreateBrandAction,
           },
           {
             path: ":slug/edit",
-            Component: AdminTypeEditDialog,
-            loader: adminEditTypeLoader,
-            action: adminUpdateTypeAction,
+            Component: AdminBrandEditDialog,
+            loader: adminEditBrandLoader,
+            action: adminUpdateBrandAction,
           },
           {
             path: ":slug/delete",
-            Component: AdminTypeDeleteDialog,
-            loader: adminDeleteTypeLoader,
-            action: adminDeleteTypeAction,
+            Component: AdminBrandDeleteDialog,
+            loader: adminDeleteBrandLoader,
+            action: adminDeleteBrandAction,
           },
         ],
       },

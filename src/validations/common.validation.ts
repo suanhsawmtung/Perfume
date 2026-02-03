@@ -17,3 +17,7 @@ export const typeSchema = z.object({
 export const categorySchema = z.object({
   name: nameSchema,
 });
+
+export const brandSchema = z.object({
+  name: nameSchema,
+});

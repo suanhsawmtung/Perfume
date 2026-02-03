@@ -1,4 +1,5 @@
 import type { PostStatus } from "@/types/post.type";
+import type { Concentration, Gender } from "@/types/product.type";
 import type { Role, Status } from "@/types/user.type";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -80,16 +81,12 @@ export function isPostStatus(
 }
 
 // Type guard to validate if a string is a valid Status
-export function isStatus(
-  value: string | null | undefined,
-): value is Status {
+export function isStatus(value: string | null | undefined): value is Status {
   return value === "ACTIVE" || value === "INACTIVE" || value === "FREEZE";
 }
 
 // Type guard to validate if a string is a valid Role
-export function isRole(
-  value: string | null | undefined,
-): value is Role {
+export function isRole(value: string | null | undefined): value is Role {
   return value === "USER" || value === "ADMIN" || value === "AUTHOR";
 }
 
@@ -143,4 +140,38 @@ export function formatName({
     return last;
   }
   return username || "-";
+}
+
+// Type guard to validate if a string is a valid Concentration
+export function isConcentration(
+  value: string | null | undefined,
+): value is Concentration {
+  return (
+    value === "EDC" || value === "EDT" || value === "EDP" || value === "PARFUM"
+  );
+}
+
+// Type guard to validate if a string is a valid Gender
+export function isGender(value: string | null | undefined): value is Gender {
+  return value === "MALE" || value === "FEMALE" || value === "UNISEX";
+}
+
+// Get concentration variant for badge
+export function getConcentrationVariant(concentration: Concentration) {
+  return concentration === "PARFUM"
+    ? "default"
+    : concentration === "EDP"
+      ? "secondary"
+      : concentration === "EDT"
+        ? "outline"
+        : "destructive";
+}
+
+// Get gender variant for badge
+export function getGenderVariant(gender: Gender) {
+  return gender === "MALE"
+    ? "default"
+    : gender === "FEMALE"
+      ? "secondary"
+      : "outline";
 }

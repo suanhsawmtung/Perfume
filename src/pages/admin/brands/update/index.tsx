@@ -1,0 +1,28 @@
+import { BrandForm } from "@/components/admin/brand/form/brand-form";
+import DialogWrapper from "@/components/wrapper/dialog-wrapper";
+import { useBrand } from "@/services/brand/queries/useGetBrand";
+import { useNavigate, useParams } from "react-router";
+
+const AdminBrandEditDialog = () => {
+  const navigate = useNavigate();
+  const { slug } = useParams();
+
+  if (!slug) {
+    throw new Response("Brand slug is required", { status: 400 });
+  }
+
+  const { data: brand } = useBrand(slug);
+
+  return (
+    <DialogWrapper
+      title="Edit Brand"
+      close={() => navigate("/admin/brands")}
+      onOpenChange={() => navigate("/admin/brands")}
+      open={true}
+    >
+      <BrandForm brand={brand} cancelUrl="/admin/brands" />
+    </DialogWrapper>
+  );
+};
+
+export default AdminBrandEditDialog;

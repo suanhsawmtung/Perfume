@@ -48,8 +48,9 @@ const navItems: NavItemConfig[] = [
     roles: ["ADMIN"],
     children: [
       { title: "Products", href: "/admin/products" },
-      { title: "Materials", href: "/admin/materials" },
-      { title: "Types", href: "/admin/types" },
+      // { title: "Materials", href: "/admin/materials" },
+      // { title: "Types", href: "/admin/types" },
+      { title: "Brands", href: "/admin/brands" },
     ],
   },
   {
