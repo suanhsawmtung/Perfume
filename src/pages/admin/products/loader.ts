@@ -1,6 +1,6 @@
+import { isConcentration, isGender, parseBoolean } from "@/lib/utils";
 import { DEFAULT_LIMIT } from "@/services/product/api";
 import { ensureListProducts } from "@/services/product/queries/useGetProducts";
-import { isConcentration, isGender } from "@/lib/utils";
 
 import type { LoaderFunctionArgs } from "react-router";
 import { redirect } from "react-router";
@@ -53,13 +53,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const concentration = isConcentration(concentrationParam)
     ? concentrationParam
     : undefined;
-
-  // Parse boolean parameters
-  const parseBoolean = (value: string | null) => {
-    if (value === "true") return true;
-    if (value === "false") return false;
-    return undefined;
-  };
 
   const isActive = parseBoolean(searchParams.get("isActive"));
   const isLimited = parseBoolean(searchParams.get("isLimited"));

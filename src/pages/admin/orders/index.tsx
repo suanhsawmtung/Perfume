@@ -1,6 +1,10 @@
+import { OrderFilterDialog } from "@/components/admin/order/list/order-filter-dialog";
 import { OrderList } from "@/components/admin/order/list/order-list";
 import AdminHeaderSection from "@/components/admin/shared/admin-header-section";
-import { isOrderStatus, isPaymentStatus } from "@/lib/utils";
+import { CreateButton } from "@/components/admin/shared/create-button";
+import { FilterBar } from "@/components/admin/shared/filter-bar";
+import { MoreFilterButton } from "@/components/admin/shared/more-filter-button";
+import { isOrderSource, isOrderStatus, isPaymentStatus } from "@/lib/utils";
 import { DEFAULT_LIMIT } from "@/services/order/api";
 import { useListOrders } from "@/services/order/queries/useGetOrders";
 import { useSearchParams } from "react-router";
@@ -16,6 +20,9 @@ const AdminOrdersPage = () => {
   const paymentStatusParam = searchParams.get("paymentStatus");
   const paymentStatus = isPaymentStatus(paymentStatusParam) ? paymentStatusParam : undefined;
 
+  const sourceParam = searchParams.get("source");
+  const source = isOrderSource(sourceParam) ? sourceParam : undefined;
+
   const offset = (page - 1) * DEFAULT_LIMIT;
 
   const { data } = useListOrders({
@@ -24,6 +31,7 @@ const AdminOrdersPage = () => {
     limit: DEFAULT_LIMIT,
     status,
     paymentStatus,
+    source,
   });
 
   return (
@@ -31,6 +39,23 @@ const AdminOrdersPage = () => {
       <AdminHeaderSection title="Orders" />
 
       <div className="space-y-5">
+        <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
+          <div className="flex items-center gap-x-2">
+            <CreateButton text="Create Order" to="/admin/orders/create" />
+
+            <div className="block sm:hidden">
+              <OrderFilterDialog>
+                <MoreFilterButton />
+              </OrderFilterDialog>
+            </div>
+          </div>
+
+          <FilterBar>
+            <OrderFilterDialog>
+              <MoreFilterButton />
+            </OrderFilterDialog>
+          </FilterBar>
+        </div>
         
         {data && (
           <OrderList

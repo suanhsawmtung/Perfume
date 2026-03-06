@@ -183,17 +183,17 @@ export const getVariantColumns = ({
     },
   },
   {
-    id: "quantity",
+    accessorKey: "stock",
     header: () => (
       <div className="text-primary flex items-center justify-center text-sm font-semibold">
         Stock
       </div>
     ),
     cell: ({ row }) => {
-      const inventory = row.original.inventories[0];
+      const stock = row.getValue("stock") as number;
       return (
         <div className="text-muted-foreground text-center text-sm font-normal">
-          {inventory?.quantity ?? 0}
+          {stock}
         </div>
       );
     },

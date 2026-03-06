@@ -1,10 +1,31 @@
+import type { ProductFilterFormSchema, productSchema } from "@/validations/product.validation";
+import type z from "zod";
+
 // Product enums (based on backend $Enums)
 export type Concentration = "EDC" | "EDT" | "EDP" | "PARFUM";
 export type Gender = "MALE" | "FEMALE" | "UNISEX";
 export type VariantSource = "ORIGINAL" | "DECANT";
 
-// Product type from backend response
 export interface ProductType {
+  id: number;
+  name: string;
+  slug: string;
+  concentration: Concentration;
+  gender: Gender;
+  description: string;
+  rating: string;
+  ratingCount: number;
+  isActive: boolean;
+  isLimited: boolean;
+  releasedYear: number;
+  brandId: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}
+
+// Product type from backend response
+export interface ProductListType {
   slug: string;
   name: string;
   brand: {
@@ -33,7 +54,7 @@ export interface ProductQueryParams {
 
 // Product list result from API
 export interface ProductListResult {
-  products: ProductType[];
+  products: ProductListType[];
   currentPage: number;
   totalPages: number;
   pageSize: number;
@@ -197,3 +218,6 @@ export interface DeleteProductVariantResponse {
   success: boolean;
   message: string;
 }
+
+export type ProductFilterFormValues = z.infer<typeof ProductFilterFormSchema>;
+export type ProductFormValues = z.infer<typeof productSchema>;

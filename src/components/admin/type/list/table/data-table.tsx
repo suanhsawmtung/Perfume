@@ -1,17 +1,17 @@
 import {
-  type ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
+    type ColumnDef,
+    flexRender,
+    getCoreRowModel,
+    useReactTable,
 } from "@tanstack/react-table";
 
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
 } from "@/components/ui/table";
 
 interface DataTableProps<TData, TValue> {
@@ -61,7 +61,7 @@ export function DataTable<TData, TValue>({
               className="w-[14%]"
             >
               {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id} className="max-h-[50px] py-4">
+                <TableCell key={cell.id} className="max-h-[50px] py-4 lg:min-w-auto min-w-[200px]">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
               ))}

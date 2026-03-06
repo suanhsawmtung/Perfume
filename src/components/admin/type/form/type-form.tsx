@@ -1,14 +1,13 @@
 import { Button } from "@/components/ui/button";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import type { ProductTypeType } from "@/types";
 import type { TypeFormValues } from "@/types/type.type";
 import { typeSchema } from "@/validations/common.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,7 +16,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useNavigation, useSubmit } from "react-router";
 
 interface TypeFormProps {
-  type?: ProductTypeType;
+  type?: ProductListTypeType;
   cancelUrl?: string;
   submitButtonText?: string;
 }

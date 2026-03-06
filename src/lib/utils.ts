@@ -1,3 +1,4 @@
+import type { OrderSource, OrderStatus, PaymentStatus } from "@/types/order.type";
 import type { PostStatus } from "@/types/post.type";
 import type { Concentration, Gender } from "@/types/product.type";
 import type { Role, Status } from "@/types/user.type";
@@ -63,6 +64,19 @@ export function getUserInitials(user: {
   return "U";
 }
 
+// Format date and time as "Oct 22, 1998 08:30 AM"
+export const formatDateTime = (date: Date | string): string => {
+  const dateObj = typeof date === "string" ? new Date(date) : date;
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  }).format(dateObj);
+};
+
 // Format date as "Oct 22, 1998"
 export const formatDate = (date: Date | string): string => {
   const dateObj = typeof date === "string" ? new Date(date) : date;
@@ -114,6 +128,41 @@ export function getUserStatusVariant(status: Status) {
     : status === "INACTIVE"
       ? "secondary"
       : "destructive";
+}
+
+// Get order status variant for badge
+export function getOrderStatusVariant(status: OrderStatus) {
+  switch (status) {
+    case "PENDING":
+      return "secondary";
+    case "ACCEPTED":
+      return "default";
+    case "REJECTED":
+      return "destructive";
+    case "CANCELLED":
+    case "DONE":
+      return "outline";
+    default:
+      return "secondary";
+  }
+}
+
+// Get payment status variant for badge
+export function getPaymentStatusVariant(status: PaymentStatus) {
+  switch (status) {
+    case "UNPAID":
+      return "default";
+    case "PENDING":
+      return "secondary";
+    case "PAID":
+      return "outline";
+    case "FAILED":
+    case "REFUNDED":
+    case "PARTIALLY_REFUNDED":
+      return "destructive";
+    default:
+      return "secondary";
+  }
 }
 
 // Format name from firstName and lastName
@@ -184,7 +233,8 @@ export function isOrderStatus(
     value === "PENDING" ||
     value === "REJECTED" ||
     value === "ACCEPTED" ||
-    value === "DONE"
+    value === "DONE" ||
+    value === "CANCELLED"
   );
 }
 
@@ -192,9 +242,29 @@ export function isOrderStatus(
 export function isPaymentStatus(
   value: string | null | undefined,
 ): value is PaymentStatus {
-  return value === "PAID" || value === "UNPAID";
+  return (
+    value === "PAID" ||
+    value === "UNPAID" ||
+    value === "PENDING" ||
+    value === "FAILED" ||
+    value === "REFUNDED" ||
+    value === "PARTIALLY_REFUNDED"
+  );
+}
+
+export const isOrderSource = (
+  value: string | null | undefined
+): value is OrderSource => {
+  return value === "ADMIN" || value === "CUSTOMER";
+}
+
+export function parseBoolean(value: string | null) {
+  if (value === "true") return true;
+  if (value === "false") return false;
+  return undefined;
 }
 
 export const sleep = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
+
 

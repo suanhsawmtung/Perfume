@@ -1,12 +1,11 @@
 import { AdminPagination } from "@/components/admin/shared/pagination";
 import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card";
-import type { ProductType } from "@/types/product.type";
 import { FilterTags } from "../../shared/filter-tags";
 import { columns } from "./table/columns";
 import { DataTable } from "./table/data-table";
@@ -16,7 +15,7 @@ export function ProductList({
   total,
   page,
 }: {
-  products: ProductType[];
+  products: ProductListType[];
   total?: number;
   page?: number;
   size?: number;

@@ -1,10 +1,9 @@
 import { Button } from "@/components/ui/button";
-import type { BrandType } from "@/types/brand.type";
 import { Loader2 } from "lucide-react";
 import { Form, useNavigate, useNavigation } from "react-router";
 
 interface DeleteBrandDialogProps {
-  brand: BrandType;
+  brand: BrandListType;
   cancelUrl?: string;
 }
 

@@ -76,7 +76,7 @@ export async function fetchProductVariants(
   const response = await api.get(`/admin/products/${slug}/variants`);
 
   // Backend returns: { success: true, data: { product }, message: null }
-  return response.data?.data?.product;
+  return response.data?.data?.product || [];
 }
 
 export async function fetchProductVariant(

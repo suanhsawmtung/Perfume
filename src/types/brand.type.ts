@@ -7,13 +7,23 @@ export type BrandType = {
   slug: string;
   createdAt: string; // ISO date string
   updatedAt: string; // ISO date string
+  deletedAt: string | null;
+};
+
+export type BrandListType = {
+  id: number;
+  name: string;
+  slug: string;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  deletedAt: string | null;
   _count: {
     products: number;
   };
 };
 
 export interface BrandListResult {
-  brands: BrandType[];
+  brands: BrandListType[];
   currentPage: number;
   totalPages: number;
   pageSize: number;
@@ -33,7 +43,7 @@ export interface CreateBrandResponse {
   success: boolean;
   message: string;
   data: {
-    brand: BrandType;
+    brand: BrandListType;
   };
 }
 
@@ -46,7 +56,7 @@ export interface UpdateBrandResponse {
   success: boolean;
   message: string;
   data: {
-    brand: BrandType;
+    brand: BrandListType;
   };
 }
 

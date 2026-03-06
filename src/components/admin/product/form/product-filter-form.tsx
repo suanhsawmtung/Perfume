@@ -16,12 +16,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { TabButton } from "@/components/ui/tab-button";
-import { isConcentration, isGender } from "@/lib/utils";
+import { isConcentration, isGender, parseBoolean } from "@/lib/utils";
 import { useListBrands } from "@/services/brand/queries/useGetListBrands";
-import type { Concentration, Gender } from "@/types/product.type";
+import type { Concentration, Gender, ProductFilterFormValues } from "@/types/product.type";
 import {
   ProductFilterFormSchema,
-  type ProductFilterFormValues,
 } from "@/validations/product.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
@@ -75,12 +74,6 @@ export function ProductFilterForm({ close }: { close: () => void }) {
     const concentrationParam = searchParams.get("concentration");
     const isActiveParam = searchParams.get("isActive");
     const isLimitedParam = searchParams.get("isLimited");
-
-    const parseBoolean = (value: string | null) => {
-      if (value === "true") return true;
-      if (value === "false") return false;
-      return undefined;
-    };
 
     form.reset({
       search,

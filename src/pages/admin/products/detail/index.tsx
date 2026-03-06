@@ -15,9 +15,6 @@ const AdminProductDetailPage = () => {
   }
 
   const { data: product } = useGetProduct(slug);
-  // const primaryVariant =
-  //   product.variants.find((variant) => variant.isPrimary) ??
-  //   product.variants[0];
 
   return (
     <section className="w-full">

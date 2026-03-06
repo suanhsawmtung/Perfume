@@ -94,7 +94,7 @@ const ProductVariantsPanel = ({ product }: ProductVariantsPanelProps) => {
             { label: "SKU", value: variant.sku },
             { label: "Size", value: `${variant.size}ml` },
             { label: "Source", value: variant.source },
-            { label: "Stock", value: inventory?.quantity ?? 0 },
+            { label: "Stock", value: variant.stock ?? 0 },
             { label: "Reserved", value: inventory?.reserved ?? 0 },
           ];
 

@@ -100,6 +100,13 @@ import AdminCategoryEditDialog from "@/pages/admin/categories/update";
 import { action as adminUpdateCategoryAction } from "@/pages/admin/categories/update/action";
 import { loader as adminEditCategoryLoader } from "@/pages/admin/categories/update/loader";
 import AdminDashboardPage from "./pages/admin";
+import AdminOrderCreatePage from "./pages/admin/orders/create";
+import { action as adminCreateOrderAction } from "./pages/admin/orders/create/action";
+import AdminOrderDetailPage from "./pages/admin/orders/detail";
+import { loader as adminOrderDetailLoader } from "./pages/admin/orders/detail/loader";
+import AdminOrderUpdatePage from "./pages/admin/orders/update";
+import { action as adminUpdateOrderAction } from "./pages/admin/orders/update/action";
+import { loader as adminUpdateOrderLoader } from "./pages/admin/orders/update/loader";
 
 export const router = createBrowserRouter([
   {
@@ -357,10 +364,6 @@ export const router = createBrowserRouter([
           },
         ],
       },
-      // {
-      //   path: "posts",
-      //   Component: AdminPostsPage,
-      // },
       {
         path: "categories",
         Component: AdminCategoriesPage,
@@ -411,8 +414,29 @@ export const router = createBrowserRouter([
       },
       {
         path: "orders",
-        Component: AdminOrdersPage,
-        loader: adminOrdersLoader,
+        children: [
+          {
+            index: true,
+            Component: AdminOrdersPage,
+            loader: adminOrdersLoader,
+          },
+          {
+            path: ":code",
+            Component: AdminOrderDetailPage,
+            loader: adminOrderDetailLoader,
+          },
+          {
+            path: ":code/edit",
+            Component: AdminOrderUpdatePage,
+            loader: adminUpdateOrderLoader,
+            action: adminUpdateOrderAction,
+          },
+          {
+            path: "create",
+            Component: AdminOrderCreatePage,
+            action: adminCreateOrderAction,
+          },
+        ],
       },
       {
         path: "settings",

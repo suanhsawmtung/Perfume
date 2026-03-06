@@ -1,10 +1,10 @@
-import { ProductList } from "@/components/admin/product/list/products-list";
 import { ProductFilterDialog } from "@/components/admin/product/list/product-filter-dialog";
+import { ProductList } from "@/components/admin/product/list/products-list";
 import AdminHeaderSection from "@/components/admin/shared/admin-header-section";
 import { CreateButton } from "@/components/admin/shared/create-button";
 import { FilterBar } from "@/components/admin/shared/filter-bar";
 import { MoreFilterButton } from "@/components/admin/shared/more-filter-button";
-import { isConcentration, isGender } from "@/lib/utils";
+import { isConcentration, isGender, parseBoolean } from "@/lib/utils";
 import { DEFAULT_LIMIT } from "@/services/product/api";
 import { useListProducts } from "@/services/product/queries/useGetProducts";
 import { useSearchParams } from "react-router";
@@ -24,12 +24,6 @@ const AdminProductsPage = () => {
       : undefined;
 
   const offset = (page - 1) * DEFAULT_LIMIT;
-
-  const parseBoolean = (value: string | null) => {
-    if (value === "true") return true;
-    if (value === "false") return false;
-    return undefined;
-  };
 
   const isActive = parseBoolean(isActiveParam);
   const isLimited = parseBoolean(isLimitedParam);

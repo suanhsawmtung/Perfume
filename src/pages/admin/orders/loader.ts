@@ -1,4 +1,4 @@
-import { isOrderStatus, isPaymentStatus } from "@/lib/utils";
+import { isOrderSource, isOrderStatus, isPaymentStatus } from "@/lib/utils";
 import { DEFAULT_LIMIT } from "@/services/order/api";
 import { ensureListOrders } from "@/services/order/queries/useGetOrders";
 
@@ -38,6 +38,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const paymentStatusParam = searchParams.get("paymentStatus");
   const paymentStatus = paymentStatusParam && isPaymentStatus(paymentStatusParam) ? paymentStatusParam : undefined;
 
+  const sourceParam = searchParams.get("source");
+  const source = sourceParam && isOrderSource(sourceParam) ? sourceParam : undefined;
+
   const offset = (page - 1) * DEFAULT_LIMIT;
 
   try {
@@ -47,6 +50,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       limit: DEFAULT_LIMIT,
       status,
       paymentStatus,
+      source,
     });
 
     return null;

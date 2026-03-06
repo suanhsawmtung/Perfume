@@ -18,10 +18,9 @@ import {
 import { TabButton } from "@/components/ui/tab-button";
 import { Textarea } from "@/components/ui/textarea";
 import { useListBrands } from "@/services/brand/queries/useGetListBrands";
-import type { Concentration, Gender, ProductDetailType } from "@/types/product.type";
+import type { Concentration, Gender, ProductDetailType, ProductFormValues } from "@/types/product.type";
 import {
   productSchema,
-  type ProductFormValues,
 } from "@/validations/product.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";

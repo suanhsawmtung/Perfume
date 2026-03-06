@@ -1,39 +1,31 @@
 import { queryClient } from "@/lib/query-client";
-import type { OrderListResult } from "@/types/order.type";
+import type { OrderListResult, OrderQueryParams } from "@/types/order.type";
 import {
-    useSuspenseQuery,
-    type UseSuspenseQueryResult,
+  useSuspenseQuery,
+  type UseSuspenseQueryResult,
 } from "@tanstack/react-query";
 import { fetchOrders } from "../api";
 import { orderQueryKeys } from "../key";
 
-interface UseListOrdersParams {
-  offset: number;
-  search?: string;
-  limit?: number;
-  status?: string;
-  paymentStatus?: string;
-}
-
 export function useListOrders(
-  params: UseListOrdersParams,
+  params: OrderQueryParams,
 ): UseSuspenseQueryResult<OrderListResult, Error> {
-  const { offset, search, limit, status, paymentStatus } = params;
+  const { offset, search, limit, status, paymentStatus, source } = params;
 
   return useSuspenseQuery<OrderListResult, Error>({
-    queryKey: orderQueryKeys.list({ offset, search, limit, status, paymentStatus }),
-    queryFn: () => fetchOrders({ offset, search, limit, status, paymentStatus }),
+    queryKey: orderQueryKeys.list({ offset, search, limit, status, paymentStatus, source }),
+    queryFn: () => fetchOrders({ offset, search, limit, status, paymentStatus, source }),
   });
 }
 
 export async function ensureListOrders(
-  params: UseListOrdersParams,
+  params: OrderQueryParams,
 ): Promise<void> {
-  const { offset, search, limit, status, paymentStatus } = params;
+  const { offset, search, limit, status, paymentStatus, source } = params;
 
   await queryClient.ensureQueryData({
-    queryKey: orderQueryKeys.list({ offset, search, limit, status, paymentStatus }),
-    queryFn: () => fetchOrders({ offset, search, limit, status, paymentStatus }),
+    queryKey: orderQueryKeys.list({ offset, search, limit, status, paymentStatus, source }),
+    queryFn: () => fetchOrders({ offset, search, limit, status, paymentStatus, source }),
   });
 }
 

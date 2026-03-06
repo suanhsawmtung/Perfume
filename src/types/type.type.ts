@@ -13,7 +13,7 @@ export type ProductTypeType = {
 };
 
 export interface TypeListResult {
-  types: ProductTypeType[];
+  types: ProductListTypeType[];
   currentPage: number;
   totalPages: number;
   pageSize: number;
@@ -33,7 +33,7 @@ export interface CreateTypeResponse {
   success: boolean;
   message: string;
   data: {
-    type: ProductTypeType;
+    type: ProductListTypeType;
   };
 }
 
@@ -46,7 +46,7 @@ export interface UpdateTypeResponse {
   success: boolean;
   message: string;
   data: {
-    type: ProductTypeType;
+    type: ProductListTypeType;
   };
 }
 

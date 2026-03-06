@@ -1,3 +1,4 @@
+import { DeleteProductDialog } from "@/components/admin/product/actions/delete-product-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getConcentrationVariant, getGenderVariant } from "@/lib/utils";
@@ -5,10 +6,9 @@ import type { ProductType } from "@/types/product.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowRightIcon, PencilLineIcon, Trash2Icon } from "lucide-react";
 import { Link } from "react-router";
-import { DeleteProductDialog } from "@/components/admin/product/actions/delete-product-dialog";
 
 // Actions cell component that can use hooks
-const ActionsCell = ({ product }: { product: ProductType }) => {
+const ActionsCell = ({ product }: { product: ProductListType }) => {
   return (
     <div className="flex items-center justify-end gap-1">
       <Button

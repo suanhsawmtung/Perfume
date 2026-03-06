@@ -1,10 +1,11 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { formatDate, formatPrice } from "@/lib/utils";
+import { formatDateTime, formatPrice, getOrderStatusVariant, getPaymentStatusVariant } from "@/lib/utils";
 import type { OrderType } from "@/types/order.type";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowRightIcon } from "lucide-react";
+import { ArrowRightIcon, PencilLineIcon, Trash2Icon } from "lucide-react";
 import { Link } from "react-router";
+import { DeleteOrderDialog } from "../../actions/delete-order-dialog";
 
 // Actions cell component
 const ActionsCell = ({ order }: { order: OrderType }) => {
@@ -17,13 +18,35 @@ const ActionsCell = ({ order }: { order: OrderType }) => {
         asChild
       >
         <Link
-          to={`/admin/orders/${order.id}`} // Assuming ID based routing for orders
+          to={`/admin/orders/${order.code}`}
           className="flex items-center justify-center gap-1 bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
         >
           Details
           <ArrowRightIcon size={12} />
         </Link>
       </Button>
+
+       <Button
+          variant="outline"
+          size="sm"
+          className="h-7 w-7 rounded-sm border-none bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
+          asChild
+        >
+          <Link to={`/admin/orders/${order.code}/edit`}>
+            <PencilLineIcon size={16} />
+          </Link>
+        </Button>
+
+      <DeleteOrderDialog order={order}>
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-7 w-7 rounded-sm border-none bg-red-50 p-1 text-red-400 hover:bg-red-50 hover:text-red-400"
+          asChild
+        >
+          <Trash2Icon size={16} />
+        </Button>
+      </DeleteOrderDialog>
     </div>
   );
 };
@@ -54,7 +77,7 @@ export const columns: ColumnDef<OrderType>[] = [
       );
     },
     cell: ({ row }) => {
-      const customerName = row.original.customerName || row.original.User.username || row.original.User.email;
+      const customerName = row.original.customerName || row.original.user.username || row.original.user.email;
       return (
         <div className="text-muted-foreground text-center text-sm font-normal">
           {customerName}
@@ -90,22 +113,7 @@ export const columns: ColumnDef<OrderType>[] = [
     },
     cell: ({ row }) => {
       const status = row.getValue("status") as OrderType["status"];
-      let variant: "default" | "secondary" | "destructive" | "outline" = "outline";
-      
-      switch (status) {
-        case "PENDING":
-          variant = "secondary";
-          break;
-        case "ACCEPTED":
-          variant = "default";
-          break;
-        case "REJECTED":
-          variant = "destructive";
-          break;
-        case "DONE":
-            variant = "outline"; // or maybe something else typical for done
-            break;
-      }
+      const variant = getOrderStatusVariant(status);
 
       return (
         <div className="flex items-center justify-center">
@@ -125,8 +133,8 @@ export const columns: ColumnDef<OrderType>[] = [
     },
     cell: ({ row }) => {
         const paymentStatus = row.getValue("paymentStatus") as OrderType["paymentStatus"];
-        const variant = paymentStatus === "PAID" ? "default" : "destructive";
-  
+        const variant = getPaymentStatusVariant(paymentStatus);
+
         return (
           <div className="flex items-center justify-center">
             <Badge variant={variant}>{paymentStatus}</Badge>
@@ -147,7 +155,7 @@ export const columns: ColumnDef<OrderType>[] = [
       const date = row.getValue("createdAt") as string;
       return (
         <div className="text-muted-foreground text-center text-sm font-normal">
-          {formatDate(date)}
+          {formatDateTime(date)}
         </div>
       );
     },

@@ -1,10 +1,10 @@
 import { AdminPagination } from "@/components/admin/shared/pagination";
 import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import type { OrderType } from "@/types/order.type";
 import { FilterTags } from "../../shared/filter-tags"; // Adjust import path
@@ -35,8 +35,9 @@ export function OrderList({
           <FilterTags
             allowedFilters={{
               search: true,
-              status: ["PENDING", "ACCEPTED", "REJECTED", "DONE"],
-              paymentStatus: ["PAID", "UNPAID"],
+              status: ["PENDING", "ACCEPTED", "REJECTED", "CANCELLED", "DONE"],
+              paymentStatus: ["PENDING", "UNPAID", "PAID", "FAILED", "REFUNDED", "PARTIALLY_REFUNDED"],
+              source: ["ADMIN", "CUSTOMER"],
             }}
           />
         </div>
