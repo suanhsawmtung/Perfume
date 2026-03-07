@@ -7,6 +7,14 @@ export type CategoryType = {
   slug: string;
   createdAt: string; // ISO date string
   updatedAt: string; // ISO date string
+};
+
+export type CategoryListType = {
+  id: number;
+  name: string;
+  slug: string;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
   _count: {
     posts: number;
   };
@@ -19,7 +27,7 @@ export type CommonCategoryType = {
 };
 
 export interface CategoryListResult {
-  categories: CategoryType[];
+  categories: CategoryListType[];
   currentPage: number;
   totalPages: number;
   pageSize: number;

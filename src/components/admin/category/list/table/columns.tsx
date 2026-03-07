@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
-import type { CategoryType } from "@/types";
+import type { CategoryListType } from "@/types/category.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowRightIcon, PencilLineIcon, Trash2Icon } from "lucide-react";
 import { Link } from "react-router";
 
-export const columns: ColumnDef<CategoryType>[] = [
+export const columns: ColumnDef<CategoryListType>[] = [
   {
     accessorKey: "name",
     header: () => {

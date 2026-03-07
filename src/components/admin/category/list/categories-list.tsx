@@ -6,8 +6,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import type { CategoryType } from "@/types";
 // import { FilterBar } from "../../shared/filter-bar";
+import type { CategoryListType } from "@/types/category.type";
 import { FilterTags } from "../../shared/filter-tags";
 import { columns } from "./table/columns";
 import { DataTable } from "./table/data-table";
@@ -17,7 +17,7 @@ export function CategoryList({
   total,
   page,
 }: {
-  categories: CategoryType[];
+  categories: CategoryListType[];
   total?: number;
   page?: number;
   size?: number;

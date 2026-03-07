@@ -1,5 +1,5 @@
 import { queryClient } from "@/lib/query-client";
-import type { CategoryType } from "@/types/category.type";
+import type { CategoryListType } from "@/types/category.type";
 import {
   useSuspenseQuery,
   type UseSuspenseQueryResult,
@@ -9,8 +9,8 @@ import { categoryQueryKeys } from "../key";
 
 export function useCategory(
   slug: string,
-): UseSuspenseQueryResult<CategoryType, Error> {
-  return useSuspenseQuery<CategoryType, Error>({
+): UseSuspenseQueryResult<CategoryListType, Error> {
+  return useSuspenseQuery<CategoryListType, Error>({
     queryKey: categoryQueryKeys.detail(slug),
     queryFn: () => fetchCategory(slug),
   });

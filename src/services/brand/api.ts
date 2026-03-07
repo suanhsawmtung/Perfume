@@ -1,14 +1,14 @@
 import api from "@/lib/api";
 import type {
   BrandListResult,
+  BrandListType,
   BrandQueryParams,
-  BrandType,
   CreateBrandParams,
   CreateBrandResponse,
   DeleteBrandParams,
   DeleteBrandResponse,
   UpdateBrandParams,
-  UpdateBrandResponse,
+  UpdateBrandResponse
 } from "@/types/brand.type";
 
 export const DEFAULT_LIMIT = 10;
@@ -39,7 +39,7 @@ export async function fetchBrands(options: {
   };
 }
 
-export async function fetchBrand(slug: string): Promise<BrandType> {
+export async function fetchBrand(slug: string): Promise<BrandListType> {
   const response = await api.get(`/admin/brands/${slug}`);
 
   // Backend returns: { success: true, data: { brand }, message: null }

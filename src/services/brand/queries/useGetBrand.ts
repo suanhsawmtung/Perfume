@@ -1,5 +1,5 @@
 import { queryClient } from "@/lib/query-client";
-import type { BrandType } from "@/types/brand.type";
+import type { BrandListType } from "@/types/brand.type";
 import {
   useSuspenseQuery,
   type UseSuspenseQueryResult,
@@ -9,8 +9,8 @@ import { brandQueryKeys } from "../key";
 
 export function useBrand(
   slug: string,
-): UseSuspenseQueryResult<BrandType, Error> {
-  return useSuspenseQuery<BrandType, Error>({
+): UseSuspenseQueryResult<BrandListType, Error> {
+  return useSuspenseQuery<BrandListType, Error>({
     queryKey: brandQueryKeys.detail(slug),
     queryFn: () => fetchBrand(slug),
   });

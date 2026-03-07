@@ -8,8 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import type { CategoryType } from "@/types";
-import type { CategoryFormValues } from "@/types/category.type";
+import type { CategoryFormValues, CategoryListType } from "@/types/category.type";
 import { categorySchema } from "@/validations/common.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
@@ -17,7 +16,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useNavigation, useSubmit } from "react-router";
 
 interface CategoryFormProps {
-  category?: CategoryType;
+  category?: CategoryListType;
   cancelUrl?: string;
   submitButtonText?: string;
 }

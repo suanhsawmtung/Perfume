@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
-import type { BrandType } from "@/types/brand.type";
+import type { BrandListType } from "@/types/brand.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowRightIcon, PencilLineIcon, Trash2Icon } from "lucide-react";
 import { Link } from "react-router";
 
-export const columns: ColumnDef<BrandType>[] = [
+export const columns: ColumnDef<BrandListType>[] = [
   {
     accessorKey: "name",
     header: () => {

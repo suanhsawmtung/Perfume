@@ -1,15 +1,14 @@
 import api from "@/lib/api";
 import type {
   CategoryListResult,
+  CategoryListType,
   CategoryQueryParams,
-  CategoryType,
-  CommonCategoryType,
   CreateCategoryParams,
   CreateCategoryResponse,
   DeleteCategoryParams,
   DeleteCategoryResponse,
   UpdateCategoryParams,
-  UpdateCategoryResponse,
+  UpdateCategoryResponse
 } from "@/types/category.type";
 
 export const DEFAULT_LIMIT = 10;
@@ -40,7 +39,7 @@ export async function fetchCategories(options: {
   };
 }
 
-export async function fetchCategory(slug: string): Promise<CategoryType> {
+export async function fetchCategory(slug: string): Promise<CategoryListType> {
   const response = await api.get(`/admin/categories/${slug}`);
 
   // Backend returns: { success: true, data: { category }, message: null }
@@ -78,7 +77,7 @@ export async function deleteCategory(
   return response.data;
 }
 
-export async function fetchAllCategories(): Promise<CommonCategoryType[]> {
+export async function fetchAllCategories(): Promise<CategoryListType[]> {
   const response = await api.get("/categories");
 
   return response.data?.data?.categories || [];
