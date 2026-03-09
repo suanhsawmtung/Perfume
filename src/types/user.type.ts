@@ -29,6 +29,18 @@ export interface UserListResult {
   pageSize: number;
 }
 
+export interface CommonUserType {
+  id: number;
+  firstName: string | null;
+  lastName: string | null;
+  username: string;
+}
+
+export interface CommonUserResult {
+  users: CommonUserType[];
+  nextCursor: number | null;
+}
+
 export interface UserQueryParams {
   limit?: number;
   offset?: number;

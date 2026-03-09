@@ -1,5 +1,6 @@
 import api from "@/lib/api";
 import type {
+  CommonProductResult,
   Concentration,
   CreateProductParams,
   CreateProductResponse,
@@ -13,7 +14,7 @@ import type {
   ProductVariantDetailType,
   ProductVariantsSummaryType,
   UpdateProductParams,
-  UpdateProductResponse,
+  UpdateProductResponse
 } from "@/types/product.type";
 
 export const DEFAULT_LIMIT = 10;
@@ -171,4 +172,21 @@ export async function deleteProductVariant({
 
   // Backend returns: { success: true, message: string }
   return response.data;
+}
+
+export async function fetchAllProducts(
+  limit?: number,
+  cursor?: number,
+): Promise<CommonProductResult> {
+  const response = await api.get("/products", {
+    params: {
+      ...(limit && { limit }),
+      ...(cursor && { cursor }),
+    },
+  });
+
+  return {
+    products: response.data?.data?.products || [],
+    nextCursor: response.data?.data?.nextCursor || null,
+  };
 }

@@ -104,6 +104,10 @@ export function isRole(value: string | null | undefined): value is Role {
   return value === "USER" || value === "ADMIN" || value === "AUTHOR";
 }
 
+export function isReviewStatus(value: string | null | undefined): value is "publish" | "unpublish" {
+  return value === "publish" || value === "unpublish";
+}
+
 export function getPostStatusVariant(status: PostStatus) {
   return status === "DRAFT"
     ? "secondary"

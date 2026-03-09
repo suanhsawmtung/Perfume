@@ -108,6 +108,11 @@ import AdminOrderUpdatePage from "./pages/admin/orders/update";
 import { action as adminUpdateOrderAction } from "./pages/admin/orders/update/action";
 import { loader as adminUpdateOrderLoader } from "./pages/admin/orders/update/loader";
 
+import AdminReviewsPage from "@/pages/admin/reviews";
+import AdminReviewDetailPage from "@/pages/admin/reviews/detail";
+import { loader as adminReviewDetailLoader } from "@/pages/admin/reviews/detail/loader";
+import { loader as adminReviewsLoader } from "@/pages/admin/reviews/loader";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -435,6 +440,21 @@ export const router = createBrowserRouter([
             path: "create",
             Component: AdminOrderCreatePage,
             action: adminCreateOrderAction,
+          },
+        ],
+      },
+      {
+        path: "reviews",
+        children: [
+          {
+            index: true,
+            Component: AdminReviewsPage,
+            loader: adminReviewsLoader,
+          },
+          {
+            path: ":id",
+            Component: AdminReviewDetailPage,
+            loader: adminReviewDetailLoader,
           },
         ],
       },

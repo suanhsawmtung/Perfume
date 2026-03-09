@@ -1,5 +1,14 @@
 import api from "@/lib/api";
-import type { CreateUserResponse, DeleteUserParams, DeleteUserResponse, UpdateUserResponse, UserListResult, UserQueryParams, UserType } from "@/types/user.type";
+import type {
+  CommonUserResult,
+  CreateUserResponse,
+  DeleteUserParams,
+  DeleteUserResponse,
+  UpdateUserResponse,
+  UserListResult,
+  UserQueryParams,
+  UserType
+} from "@/types/user.type";
 
 export const DEFAULT_LIMIT = 10;
 
@@ -63,4 +72,21 @@ export async function deleteUser(
 
   // Backend returns: { success: true, message: string }
   return response.data;
+}
+
+export async function fetchAllUsers(
+  limit?: number,
+  cursor?: number,
+): Promise<CommonUserResult> {
+  const response = await api.get("/users", {
+    params: {
+      ...(limit && { limit }),
+      ...(cursor && { cursor }),
+    },
+  });
+
+  return {
+    users: response.data?.data?.users || [],
+    nextCursor: response.data?.data?.nextCursor || null,
+  };
 }

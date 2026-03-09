@@ -55,6 +55,7 @@ const navItems: NavItemConfig[] = [
       // { title: "Materials", href: "/admin/materials" },
       // { title: "Types", href: "/admin/types" },
       { title: "Brands", href: "/admin/brands" },
+      { title: "Reviews", href: "/admin/reviews" },
     ],
   },
     {

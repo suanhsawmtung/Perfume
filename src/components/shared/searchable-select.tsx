@@ -88,7 +88,9 @@ export function SearchableSelect<T extends { value: string; label: string }>({
       itemToStringValue={itemToStringValue}
       onValueChange={(value) => {
         onValueChange(value);
-        handleClear();
+        setTimeout(() => {
+          handleClear();
+        }, 100);
       }}
       disabled={disabled}
     >
@@ -96,6 +98,7 @@ export function SearchableSelect<T extends { value: string; label: string }>({
         onChange={handleChange} 
         placeholder={placeholder} 
         {...(!selectedValue && { value: search })}
+        // value={selectedValue || search}
         showClear 
         disabled={disabled}
       />

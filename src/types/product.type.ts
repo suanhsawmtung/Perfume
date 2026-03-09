@@ -60,6 +60,21 @@ export interface ProductListResult {
   pageSize: number;
 }
 
+export interface CommonProductType {
+  id: number;
+  name: string;
+  slug: string;
+  brand: {
+    name: string;
+  };
+}
+
+export interface CommonProductResult {
+  products: CommonProductType[];
+  nextCursor: number | null;
+}
+
+// Product variant image
 export interface ProductVariantImage {
   path: string;
   isPrimary: boolean;

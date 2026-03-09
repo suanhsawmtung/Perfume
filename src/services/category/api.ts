@@ -3,6 +3,7 @@ import type {
   CategoryListResult,
   CategoryListType,
   CategoryQueryParams,
+  CommonCategoryType,
   CreateCategoryParams,
   CreateCategoryResponse,
   DeleteCategoryParams,
@@ -77,7 +78,7 @@ export async function deleteCategory(
   return response.data;
 }
 
-export async function fetchAllCategories(): Promise<CategoryListType[]> {
+export async function fetchAllCategories(): Promise<CommonCategoryType[]> {
   const response = await api.get("/categories");
 
   return response.data?.data?.categories || [];
