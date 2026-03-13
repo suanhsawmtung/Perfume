@@ -1,0 +1,20 @@
+﻿
+> furniture@0.0.0 build
+> tsc -b && vite build
+
+src/components/admin/product/actions/delete-product-dialog.tsx(8,12): error TS2304: Cannot find name 'ProductListType'.
+src/components/admin/product/list/products-list.tsx(18,13): error TS2304: Cannot find name 'ProductListType'.
+src/components/admin/product/list/table/columns.tsx(11,46): error TS2552: Cannot find name 'ProductListType'. Did you mean 'ProductType'?
+src/components/admin/product/list/table/columns.tsx(94,38): error TS2551: Property 'brand' does not exist on type 'ProductType'. Did you mean 'brandId'?
+src/components/admin/product/list/table/columns.tsx(112,41): error TS2339: Property '_count' does not exist on type 'ProductType'.
+src/components/admin/type/actions/delete-type-dialog.tsx(6,9): error TS2304: Cannot find name 'ProductListTypeType'.
+src/components/admin/type/form/type-form.tsx(19,10): error TS2304: Cannot find name 'ProductListTypeType'.
+src/components/admin/type/list/types-list.tsx(18,10): error TS2304: Cannot find name 'ProductListTypeType'.
+src/components/product/product-form-item.tsx(9,15): error TS2305: Module '"@/types"' has no exported member 'Category'.
+src/pages/products/index.tsx(10,21): error TS2322: Type '{ types: { id: string; label: string; }[]; categories: { id: string; label: string; }[]; }' is not assignable to type '{ categories: CategoryType[]; types: CategoryType[]; }'.
+  Types of property 'categories' are incompatible.
+    Type '{ id: string; label: string; }[]' is not assignable to type 'CategoryType[]'.
+      Type '{ id: string; label: string; }' is missing the following properties from type 'CategoryType': name, slug, createdAt, updatedAt
+src/types/type.type.ts(16,10): error TS2552: Cannot find name 'ProductListTypeType'. Did you mean 'ProductTypeType'?
+src/types/type.type.ts(36,11): error TS2552: Cannot find name 'ProductListTypeType'. Did you mean 'ProductTypeType'?
+src/types/type.type.ts(49,11): error TS2552: Cannot find name 'ProductListTypeType'. Did you mean 'ProductTypeType'?

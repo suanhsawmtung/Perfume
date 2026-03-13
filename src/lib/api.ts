@@ -1,4 +1,5 @@
 import { baseApiUrl } from "@/config/env";
+import { useAuthStore } from "@/stores/auth.store";
 import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { sleep } from "./utils";
 
@@ -48,9 +49,13 @@ api.interceptors.response.use(
       config._retry = true;
 
       // ⏳ Optional delay (e.g. 500ms)
-      await sleep(500);
+      await sleep(5000);
 
       return api(config);
+    }
+
+    if (errorCode === "Error_AuthNotFound") {
+      useAuthStore.getState().clearAuth();
     }
 
     return Promise.reject(error);
