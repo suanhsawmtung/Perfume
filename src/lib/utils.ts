@@ -3,6 +3,10 @@ import type { PaymentStatus } from "@/types/payment.type";
 import type { PostStatus } from "@/types/post.type";
 import type { Concentration, Gender } from "@/types/product.type";
 import type { RefundStatus } from "@/types/refund.type";
+import type {
+  TransactionDirection,
+  TransactionTypeEnum,
+} from "@/types/transaction.type";
 import type { Role, Status } from "@/types/user.type";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -19,7 +23,7 @@ export function formatPrice(
     style: "currency",
     currency: opts.currency ?? "USD",
     notation: opts.notation ?? "compact",
-  }).format(+price);
+  }).format(Number(price));
 }
 
 // Format user display name from AuthUser
@@ -124,6 +128,25 @@ export function isReviewStatus(value: string | null | undefined): value is "publ
   return value === "publish" || value === "unpublish";
 }
 
+export function isTransactionType(
+  value: string | null | undefined,
+): value is TransactionTypeEnum {
+  return (
+    value === "PAYMENT" ||
+    value === "REFUND" ||
+    value === "ADJUSTMENT" ||
+    value === "EXPENSE" ||
+    value === "WITHDRAWAL" ||
+    value === "OTHER"
+  );
+}
+
+export function isTransactionDirection(
+  value: string | null | undefined,
+): value is TransactionDirection {
+  return value === "IN" || value === "OUT";
+}
+
 export function getPostStatusVariant(status: PostStatus) {
   return status === "DRAFT"
     ? "secondary"
@@ -200,6 +223,27 @@ export function getRefundStatusVariant(status: RefundStatus) {
     default:
       return "secondary";
   }
+}
+
+export function getTransactionTypeVariant(type: TransactionTypeEnum) {
+  switch (type) {
+    case "PAYMENT":
+      return "outline";
+    case "REFUND":
+      return "destructive";
+    case "EXPENSE":
+      return "destructive";
+    case "WITHDRAWAL":
+      return "secondary";
+    case "ADJUSTMENT":
+      return "default";
+    default:
+      return "secondary";
+  }
+}
+
+export function getTransactionDirectionVariant(direction: TransactionDirection) {
+  return direction === "IN" ? "outline" : "destructive";
 }
 
 // Format name from firstName and lastName

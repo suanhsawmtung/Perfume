@@ -9,7 +9,7 @@ export const useDeleteRefundMutation = () => {
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: deleteRefund,
+    mutationFn: (id: number) => deleteRefund(id),
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: refundQueryKeys.all });
       toast.success(response.message || "Refund deleted successfully");

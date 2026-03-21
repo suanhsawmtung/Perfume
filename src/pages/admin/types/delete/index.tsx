@@ -1,6 +1,4 @@
-import { DeleteTypeDialog } from "@/components/admin/type/actions/delete-type-dialog";
 import DialogWrapper from "@/components/wrapper/dialog-wrapper";
-import { useType } from "@/services/type/queries/useGetType";
 import { useNavigate, useParams } from "react-router";
 
 const AdminTypeDeleteDialog = () => {
@@ -11,7 +9,7 @@ const AdminTypeDeleteDialog = () => {
     throw new Response("Type slug is required", { status: 400 });
   }
 
-  const { data: type } = useType(slug);
+  // const { data: type } = useType(slug);
 
   return (
     <DialogWrapper
@@ -20,7 +18,8 @@ const AdminTypeDeleteDialog = () => {
       onOpenChange={() => navigate("/admin/types")}
       open={true}
     >
-      <DeleteTypeDialog type={type} cancelUrl="/admin/types" />
+      {/* <DeleteTypeDialog type={type} cancelUrl="/admin/types" /> */}
+      <span>hello world</span>
     </DialogWrapper>
   );
 };

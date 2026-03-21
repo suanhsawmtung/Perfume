@@ -1,6 +1,6 @@
 import DialogWrapper from "@/components/wrapper/dialog-wrapper";
 import { useState } from "react";
-import { RefundFilterForm } from "./refund-filter-form";
+import { RefundFilterForm } from "../form/refund-filter-form";
 
 interface RefundFilterDialogProps {
   children: React.ReactNode;

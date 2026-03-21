@@ -48,6 +48,7 @@ const navItems: NavItemConfig[] = [
       { title: "Orders", href: "/admin/orders" },
       { title: "Payments", href: "/admin/payments" },
       { title: "Refunds", href: "/admin/refunds" },
+      { title: "Transactions", href: "/admin/transactions" },
     ],
   },
   {

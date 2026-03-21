@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { TabButton } from "@/components/ui/tab-button";
-import { isOrderSource, isOrderStatus, isPaymentStatus } from "@/lib/utils";
+import { isOrderPaymentStatus, isOrderSource, isOrderStatus } from "@/lib/utils";
 import type { OrderFilterFormValues, OrderPaymentStatus, OrderSource, OrderStatus } from "@/types/order.type";
 import { orderFilterFormSchema } from "@/validations/order.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -63,7 +63,7 @@ export function OrderFilterForm({ close }: { close: () => void }) {
     form.reset({
       search,
       status: isOrderStatus(statusParam) ? statusParam : undefined,
-      paymentStatus: isPaymentStatus(paymentStatusParam) ? paymentStatusParam : undefined,
+      paymentStatus: isOrderPaymentStatus(paymentStatusParam) ? paymentStatusParam : undefined,
       source: isOrderSource(sourceParam) ? sourceParam : undefined,
     });
   }, [location.search, form]);

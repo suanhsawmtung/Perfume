@@ -4,7 +4,7 @@ import AdminHeaderSection from "@/components/admin/shared/admin-header-section";
 import { CreateButton } from "@/components/admin/shared/create-button";
 import { FilterBar } from "@/components/admin/shared/filter-bar";
 import { MoreFilterButton } from "@/components/admin/shared/more-filter-button";
-import { isOrderSource, isOrderStatus, isPaymentStatus } from "@/lib/utils";
+import { isOrderPaymentStatus, isOrderSource, isOrderStatus } from "@/lib/utils";
 import { DEFAULT_LIMIT } from "@/services/order/api";
 import { useListOrders } from "@/services/order/queries/useGetOrders";
 import { useSearchParams } from "react-router";
@@ -18,7 +18,7 @@ const AdminOrdersPage = () => {
   const status = isOrderStatus(statusParam) ? statusParam : undefined;
 
   const paymentStatusParam = searchParams.get("paymentStatus");
-  const paymentStatus = isPaymentStatus(paymentStatusParam) ? paymentStatusParam : undefined;
+  const paymentStatus = isOrderPaymentStatus(paymentStatusParam) ? paymentStatusParam : undefined;
 
   const sourceParam = searchParams.get("source");
   const source = isOrderSource(sourceParam) ? sourceParam : undefined;

@@ -2,7 +2,7 @@ import { DeleteProductDialog } from "@/components/admin/product/actions/delete-p
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getConcentrationVariant, getGenderVariant } from "@/lib/utils";
-import type { ProductType } from "@/types/product.type";
+import type { ProductListType, ProductType } from "@/types/product.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowRightIcon, PencilLineIcon, Trash2Icon } from "lucide-react";
 import { Link } from "react-router";
@@ -65,7 +65,7 @@ const ActionsCell = ({ product }: { product: ProductListType }) => {
   );
 };
 
-export const columns: ColumnDef<ProductType>[] = [
+export const columns: ColumnDef<ProductListType>[] = [
   {
     accessorKey: "name",
     header: () => {

@@ -9,8 +9,14 @@ export async function loader({ params }: LoaderFunctionArgs) {
     throw new Response("Refund ID is required", { status: 400 });
   }
 
+  const refundId = Number(id);
+
+  if (isNaN(refundId)) {
+    throw new Response("Invalid refund ID", { status: 400 });
+  }
+
   try {
-    await ensureRefund(Number(id));
+    await ensureRefund(refundId);
 
     return null;
   } catch (error: any) {

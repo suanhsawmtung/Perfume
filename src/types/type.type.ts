@@ -1,5 +1,6 @@
 import type { typeSchema } from "@/validations/common.validation";
 import type z from "zod";
+import type { ProductListType } from "./product.type";
 
 export type ProductTypeType = {
   id: number;
@@ -13,7 +14,7 @@ export type ProductTypeType = {
 };
 
 export interface TypeListResult {
-  types: ProductListTypeType[];
+  types: ProductListType[];
   currentPage: number;
   totalPages: number;
   pageSize: number;
@@ -33,7 +34,7 @@ export interface CreateTypeResponse {
   success: boolean;
   message: string;
   data: {
-    type: ProductListTypeType;
+    type: ProductListType;
   };
 }
 
@@ -46,7 +47,7 @@ export interface UpdateTypeResponse {
   success: boolean;
   message: string;
   data: {
-    type: ProductListTypeType;
+    type: ProductListType;
   };
 }
 

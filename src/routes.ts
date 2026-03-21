@@ -116,6 +116,7 @@ import { loader as adminReviewsLoader } from "@/pages/admin/reviews/loader";
 import AdminProductRatingsPage from "@/pages/admin/product-ratings";
 import { loader as adminProductRatingsLoader } from "@/pages/admin/product-ratings/loader";
 
+import { loader as adminEditPaymentLoader } from "@/pages/admin/payments/update/loader";
 import AdminRefundsPage from "@/pages/admin/refunds";
 import AdminRefundCreatePage from "@/pages/admin/refunds/create";
 import { action as adminRefundCreateAction } from "@/pages/admin/refunds/create/action";
@@ -125,6 +126,15 @@ import { loader as adminRefundsLoader } from "@/pages/admin/refunds/loader";
 import AdminRefundUpdatePage from "@/pages/admin/refunds/update";
 import { action as adminUpdateRefundAction } from "@/pages/admin/refunds/update/action";
 import { loader as adminEditRefundLoader } from "@/pages/admin/refunds/update/loader";
+import AdminTransactionsPage from "@/pages/admin/transactions";
+import AdminTransactionCreatePage from "@/pages/admin/transactions/create";
+import { action as adminTransactionCreateAction } from "@/pages/admin/transactions/create/action";
+import AdminTransactionDetailPage from "@/pages/admin/transactions/detail";
+import { loader as adminTransactionDetailLoader } from "@/pages/admin/transactions/detail/loader";
+import { loader as adminTransactionsLoader } from "@/pages/admin/transactions/loader";
+import AdminTransactionEditPage from "@/pages/admin/transactions/update";
+import { action as adminUpdateTransactionAction } from "@/pages/admin/transactions/update/action";
+import { loader as adminEditTransactionLoader } from "@/pages/admin/transactions/update/loader";
 import AdminPaymentsPage from "./pages/admin/payments";
 import AdminPaymentCreatePage from "./pages/admin/payments/create";
 import { action as adminPaymentCreateAction } from "./pages/admin/payments/create/action";
@@ -133,7 +143,6 @@ import { loader as adminPaymentDetailLoader } from "./pages/admin/payments/detai
 import { loader as adminPaymentsLoader } from "./pages/admin/payments/loader";
 import AdminPaymentUpdatePage from "./pages/admin/payments/update";
 import { action as adminUpdatePaymentAction } from "./pages/admin/payments/update/action";
-import { loader as adminEditPaymentLoader } from "./pages/admin/payments/update/loader";
 
 export const router = createBrowserRouter([
   {
@@ -544,6 +553,32 @@ export const router = createBrowserRouter([
             Component: AdminPaymentUpdatePage,
             action: adminUpdatePaymentAction,
             loader: adminEditPaymentLoader,
+          },
+        ],
+      },
+      {
+        path: "transactions",
+        children: [
+          {
+            index: true,
+            Component: AdminTransactionsPage,
+            loader: adminTransactionsLoader,
+          },
+          {
+            path: ":id",
+            Component: AdminTransactionDetailPage,
+            loader: adminTransactionDetailLoader,
+          },
+          {
+            path: ":id/edit",
+            Component: AdminTransactionEditPage,
+            loader: adminEditTransactionLoader,
+            action: adminUpdateTransactionAction,
+          },
+          {
+            path: "create",
+            Component: AdminTransactionCreatePage,
+            action: adminTransactionCreateAction,
           },
         ],
       },

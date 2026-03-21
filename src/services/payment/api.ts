@@ -24,7 +24,7 @@ export const listPayments = async (params?: PaymentQueryParams): Promise<Payment
   };
 };
 
-export const getPayment = async (id: string): Promise<PaymentType> => {
+export const getPayment = async (id: number): Promise<PaymentType> => {
   const response = await axios.get(`/admin/payments/${id}`);
   return response.data.data?.payment;
 };
@@ -35,14 +35,14 @@ export const createPayment = async (data: PaymentFormValues): Promise<CreatePaym
 };
 
 export const updatePayment = async (
-  id: string,
+  id: number,
   data: Partial<PaymentFormValues>
 ): Promise<UpdatePaymentResponse> => {
   const response = await axios.patch(`/admin/payments/${id}`, data);
   return response.data;
 };
 
-export const deletePayment = async (id: string): Promise<DeletePaymentResponse> => {
+export const deletePayment = async (id: number): Promise<DeletePaymentResponse> => {
   const response = await axios.delete(`/admin/payments/${id}`);
   return response.data;
 };

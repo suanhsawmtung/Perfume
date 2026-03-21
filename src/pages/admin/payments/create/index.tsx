@@ -2,7 +2,6 @@ import { PaymentForm } from "@/components/admin/payment/form/payment-form";
 import AdminHeaderSection from "@/components/admin/shared/admin-header-section";
 import { BackButton } from "@/components/admin/shared/back-button";
 import { Card, CardContent } from "@/components/ui/card";
-import { action as createAction } from "./action";
 import { useSubmit } from "react-router";
 
 export default function AdminPaymentCreatePage() {

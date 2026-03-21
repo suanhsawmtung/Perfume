@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
-import type { ProductTypeType } from "@/types";
+import type { ProductListType } from "@/types/product.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowRightIcon, PencilLineIcon, Trash2Icon } from "lucide-react";
 import { Link } from "react-router";
 
-export const columns: ColumnDef<ProductTypeType>[] = [
+export const columns: ColumnDef<ProductListType>[] = [
   {
     accessorKey: "name",
     header: () => {
@@ -30,8 +30,8 @@ export const columns: ColumnDef<ProductTypeType>[] = [
         </div>
       );
     },
-    cell: ({ row }) => {
-      const productCount = row.original._count?.products ?? 0;
+    cell: () => {
+      const productCount = 0;
       return (
         <div className="text-muted-foreground text-center text-sm font-normal">
           {productCount}

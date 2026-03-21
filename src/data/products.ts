@@ -10,11 +10,11 @@ import type { Product } from "@/types";
 
 export const filterList = {
   types: [
-    { id: "uuid1", label: "seating" },
-    { id: "uuid2", label: "lying" },
-    { id: "uuid3", label: "entertainment" },
-    { id: "uuid4", label: "tables" },
-    { id: "uuid5", label: "storage" },
+    { id: "uuid1", name: "seating", slug: "seating" },
+    { id: "uuid2", name: "lying", slug: "lying" },
+    { id: "uuid3", name: "entertainment", slug: "entertainment" },
+    { id: "uuid4", name: "tables", slug: "tables" },
+    { id: "uuid5", name: "storage", slug: "storage" },
   ],
   categories: [
     { id: "uuid1", label: "Wooden" },

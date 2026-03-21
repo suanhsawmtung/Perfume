@@ -10,8 +10,9 @@ export async function loader({ params }: LoaderFunctionArgs) {
   }
 
   const refundId = Number(id);
+
   if (isNaN(refundId)) {
-    throw new Response("Invalid Refund ID", { status: 400 });
+    throw new Response("Invalid refund ID", { status: 400 });
   }
 
   try {

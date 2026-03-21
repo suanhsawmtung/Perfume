@@ -1,6 +1,6 @@
 import DialogWrapper from "@/components/wrapper/dialog-wrapper";
 import { useState } from "react";
-import { PaymentFilterForm } from "./payment-filter-form";
+import { PaymentFilterForm } from "../form/payment-filter-form";
 
 interface PaymentFilterDialogProps {
   children: React.ReactNode;

@@ -9,8 +9,14 @@ export async function loader({ params }: LoaderFunctionArgs) {
     throw new Response("Payment ID is required", { status: 400 });
   }
 
+  const paymentId = Number(id);
+
+  if (isNaN(paymentId)) {
+    throw new Response("Invalid payment ID", { status: 400 });
+  }
+
   try {
-    await ensurePayment(id);
+    await ensurePayment(paymentId);
 
     return null;
   } catch (error: any) {

@@ -1,13 +1,13 @@
-import { deletePayment } from "../api";
-import { paymentQueryKeys } from "../key";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { deletePayment } from "../api";
+import { paymentQueryKeys } from "../key";
 
 export const useDeletePayment = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => deletePayment(id),
+    mutationFn: (id: number) => deletePayment(id),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: paymentQueryKeys.all });
       toast.success(data.message || "Payment deleted successfully.");

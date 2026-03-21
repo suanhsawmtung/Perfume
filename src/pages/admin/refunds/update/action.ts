@@ -16,6 +16,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const refundId = Number(id);
 
+  if (isNaN(refundId)) {
+    throw new Response("Invalid refund ID", { status: 400 });
+  }
+
   const reason = formData.get("reason") as string;
 
   if (!reason || reason.trim().length === 0) {

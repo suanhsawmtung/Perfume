@@ -1,4 +1,4 @@
-import { isOrderSource, isOrderStatus, isPaymentStatus } from "@/lib/utils";
+import { isOrderPaymentStatus, isOrderSource, isOrderStatus } from "@/lib/utils";
 import { DEFAULT_LIMIT } from "@/services/order/api";
 import { ensureListOrders } from "@/services/order/queries/useGetOrders";
 
@@ -36,7 +36,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const status = statusParam && isOrderStatus(statusParam) ? statusParam : undefined;
 
   const paymentStatusParam = searchParams.get("paymentStatus");
-  const paymentStatus = paymentStatusParam && isPaymentStatus(paymentStatusParam) ? paymentStatusParam : undefined;
+  const paymentStatus = paymentStatusParam && isOrderPaymentStatus(paymentStatusParam) ? paymentStatusParam : undefined;
 
   const sourceParam = searchParams.get("source");
   const source = sourceParam && isOrderSource(sourceParam) ? sourceParam : undefined;

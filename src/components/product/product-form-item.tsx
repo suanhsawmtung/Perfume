@@ -6,13 +6,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import type { Category } from "@/types";
+import type { CategoryType } from "@/types";
 import type { Control, Path } from "react-hook-form";
 import type { ProductFilterFormSchemaType } from "./filter-list";
 
 interface Props {
   title: string;
-  items: Category[];
+  items: CategoryType[];
   control: Control<ProductFilterFormSchemaType>;
   name: Path<ProductFilterFormSchemaType>;
 }
@@ -36,23 +36,23 @@ const ProductFormItem = ({ title, items, control, name }: Props) => {
               >
                 <FormControl>
                   <Checkbox
-                    checked={(field.value as string[])?.includes(item.id)}
+                    checked={(field.value as string[])?.includes(String(item.id))}
                     onCheckedChange={(checked) => {
                       return checked
                         ? field.onChange([
                             ...(field.value as string[]),
-                            item.id,
+                            String(item.id),
                           ])
                         : field.onChange(
                             (field.value as string[])?.filter(
-                              (value) => value !== item.id,
+                              (value) => Number(value) !== item.id,
                             ),
                           );
                     }}
                   />
                 </FormControl>
                 <FormLabel className="text-sm font-normal">
-                  {item.label}
+                  {item.name}
                 </FormLabel>
               </FormItem>
             );

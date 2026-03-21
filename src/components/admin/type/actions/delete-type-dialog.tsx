@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
+import type { ProductListType } from "@/types/product.type";
 import { Loader2 } from "lucide-react";
 import { Form, useNavigate, useNavigation } from "react-router";
 
 interface DeleteTypeDialogProps {
-  type: ProductListTypeType;
+  type: ProductListType;
   cancelUrl?: string;
 }
 

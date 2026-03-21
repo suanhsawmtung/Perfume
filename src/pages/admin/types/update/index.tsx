@@ -1,6 +1,4 @@
-import { TypeForm } from "@/components/admin/type/form/type-form";
 import DialogWrapper from "@/components/wrapper/dialog-wrapper";
-import { useType } from "@/services/type/queries/useGetType";
 import { useNavigate, useParams } from "react-router";
 
 const AdminTypeEditDialog = () => {
@@ -11,7 +9,7 @@ const AdminTypeEditDialog = () => {
     throw new Response("Type slug is required", { status: 400 });
   }
 
-  const { data: type } = useType(slug);
+  // const { data: type } = useType(slug);
 
   return (
     <DialogWrapper
@@ -20,7 +18,8 @@ const AdminTypeEditDialog = () => {
       onOpenChange={() => navigate("/admin/types")}
       open={true}
     >
-      <TypeForm type={type} cancelUrl="/admin/types" />
+      {/* <TypeForm type={type} cancelUrl="/admin/types" /> */}
+      hello
     </DialogWrapper>
   );
 };
