@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import DialogWrapper from "@/components/wrapper/dialog-wrapper";
-import { useDeletePayment } from "@/services/payment/queries/useDeletePayment";
+import { useVoidPayment } from "@/services/payment/queries/useVoidPayment";
 import type { PaymentType } from "@/types/payment.type";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -10,34 +10,34 @@ interface DeletePaymentDialogProps {
   children: React.ReactNode;
 }
 
-export function DeletePaymentDialog({
+export function VoidPaymentDialog({
   payment,
   children,
 }: DeletePaymentDialogProps) {
-  const deletePaymentMutation = useDeletePayment();
+  const voidPaymentMutation = useVoidPayment();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (deletePaymentMutation.isSuccess) {
+    if (voidPaymentMutation.isSuccess) {
       setOpen(false);
     }
-  }, [deletePaymentMutation.isSuccess]);
+  }, [voidPaymentMutation.isSuccess]);
 
-  const handleDelete = () => {
-    deletePaymentMutation.mutate(payment.id);
+  const handleVoid = () => {
+    voidPaymentMutation.mutate(payment.id);
   };
 
   return (
     <DialogWrapper
       open={open}
       onOpenChange={setOpen}
-      title="Delete Payment"
+      title="Void Payment"
       close={() => setOpen(false)}
       triggerContent={children}
     >
       <div className="space-y-6">
         <p className="text-muted-foreground text-sm">
-          Are you sure you want to delete the payment for order{" "}
+          Are you sure you want to void the payment for order{" "}
           <span className="text-foreground font-semibold">
             &quot;{payment?.order?.code}&quot;
           </span>
@@ -49,20 +49,20 @@ export function DeletePaymentDialog({
             type="button"
             variant="outline"
             onClick={() => setOpen(false)}
-            disabled={deletePaymentMutation.isPending}
+            disabled={voidPaymentMutation.isPending}
           >
             Cancel
           </Button>
           <Button
             type="button"
             variant="destructive"
-            onClick={handleDelete}
-            disabled={deletePaymentMutation.isPending}
+            onClick={handleVoid}
+            disabled={voidPaymentMutation.isPending}
           >
-            {deletePaymentMutation.isPending && (
+            {voidPaymentMutation.isPending && (
               <Loader2 className="mr-2 size-4 animate-spin" />
             )}
-            Delete
+            Void
           </Button>
         </div>
       </div>

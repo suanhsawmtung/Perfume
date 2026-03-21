@@ -37,7 +37,7 @@ export default function AdminTransactionsPage() {
       <div className="space-y-5">
         <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
           <div className="flex items-center gap-x-2">
-            <CreateButton text="Create Refund" to="/admin/transactions/create" />
+            <CreateButton text="Create Transaction" to="/admin/transactions/create" />
 
             <div className="block sm:hidden">
               <TransactionFilterDialog>

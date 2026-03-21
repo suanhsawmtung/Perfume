@@ -9,9 +9,9 @@ import {
 } from "@/lib/utils";
 import type { PaymentType } from "@/types/payment.type";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowRightIcon, PencilLineIcon, Trash2Icon } from "lucide-react";
+import { ArrowRightIcon, Ban, PencilLineIcon } from "lucide-react";
 import { Link } from "react-router";
-import { DeletePaymentDialog } from "../../actions/delete-payment-dialog";
+import { VoidPaymentDialog } from "../../actions/void-payment-dialog";
 
 const ActionsCell = ({ payment }: { payment: PaymentType }) => {
   return (
@@ -42,16 +42,16 @@ const ActionsCell = ({ payment }: { payment: PaymentType }) => {
         </Link>
       </Button>
 
-      <DeletePaymentDialog payment={payment}>
+      <VoidPaymentDialog payment={payment}>
         <Button
           variant="outline"
           size="sm"
           className="h-7 w-7 rounded-sm border-none bg-red-50 p-1 text-red-400 hover:bg-red-50 hover:text-red-400"
           asChild
         >
-          <Trash2Icon size={16} />
+          <Ban size={16} />
         </Button>
-      </DeletePaymentDialog>
+      </VoidPaymentDialog>
     </div>
   );
 };

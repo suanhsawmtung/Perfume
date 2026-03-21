@@ -1,12 +1,12 @@
 import axios from "@/lib/api";
 import type {
   CreatePaymentResponse,
-  DeletePaymentResponse,
   PaymentFormValues,
   PaymentListResult,
   PaymentQueryParams,
   PaymentType,
   UpdatePaymentResponse,
+  VoidPaymentResponse
 } from "@/types/payment.type";
 
 export const DEFAULT_LIMIT = 10;
@@ -42,7 +42,7 @@ export const updatePayment = async (
   return response.data;
 };
 
-export const deletePayment = async (id: number): Promise<DeletePaymentResponse> => {
-  const response = await axios.delete(`/admin/payments/${id}`);
+export const voidPayment = async (id: number): Promise<VoidPaymentResponse> => {
+  const response = await axios.patch(`/admin/payments/${id}/void`);
   return response.data;
 };

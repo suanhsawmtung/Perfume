@@ -40,7 +40,7 @@ export interface PaymentQueryParams {
   status?: string;
 }
 
-export interface DeletePaymentResponse {
+export interface VoidPaymentResponse {
   success: boolean;
   message: string;
 }

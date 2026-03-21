@@ -1,12 +1,12 @@
 import axios from "@/lib/api";
 import type {
   CreateRefundResponse,
-  DeleteRefundResponse,
   RefundFormValues,
   RefundListResult,
   RefundQueryParams,
   RefundType,
   UpdateRefundResponse,
+  VoidRefundResponse
 } from "@/types/refund.type";
 export const DEFAULT_LIMIT = 10;
 
@@ -40,7 +40,7 @@ export const updateRefund = async (
   return response.data;
 };
 
-export const deleteRefund = async (id: number): Promise<DeleteRefundResponse> => {
-  const response = await axios.delete(`/admin/refunds/${id}`);
+export const voidRefund = async (id: number): Promise<VoidRefundResponse> => {
+  const response = await axios.patch(`/admin/refunds/${id}/void`);
   return response.data;
 };

@@ -32,7 +32,7 @@ export interface RefundQueryParams {
   status?: string;
 }
 
-export interface DeleteRefundResponse {
+export interface VoidRefundResponse {
   success: boolean;
   message: string;
 }

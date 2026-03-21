@@ -3,9 +3,9 @@ import { Button } from "@/components/ui/button";
 import { formatDate, getRefundStatusVariant } from "@/lib/utils";
 import type { RefundType } from "@/types/refund.type";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowRightIcon, PencilLineIcon, Trash2Icon } from "lucide-react";
+import { ArrowRightIcon, Ban, PencilLineIcon } from "lucide-react";
 import { Link } from "react-router";
-import { DeleteRefundDialog } from "../../actions/delete-refund-dialog";
+import { VoidRefundDialog } from "../../actions/delete-refund-dialog";
 
 const ActionsCell = ({ refund }: { refund: RefundType }) => {
   return (
@@ -36,16 +36,16 @@ const ActionsCell = ({ refund }: { refund: RefundType }) => {
         </Link>
       </Button>
 
-      <DeleteRefundDialog refund={refund}>
+      <VoidRefundDialog refund={refund}>
         <Button
           variant="outline"
           size="sm"
           className="h-7 w-7 rounded-sm border-none bg-red-50 p-1 text-red-400 hover:bg-red-50 hover:text-red-400"
           asChild
         >
-          <Trash2Icon size={16} />  
+          <Ban size={16} />  
         </Button>        
-      </DeleteRefundDialog>
+      </VoidRefundDialog>
     </div>
   );
 };

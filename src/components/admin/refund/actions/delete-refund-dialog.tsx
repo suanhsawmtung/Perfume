@@ -1,43 +1,43 @@
 import { Button } from "@/components/ui/button";
 import DialogWrapper from "@/components/wrapper/dialog-wrapper";
-import { useDeleteRefundMutation } from "@/services/refund/queries/useDeleteRefund";
+import { useVoidRefundMutation } from "@/services/refund/queries/useVoidRefund";
 import type { RefundType } from "@/types/refund.type";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
-interface DeleteRefundDialogProps {
+interface VoidRefundDialogProps {
   refund: RefundType;
   children: React.ReactNode;
 }
 
-export function DeleteRefundDialog({
+export function VoidRefundDialog({
   refund,
   children,
-}: DeleteRefundDialogProps) {
-  const deleteRefundMutation = useDeleteRefundMutation();
+}: VoidRefundDialogProps) {
+  const voidRefundMutation = useVoidRefundMutation();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (deleteRefundMutation.isSuccess) {
+    if (voidRefundMutation.isSuccess) {
       setOpen(false);
     }
-  }, [deleteRefundMutation.isSuccess]);
+  }, [voidRefundMutation.isSuccess]);
 
-  const handleDelete = () => {
-    deleteRefundMutation.mutate(refund.id);
+  const handleVoid = () => {
+    voidRefundMutation.mutate(refund.id);
   };
 
   return (
     <DialogWrapper
       open={open}
       onOpenChange={setOpen}
-      title="Delete Refund"
+      title="Void Refund"
       close={() => setOpen(false)}
       triggerContent={children}
     >
       <div className="space-y-6">
         <p className="text-muted-foreground text-sm">
-          Are you sure you want to delete the refund for order{" "}
+          Are you sure you want to void the refund for order{" "}
           <span className="text-foreground font-semibold">
             &quot;{refund.order?.code}&quot;
           </span>
@@ -49,20 +49,20 @@ export function DeleteRefundDialog({
             type="button"
             variant="outline"
             onClick={() => setOpen(false)}
-            disabled={deleteRefundMutation.isPending}
+            disabled={voidRefundMutation.isPending}
           >
             Cancel
           </Button>
           <Button
             type="button"
             variant="destructive"
-            onClick={handleDelete}
-            disabled={deleteRefundMutation.isPending}
+            onClick={handleVoid}
+            disabled={voidRefundMutation.isPending}
           >
-            {deleteRefundMutation.isPending && (
+            {voidRefundMutation.isPending && (
               <Loader2 className="mr-2 size-4 animate-spin" />
             )}
-            Delete
+            Void
           </Button>
         </div>
       </div>

@@ -6,10 +6,9 @@ import {
   formatPrice,
   getTransactionTypeVariant
 } from "@/lib/utils";
-import { DeleteTransactionDialog } from "../../actions/delete-transaction-dialog";
 import type { TransactionType } from "@/types/transaction.type";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowRightIcon, PencilLineIcon, TrashIcon } from "lucide-react";
+import { ArrowRightIcon, PencilLineIcon } from "lucide-react";
 import { Link } from "react-router";
 
 const ActionsCell = ({ transaction }: { transaction: TransactionType }) => {
@@ -40,16 +39,6 @@ const ActionsCell = ({ transaction }: { transaction: TransactionType }) => {
           <PencilLineIcon size={16} />
         </Link>
       </Button>
-
-      <DeleteTransactionDialog transaction={transaction}>
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-7 w-7 rounded-sm border-none bg-red-50 text-red-400 hover:bg-red-50 hover:text-red-400"
-        >
-          <TrashIcon size={16} />
-        </Button>
-      </DeleteTransactionDialog>
     </div>
   );
 };
