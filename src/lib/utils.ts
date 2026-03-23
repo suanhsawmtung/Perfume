@@ -179,6 +179,8 @@ export function getOrderStatusVariant(status: OrderStatus) {
     case "PENDING":
       return "secondary";
     case "ACCEPTED":
+    case "SHIPPED":
+    case "DELIVERED":
       return "default";
     case "REJECTED":
       return "destructive";
@@ -314,6 +316,8 @@ export function isOrderStatus(
     value === "PENDING" ||
     value === "REJECTED" ||
     value === "ACCEPTED" ||
+    value === "SHIPPED" ||
+    value === "DELIVERED" ||
     value === "DONE" ||
     value === "CANCELLED"
   );

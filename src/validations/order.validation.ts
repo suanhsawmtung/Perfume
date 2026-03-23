@@ -2,7 +2,7 @@ import z from "zod";
 
 export const orderFilterFormSchema = z.object({
   search: z.string().optional(),
-  status: z.enum(["PENDING", "ACCEPTED", "REJECTED", "CANCELLED", "DONE"]).optional(),
+  status: z.enum(["PENDING", "ACCEPTED", "REJECTED", "CANCELLED", "DONE", "SHIPPED", "DELIVERED"]).optional(),
   paymentStatus: z.enum(["UNPAID", "PAID", "PENDING", "FAILED", "REFUNDED", "PARTIALLY_REFUNDED"]).optional(),
   source: z.enum(["ADMIN", "CUSTOMER"]).optional(),
 });
@@ -14,11 +14,8 @@ export const orderFormSchema = z.object({
   customerNotes: z.string().optional(),
   rejectedReason: z.string().optional(),
   cancelledReason: z.string().optional(),
-  status: z.enum(["PENDING", "ACCEPTED", "REJECTED", "CANCELLED", "DONE"]),
-  paymentStatus: z.enum(["UNPAID", "PAID", "PENDING", "FAILED", "REFUNDED", "PARTIALLY_REFUNDED"]),
-  userId: z.number().int().positive("User selection is required"),
+  status: z.enum(["PENDING", "ACCEPTED", "REJECTED", "CANCELLED", "DONE", "SHIPPED", "DELIVERED"]),
   source: z.enum(["ADMIN", "CUSTOMER"]),
-  image: z.instanceof(File).optional(),
   items: z.array(z.object({
     itemId: z.number(),
     itemType: z.enum(["PRODUCT_VARIANT", "BUNDLE"]),

@@ -3,7 +3,7 @@ import type z from "zod";
 import type { BrandType } from "./brand.type";
 import type { ProductType, VariantSource } from "./product.type";
 
-export type OrderStatus = "PENDING" | "REJECTED" | "ACCEPTED" | "DONE" | "CANCELLED";
+export type OrderStatus = "PENDING" | "REJECTED" | "ACCEPTED" | "SHIPPED" | "DELIVERED" | "DONE" | "CANCELLED";
 export type OrderPaymentStatus = "UNPAID" | "PAID" | "PENDING" | "FAILED" | "REFUNDED" | "PARTIALLY_REFUNDED";
 export type OrderSource = "CUSTOMER" | "ADMIN";
 
@@ -104,8 +104,6 @@ export interface CreateOrderParams {
   customerAddress: string;
   customerNotes?: string;
   status: OrderStatus;
-  paymentStatus: OrderPaymentStatus;
-  userId: number;
   items: OrderItemCreateInput[];
   rejectedReason?: string;
   cancelledReason?: string;
