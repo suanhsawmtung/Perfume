@@ -3,7 +3,7 @@ import DialogWrapper from "@/components/wrapper/dialog-wrapper";
 import { useDeleteProductMutation } from "@/services/product/queries/useDeleteProduct";
 import type { ProductListType } from "@/types/product.type";
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface DeleteProductDialogProps {
   product: ProductListType;
@@ -17,14 +17,12 @@ export function DeleteProductDialog({
   const deleteProductMutation = useDeleteProductMutation();
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    if (deleteProductMutation.isSuccess) {
-      setOpen(false);
-    }
-  }, [deleteProductMutation.isSuccess]);
-
   const handleDelete = () => {
-    deleteProductMutation.mutate({ slug: product.slug });
+    deleteProductMutation.mutate({ slug: product.slug }, {
+      onSuccess: () => {
+        setOpen(false);
+      },
+    });
   };
 
   return (

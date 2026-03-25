@@ -3,7 +3,7 @@ import DialogWrapper from "@/components/wrapper/dialog-wrapper";
 import { useDeletePostMutation } from "@/services/post/queries/useDeletePost";
 import type { PostType } from "@/types/post.type";
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface DeletePostDialogProps {
   post: PostType;
@@ -17,16 +17,12 @@ export function DeletePostDialog({
   const deletePostMutation = useDeletePostMutation();
   const [open, setOpen] = useState(false);
 
-  // Close dialog on successful deletion (mutation will navigate on success)
-  useEffect(() => {
-    if (deletePostMutation.isSuccess) {
-      setOpen(false);
-    }
-  }, [deletePostMutation.isSuccess]);
-
   const handleDelete = () => {
-    deletePostMutation.mutate({ slug: post.slug });
-    // Dialog will close via useEffect on success, or stay open on error
+    deletePostMutation.mutate({ slug: post.slug }, {
+      onSuccess: () => {
+        setOpen(false);
+      },
+    });
   };
 
   return (

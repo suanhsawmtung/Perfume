@@ -3,7 +3,7 @@ import z from "zod";
 export const orderFilterFormSchema = z.object({
   search: z.string().optional(),
   status: z.enum(["PENDING", "ACCEPTED", "REJECTED", "CANCELLED", "DONE", "SHIPPED", "DELIVERED"]).optional(),
-  paymentStatus: z.enum(["UNPAID", "PAID", "PENDING", "FAILED", "REFUNDED", "PARTIALLY_REFUNDED"]).optional(),
+  paymentStatus: z.enum(["UNPAID", "PAID", "FAILED", "REFUNDED", "PARTIALLY_REFUNDED", "PARTIALLY_PAID"]).optional(),
   source: z.enum(["ADMIN", "CUSTOMER"]).optional(),
 });
 

@@ -3,21 +3,22 @@ import AdminHeaderSection from "@/components/admin/shared/admin-header-section";
 import { BackButton } from "@/components/admin/shared/back-button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useGetPayment } from "@/services/payment/queries/useGetPayment";
-import { useParams, useSubmit } from "react-router";
+import { useParams } from "react-router";
 
 const AdminPaymentUpdatePage = () => {
   const { id } = useParams();
-  const submit = useSubmit();
 
   if (!id) {
     throw new Response("Payment ID is required", { status: 400 });
   }
 
-  const { data: payment } = useGetPayment(id);
+  const paymentId = Number(id);
 
-  const handleSubmit = (values: any) => {
-    submit(values, { method: "patch" });
-  };
+  if (isNaN(paymentId)) {
+    throw new Response("Payment ID must be a number", { status: 400 });
+  }
+
+  const { data: payment } = useGetPayment(paymentId);
 
   return (
     <section className="w-full">
@@ -28,9 +29,7 @@ const AdminPaymentUpdatePage = () => {
         <Card className="w-full">
           <CardContent className="flex flex-col gap-6 py-6">
             <PaymentForm 
-              initialValues={payment} 
-              onSubmit={handleSubmit} 
-              isUpdate 
+              payment={payment} 
             />
           </CardContent>
         </Card>

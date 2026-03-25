@@ -9,8 +9,6 @@ export const paymentSchema = z.object({
   paidAt: z.string().optional().nullable(),
 });
 
-export type PaymentFormValues = z.infer<typeof paymentSchema>;
-
 export const updatePaymentSchema = z.object({
   method: z.enum(["BANK_TRANSFER", "CASH", "CARD", "E_WALLET"]).optional(),
   reference: z.string().trim().max(255, "Reference must be 255 characters or less").optional().nullable(),

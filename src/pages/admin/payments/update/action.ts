@@ -13,13 +13,19 @@ export async function action({ request, params }: ActionFunctionArgs) {
     throw new Response("Payment ID is required", { status: 400 });
   }
 
+  const paymentId = Number(id);
+
+  if (isNaN(paymentId)) {
+    throw new Response("Invalid payment ID", { status: 400 });
+  }
+
   const method = formData.get("method") as string;
   const reference = formData.get("reference") as string;
   const note = formData.get("note") as string;
   const paidAt = formData.get("paidAt") as string;
 
   try {
-    const response = await updatePayment(id, {
+    const response = await updatePayment(paymentId, {
       method: method as any,
       reference: reference || null,
       note: note || null,
@@ -27,7 +33,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     });
 
     await queryClient.invalidateQueries({
-      queryKey: paymentQueryKeys.detail(id),
+      queryKey: paymentQueryKeys.detail(paymentId),
     });
 
     await queryClient.invalidateQueries({

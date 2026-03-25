@@ -11,12 +11,10 @@ export const useDeleteOrderMutation = () => {
   return useMutation({
     mutationFn: (params: { code: string }) => deleteOrder(params),
     onSuccess: (_, variables) => {
-      // Remove the deleted order from cache
       queryClient.removeQueries({
         queryKey: orderQueryKeys.detail(variables.code),
       });
 
-      // Invalidate order list queries to refetch
       queryClient.invalidateQueries({
         queryKey: orderQueryKeys.all,
       });

@@ -3,7 +3,7 @@ import DialogWrapper from "@/components/wrapper/dialog-wrapper";
 import { useVoidPayment } from "@/services/payment/queries/useVoidPayment";
 import type { PaymentType } from "@/types/payment.type";
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface DeletePaymentDialogProps {
   payment: PaymentType;
@@ -17,14 +17,12 @@ export function VoidPaymentDialog({
   const voidPaymentMutation = useVoidPayment();
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    if (voidPaymentMutation.isSuccess) {
-      setOpen(false);
-    }
-  }, [voidPaymentMutation.isSuccess]);
-
   const handleVoid = () => {
-    voidPaymentMutation.mutate(payment.id);
+    voidPaymentMutation.mutate(payment.id, {
+      onSuccess: () => {
+        setOpen(false);
+      },
+    });
   };
 
   return (
@@ -36,13 +34,19 @@ export function VoidPaymentDialog({
       triggerContent={children}
     >
       <div className="space-y-6">
-        <p className="text-muted-foreground text-sm">
-          Are you sure you want to void the payment for order{" "}
-          <span className="text-foreground font-semibold">
-            &quot;{payment?.order?.code}&quot;
-          </span>
-          ? This action cannot be undone.
-        </p>
+        {payment.status === "SUCCESS" ? (
+          <p className="text-muted-foreground text-sm">
+            Are you sure you want to void the payment for order{" "}
+            <span className="text-foreground font-semibold">
+              &quot;{payment?.order?.code}&quot;
+            </span>
+            ? This action cannot be undone.
+          </p>
+        ) : (
+          <p className="text-muted-foreground text-sm">
+            Only SUCCESS payment can be voided.
+          </p>
+        )}
 
         <div className="flex justify-end gap-2">
           <Button
@@ -51,19 +55,21 @@ export function VoidPaymentDialog({
             onClick={() => setOpen(false)}
             disabled={voidPaymentMutation.isPending}
           >
-            Cancel
+            {payment.status === "SUCCESS" ? "Cancel" : "Close"}
           </Button>
-          <Button
-            type="button"
-            variant="destructive"
-            onClick={handleVoid}
-            disabled={voidPaymentMutation.isPending}
-          >
-            {voidPaymentMutation.isPending && (
-              <Loader2 className="mr-2 size-4 animate-spin" />
-            )}
-            Void
-          </Button>
+          {payment.status === "SUCCESS" && (
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={handleVoid}
+              disabled={voidPaymentMutation.isPending}
+            >
+              {voidPaymentMutation.isPending && (
+                <Loader2 className="mr-2 size-4 animate-spin" />
+              )}
+              Void
+            </Button>
+          )}
         </div>
       </div>
     </DialogWrapper>

@@ -26,12 +26,12 @@ const orderStatusOptions: Array<{ key: OrderStatus; text: string }> = [
 ];
 
 const paymentStatusOptions: Array<{ key: OrderPaymentStatus; text: string }> = [
-  { key: "PENDING", text: "Pending" },
   { key: "UNPAID", text: "Unpaid" },
   { key: "PAID", text: "Paid" },
   { key: "FAILED", text: "Failed" },
   { key: "REFUNDED", text: "Refunded" },
   { key: "PARTIALLY_REFUNDED", text: "Partially Refunded" },
+  { key: "PARTIALLY_PAID", text: "Partially Paid" },
 ];
 
 const orderSourceOptions: Array<{ key: OrderSource; text: string }> = [

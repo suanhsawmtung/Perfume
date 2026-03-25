@@ -56,71 +56,86 @@ const ActionsCell = ({ payment }: { payment: PaymentType }) => {
   );
 };
 
-export const columns: ColumnDef<PaymentType>[] = [
-  {
-    accessorKey: "order.code",
-    header: "Order Code",
-    cell: ({ row }) => {
-      const order = row.original.order;
-      if (!order) return "-";
-      return (
-        <Link
-          to={`/admin/orders/${order.code}`}
-          className="font-medium text-primary hover:underline"
-        >
-          {order.code}
-        </Link>
-      );
+export type PaymentTableMode = "list" | "detail" | "edit";
+
+export const getColumns = (mode: PaymentTableMode): ColumnDef<PaymentType>[] => {
+  const allColumns: ColumnDef<PaymentType>[] = [
+    {
+      accessorKey: "order.code",
+      id: "orderCode",
+      header: "Order Code",
+      cell: ({ row }) => {
+        const order = row.original.order;
+        if (!order) return "-";
+        return (
+          <Link
+            to={`/admin/orders/${order.code}`}
+            className="font-medium text-primary hover:underline"
+          >
+            {order.code}
+          </Link>
+        );
+      },
     },
-  },
-  {
-    accessorKey: "method",
-    header: "Method",
-    cell: ({ row }) => {
-      const method = row.getValue("method") as string;
-      return <Badge variant="outline">{method.replace("_", " ")}</Badge>;
+    {
+      accessorKey: "method",
+      header: "Method",
+      cell: ({ row }) => {
+        const method = row.getValue("method") as string;
+        return <Badge variant="outline">{method.replace("_", " ")}</Badge>;
+      },
     },
-  },
-  {
-    accessorKey: "amount",
-    header: "Amount",
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-      return <span className="font-medium">{formatPrice(amount)}</span>;
+    {
+      accessorKey: "amount",
+      header: "Amount",
+      cell: ({ row }) => {
+        const amount = parseFloat(row.getValue("amount"));
+        return <span className="font-medium">{formatPrice(amount)}</span>;
+      },
     },
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => {
-      const status = row.getValue("status") as any;
-      return (
-        <Badge variant={getPaymentStatusVariant(status)}>
-          {status}
-        </Badge>
-      );
+    {
+      accessorKey: "status",
+      header: "Status",
+      cell: ({ row }) => {
+        const status = row.getValue("status") as any;
+        return (
+          <Badge variant={getPaymentStatusVariant(status)}>
+            {status}
+          </Badge>
+        );
+      },
     },
-  },
-  {
-    accessorKey: "paidAt",
-    header: "Paid At",
-    cell: ({ row }) => {
-      const paidAt = row.getValue("paidAt") as string;
-      return paidAt ? formatDate(paidAt) : "-";
+    {
+      accessorKey: "paidAt",
+      header: "Paid At",
+      cell: ({ row }) => {
+        const paidAt = row.getValue("paidAt") as string;
+        return paidAt ? formatDate(paidAt) : "-";
+      },
     },
-  },
-  {
-    accessorKey: "createdAt",
-    header: "Created At",
-    cell: ({ row }) => {
-      return formatDate(row.getValue("createdAt"));
+    {
+      accessorKey: "createdAt",
+      header: "Created At",
+      cell: ({ row }) => {
+        return formatDate(row.getValue("createdAt"));
+      },
     },
-  },
-  {
-    id: "actions",
-    header: "",
-    cell: ({ row }) => {
-      return <ActionsCell payment={row.original} />;
+    {
+      id: "actions",
+      header: "",
+      cell: ({ row }) => {
+        return <ActionsCell payment={row.original} />;
+      },
     },
-  },
-];
+  ];
+
+  if (mode === "detail") {
+    return allColumns.filter(col => col.id !== "orderCode" && col.id !== "actions");
+  }
+
+  if (mode === "edit") {
+    return allColumns.filter(col => col.id !== "orderCode");
+  }
+
+  return allColumns;
+};

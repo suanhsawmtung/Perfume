@@ -11,35 +11,54 @@ import { Input } from "@/components/ui/input";
 import { TabButton } from "@/components/ui/tab-button";
 import { Textarea } from "@/components/ui/textarea";
 import { PAYMENT_METHODS } from "@/constants/payment.constant";
-import { paymentSchema, updatePaymentSchema, type PaymentFormValues } from "@/validations/payment.validation";
+import type { PaymentFormValues, PaymentType } from "@/types/payment.type";
+import { paymentSchema, updatePaymentSchema } from "@/validations/payment.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { useNavigation, useSubmit } from "react-router";
 
 interface PaymentFormProps {
-  initialValues?: Partial<PaymentFormValues> & { order?: { code: string } | null };
-  onSubmit: (values: PaymentFormValues) => void;
-  isLoading?: boolean;
-  isUpdate?: boolean;
+  payment?: PaymentType
 }
 
 export function PaymentForm({
-  initialValues,
-  onSubmit,
-  isLoading,
-  isUpdate,
+  payment,
 }: PaymentFormProps) {
+  const submit = useSubmit();
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
+  const isUpdate = !!payment;
+
   const form = useForm<PaymentFormValues>({
     resolver: zodResolver(isUpdate ? updatePaymentSchema : paymentSchema) as any,
     defaultValues: {
-      orderCode: initialValues?.orderCode || initialValues?.order?.code || "",
-      method: initialValues?.method || "BANK_TRANSFER",
-      amount: initialValues?.amount || 0,
-      reference: initialValues?.reference || "",
-      note: initialValues?.note || "",
-      paidAt: initialValues?.paidAt ? new Date(initialValues.paidAt).toISOString().split("T")[0] : new Date().toISOString().split("T")[0],
+      orderCode: payment?.order?.code || "",
+      method: payment?.method || "BANK_TRANSFER",
+      amount: payment?.amount || 0,
+      reference: payment?.reference || "",
+      note: payment?.note || "",
+      paidAt: payment?.paidAt ? new Date(payment.paidAt).toISOString().split("T")[0] : new Date().toISOString().split("T")[0],
     },
   });
+
+  const onSubmit = (values: PaymentFormValues) => {
+    const formData = new FormData();
+    
+    if (!isUpdate) {
+      formData.append("orderCode", values.orderCode);
+      formData.append("amount", String(values.amount));
+    }
+    
+    if(values.reference) formData.append("reference", values.reference);
+    if(values.note) formData.append("note", values.note);
+    if(values.paidAt) formData.append("paidAt", values.paidAt);
+    formData.append("method", values.method);
+
+    submit(formData, {
+      method: isUpdate ? "PATCH" : "POST",
+    });
+  };
 
   return (
     <Form {...form}>
@@ -55,7 +74,7 @@ export function PaymentForm({
                   <Input
                     placeholder="Enter order code"
                     {...field}
-                    disabled={isLoading || isUpdate}
+                    disabled={isSubmitting || isUpdate}
                   />
                 </FormControl>
                 <FormMessage />
@@ -75,7 +94,7 @@ export function PaymentForm({
                     step="0.01"
                     placeholder="0.00"
                     {...field}
-                    disabled={isLoading || isUpdate}
+                    disabled={isSubmitting || isUpdate}
                   />
                 </FormControl>
                 <FormMessage />
@@ -97,7 +116,7 @@ export function PaymentForm({
                         text={method.text}
                         isSelected={field.value === method.key}
                         onClick={() => field.onChange(method.key)}
-                        disabled={isLoading}
+                        disabled={isSubmitting}
                       />
                     ))}
                   </div>
@@ -114,7 +133,12 @@ export function PaymentForm({
               <FormItem>
                 <FormLabel>Reference (Optional)</FormLabel>
                 <FormControl>
-                  <Input placeholder="Transaction ID, etc." {...field} value={field.value || ""} disabled={isLoading} />
+                  <Input 
+                    {...field} 
+                    placeholder="Transaction ID, etc." 
+                    value={field.value || ""} 
+                    disabled={isSubmitting} 
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -128,7 +152,12 @@ export function PaymentForm({
               <FormItem>
                 <FormLabel>Paid At (Optional)</FormLabel>
                 <FormControl>
-                  <Input type="date" {...field} value={field.value || ""} disabled={isLoading} />
+                  <Input 
+                    {...field} 
+                    type="date" 
+                    value={field.value || ""} 
+                    disabled={isSubmitting} 
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -148,7 +177,7 @@ export function PaymentForm({
                   className="resize-none min-h-[100px]"
                   {...field}
                   value={field.value || ""}
-                  disabled={isLoading}
+                  disabled={isSubmitting}
                 />
               </FormControl>
               <FormMessage />
@@ -161,12 +190,12 @@ export function PaymentForm({
             type="button"
             variant="outline"
             onClick={() => window.history.back()}
-            disabled={isLoading}
+            disabled={isSubmitting}
           >
             Cancel
           </Button>
-          <Button type="submit" disabled={isLoading}>
-            {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting && <Loader2 className="mr-2 size-4 animate-spin" />}
             {isUpdate ? "Update Payment" : "Record Payment"}
           </Button>
         </div>

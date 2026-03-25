@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { formatDateTime, formatPrice, getOrderStatusVariant, getPaymentStatusVariant } from "@/lib/utils";
+import { formatDateTime, formatPrice, getOrderSourceVariant, getOrderStatusVariant, getPaymentStatusVariant } from "@/lib/utils";
 import type { OrderType } from "@/types/order.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowRightIcon, PencilLineIcon, Trash2Icon } from "lucide-react";
@@ -138,6 +138,26 @@ export const columns: ColumnDef<OrderType>[] = [
         return (
           <div className="flex items-center justify-center">
             <Badge variant={variant}>{paymentStatus}</Badge>
+          </div>
+        );
+      },
+  },
+  {
+    accessorKey: "source",
+    header: () => {
+      return (
+        <div className="text-primary flex items-center justify-center text-sm font-semibold">
+          Source
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+        const source = row.getValue("source") as OrderType["source"];
+        const variant = getOrderSourceVariant(source);
+
+        return (
+          <div className="flex items-center justify-center">
+            <Badge variant={variant}>{source}</Badge>
           </div>
         );
       },

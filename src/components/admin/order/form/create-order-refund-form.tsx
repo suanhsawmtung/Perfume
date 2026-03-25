@@ -9,75 +9,45 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import type { RefundFormValues, RefundType } from "@/types/refund.type";
+import { useCreateRefund } from "@/services/refund/queries/useCreateRefund";
+import type { RefundFormValues } from "@/types/refund.type";
 import { refundSchema } from "@/validations/refund.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { useNavigation, useSubmit } from "react-router";
 
-interface RefundFormProps {
-  refund?: RefundType;
+interface CreateOrderRefundFormProps {
+  orderCode: string;
+  onClose: () => void;
 }
 
-export function RefundForm({
-  refund,
-}: RefundFormProps) {
-  const submit = useSubmit();
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
-  const isUpdate = !!refund;
-  
+export function CreateOrderRefundForm({ 
+  orderCode,
+  onClose 
+}: CreateOrderRefundFormProps) {
+
+  const createRefundMutation = useCreateRefund();
+
   const form = useForm<RefundFormValues>({
     resolver: zodResolver(refundSchema) as any,
-    defaultValues: refund ? {
-      orderCode: refund.order?.code || "",
-      amount: refund.amount,
-      reason: refund.reason || "",
-    } : {
-      orderCode: "",
+    defaultValues: {
+      orderCode: orderCode,
       amount: 0,
       reason: "",
     },
   });
 
   const onSubmit = (values: RefundFormValues) => {
-    const formData = new FormData();
-    
-    if (!isUpdate) {
-        formData.append("orderCode", values.orderCode);
-        formData.append("amount", String(values.amount));
-    }
-    
-    formData.append("reason", values.reason);
-
-    submit(formData, {
-      method: isUpdate ? "PATCH" : "POST",
+    createRefundMutation.mutate(values, {
+      onSuccess: () => {
+        onClose();
+      },
     });
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <FormField
-            control={form.control}
-            name="orderCode"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Order Code</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Enter Order Code"
-                    {...field}
-                    disabled={isSubmitting || isUpdate}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
           <FormField
             control={form.control}
             name="amount"
@@ -90,15 +60,13 @@ export function RefundForm({
                     step="0.01"
                     placeholder="0.00"
                     {...field}
-                    disabled={isSubmitting || isUpdate}
+                    disabled={createRefundMutation.isPending}
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-
-        </div>
 
         <FormField
           control={form.control}
@@ -111,7 +79,7 @@ export function RefundForm({
                   placeholder="Reason for refund..."
                   className="min-h-[120px]"
                   {...field}
-                  disabled={isSubmitting}
+                  disabled={createRefundMutation.isPending}
                 />
               </FormControl>
               <FormMessage />
@@ -123,14 +91,17 @@ export function RefundForm({
           <Button
             type="button"
             variant="outline"
-            onClick={() => window.history.back()}
-            disabled={isSubmitting}
+            onClick={onClose}
+            disabled={createRefundMutation.isPending}
           >
             Cancel
           </Button>
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting && <Loader2 className="mr-2 size-4 animate-spin" />}
-            {isUpdate ? "Update Refund" : "Create Refund"}
+          <Button 
+            type="submit" 
+            disabled={createRefundMutation.isPending}
+          >
+            {createRefundMutation.isPending && <Loader2 className="mr-2 size-4 animate-spin" />}
+            Create Refund
           </Button>
         </div>
       </form>

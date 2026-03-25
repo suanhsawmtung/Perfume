@@ -17,6 +17,16 @@ type OrderDetailCardProps = {
 const OrderDetailCard = ({ order }: OrderDetailCardProps) => {
   const detailItems = [
     { label: "Total Price", value: formatPrice(order.totalPrice) },
+    { 
+      label: "Total Paid", 
+      value: formatPrice(order.totalPaidAmount || 0),
+      className: "text-emerald-600 font-bold"
+    },
+    { 
+      label: "Total Refunded", 
+      value: formatPrice(order.totalRefundAmount || 0),
+      className: "text-rose-600 font-bold"
+    },
     { label: "Item Count", value: order.orderItems.length },
     { label: "Order Date", value: formatDateTime(order.createdAt) },
     { label: "Customer Name", value: order.customerName ?? "-" },
@@ -41,7 +51,7 @@ const OrderDetailCard = ({ order }: OrderDetailCardProps) => {
               <div className="flex min-h-[300px] flex-col items-center justify-center gap-3">
                 <ImageIcon className="text-muted-foreground h-6 w-6" />
                 <p className="text-muted-foreground text-xs font-normal">
-                  No Image Available
+                  No Payment Slip
                 </p>
               </div>
             </div>
@@ -59,7 +69,9 @@ const OrderDetailCard = ({ order }: OrderDetailCardProps) => {
                     <span className="font-semibold">{item.label}</span>
                     <span className="font-semibold">-</span>
                   </div>
-                  <span className="break-all">{item.value}</span>
+                  <span className={`break-all ${item.className || ""}`}>
+                    {item.value}
+                  </span>
                 </div>
               ))}
             </div>

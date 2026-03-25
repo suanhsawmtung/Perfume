@@ -2,7 +2,7 @@ import z from "zod";
 
 export const refundSchema = z.object({
   orderCode: z.string().min(1, "Order code is required"),
-  amount: z.coerce.number().min(0.01, "Amount must be at least 0.01"),
+  amount: z.coerce.number().min(0, "Amount must be at least 0"),
   reason: z
     .string()
     .trim()

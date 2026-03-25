@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import {
-    FormField
+  FormField
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { formatPrice } from "@/lib/utils";

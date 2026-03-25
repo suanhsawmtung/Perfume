@@ -183,6 +183,21 @@ export const OrderForm = ({ order }: { order?: OrderDetailType }) => {
           toast.error(`Cannot change order status from ${order.status} to ${values.status}`);
           return;
         }
+
+        if(values.status !== order.status && order.source === "CUSTOMER" && values.status === "CANCELLED") {
+          toast.error(`You cannot cancel the customer sourced order.`);
+          return;
+        }
+      }
+
+      if (values.status === "REJECTED" && !values.rejectedReason?.trim()) {
+        toast.error("Rejected reason is required");
+        return;
+      }
+
+      if (values.status === "CANCELLED" && !values.cancelledReason?.trim()) {
+        toast.error("Cancelled reason is required");
+        return;
       }
 
       const formData = new FormData();
@@ -206,7 +221,6 @@ export const OrderForm = ({ order }: { order?: OrderDetailType }) => {
 
       submit(formData, {
         method: isEditMode ? "PATCH" : "POST",
-        encType: "multipart/form-data",
       });
     },
     [isEditMode, isContentLocked, order, isCustomerOrder, isStatusLocked, submit]
@@ -223,11 +237,18 @@ export const OrderForm = ({ order }: { order?: OrderDetailType }) => {
       return statusOptions.filter(opt => ["PENDING", "ACCEPTED"].includes(opt.key));
     }
 
-    const transitions = orderStatusTransitions[order.status as OrderStatus];
-    return statusOptions.filter(
-      (option) => option.key === order.status || transitions.includes(option.key)
-    );
-  }, [isEditMode, order?.status]);
+    const transitions = orderStatusTransitions[order.status as OrderStatus] || [];
+    return statusOptions.filter((option) => {
+      const isAllowed = option.key === order.status || transitions.includes(option.key);
+      
+      // Hide CANCELLED status for CUSTOMER source orders in update form
+      if (order?.source === "CUSTOMER" && option.key === "CANCELLED") {
+        return false;
+      }
+      
+      return isAllowed;
+    });
+  }, [isEditMode, order?.status, order?.source]);
 
   const totalPrice = watchedItems.reduce(
     (acc, field) => acc + (field.price || 0) * (field.quantity || 0),
@@ -378,6 +399,23 @@ export const OrderForm = ({ order }: { order?: OrderDetailType }) => {
                   </FormItem>
                 )}
               />
+            )}
+            {/* Financial Summary */}
+            {isEditMode && (
+              <div className="mt-8 grid grid-cols-2 gap-4 rounded-lg border bg-muted/30 p-4 shadow-sm">
+                <div className="space-y-1">
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Total Paid</p>
+                  <p className="text-lg font-bold text-emerald-600 tabular-nums">
+                    {formatPrice(order?.totalPaidAmount || 0)}
+                  </p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Total Refunded</p>
+                  <p className="text-lg font-bold text-rose-600 tabular-nums">
+                    {formatPrice(order?.totalRefundAmount || 0)}
+                  </p>
+                </div>
+              </div>
             )}
           </div>
         </div>

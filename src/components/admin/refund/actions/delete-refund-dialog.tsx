@@ -3,7 +3,7 @@ import DialogWrapper from "@/components/wrapper/dialog-wrapper";
 import { useVoidRefundMutation } from "@/services/refund/queries/useVoidRefund";
 import type { RefundType } from "@/types/refund.type";
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface VoidRefundDialogProps {
   refund: RefundType;
@@ -17,14 +17,12 @@ export function VoidRefundDialog({
   const voidRefundMutation = useVoidRefundMutation();
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    if (voidRefundMutation.isSuccess) {
-      setOpen(false);
-    }
-  }, [voidRefundMutation.isSuccess]);
-
   const handleVoid = () => {
-    voidRefundMutation.mutate(refund.id);
+    voidRefundMutation.mutate(refund.id, {
+      onSuccess: () => {
+        setOpen(false);
+      },
+    });
   };
 
   return (

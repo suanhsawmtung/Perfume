@@ -6,6 +6,7 @@ import type {
   PaymentQueryParams,
   PaymentType,
   UpdatePaymentResponse,
+  VerifyPaymentResponse,
   VoidPaymentResponse
 } from "@/types/payment.type";
 
@@ -39,6 +40,14 @@ export const updatePayment = async (
   data: Partial<PaymentFormValues>
 ): Promise<UpdatePaymentResponse> => {
   const response = await axios.patch(`/admin/payments/${id}`, data);
+  return response.data;
+};
+
+export const verifyPayment = async (
+  id: number,
+  data: { status: "SUCCESS" | "FAILED" }
+): Promise<VerifyPaymentResponse> => {
+  const response = await axios.patch(`/admin/payments/${id}/verify`, data);
   return response.data;
 };
 

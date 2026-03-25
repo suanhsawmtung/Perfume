@@ -3,7 +3,7 @@ import DialogWrapper from "@/components/wrapper/dialog-wrapper";
 import { useDeleteOrderMutation } from "@/services/order/queries/useDeleteOrder";
 import type { OrderType } from "@/types/order.type";
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 interface DeleteOrderDialogProps {
@@ -19,19 +19,16 @@ export function DeleteOrderDialog({
   const [open, setOpen] = useState(false);
   const isCustomerOrder = order.source === "CUSTOMER";
 
-  // Close dialog on successful deletion
-  useEffect(() => {
-    if (deleteOrderMutation.isSuccess) {
-      setOpen(false);
-    }
-  }, [deleteOrderMutation.isSuccess]);
-
   const handleDelete = () => {
     if (isCustomerOrder) {
       toast.error("Orders created by customers are not allowed to be deleted.");
       return;
     }
-    deleteOrderMutation.mutate({ code: order.code });
+    deleteOrderMutation.mutate({ code: order.code }, {
+      onSuccess: () => {
+        setOpen(false);
+      },
+    });
   };
 
   return (

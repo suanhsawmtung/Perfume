@@ -1,11 +1,39 @@
 import type { orderFilterFormSchema } from "@/validations/order.validation";
 import type z from "zod";
 import type { BrandType } from "./brand.type";
-import type { ProductType, VariantSource } from "./product.type";
+import type { PaymentMethod, PaymentStatus } from "./payment.type";
+import type { VariantSource } from "./product.type";
+import type { RefundStatus } from "./refund.type";
 
 export type OrderStatus = "PENDING" | "REJECTED" | "ACCEPTED" | "SHIPPED" | "DELIVERED" | "DONE" | "CANCELLED";
-export type OrderPaymentStatus = "UNPAID" | "PAID" | "PENDING" | "FAILED" | "REFUNDED" | "PARTIALLY_REFUNDED";
+export type OrderPaymentStatus = "UNPAID" | "PARTIALLY_PAID" | "PAID" | "FAILED" | "REFUNDED" | "PARTIALLY_REFUNDED";
 export type OrderSource = "CUSTOMER" | "ADMIN";
+export type OrderItemType = "PRODUCT_VARIANT" | "BUNDLE";
+
+export type PaymentType = {
+  id: number;
+  orderId: number;
+  method: PaymentMethod;
+  amount: number;
+  status: PaymentStatus;
+  reference: string | null;
+  note: string | null;
+  paidAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}
+
+export interface RefundType {
+  id: number;
+  orderId: number;
+  amount: number;
+  status: RefundStatus;
+  reason: string | null;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}
 
 export interface OrderType {
   id: number;
@@ -24,20 +52,16 @@ export interface OrderType {
   deletedAt: string | null;
   userId: number;
   source: OrderSource;
-  image?: string
+  image?: string;
   user: {
-    // Assuming partial user data is returned
+    id: number;
     firstName: string | null;
     lastName: string | null;
     username: string;
+    phone: string | null;
     email: string;
   };
-  _count?: {
-    orderItems: number;
-  };
 }
-
-export type OrderItemType = "PRODUCT_VARIANT" | "BUNDLE";
 
 export interface OrderItem {
   id: number;
@@ -46,6 +70,7 @@ export interface OrderItem {
   itemType: OrderItemType;
   quantity: number;
   price: string | number;
+  createdAt: string;
   productVariant?: {
     id: number;
     slug: string;
@@ -61,16 +86,21 @@ export interface OrderItem {
     createdAt: string;
     updatedAt: string;
     deletedAt: string | null;
-    product: ProductType & {
+    product: {
+      id: number;
+      name: string;
+      slug: string;
       brand: BrandType;
-    };
+    }
   };
 }
 
 export interface OrderDetailType extends OrderType {
   orderItems: OrderItem[];
-  // /** @deprecated use orderItems */
-  // products: OrderItem[];
+  payments: PaymentType[];
+  refunds: RefundType[];
+  totalPaidAmount: number;
+  totalRefundAmount: number;
 }
 
 export interface OrderListResult {

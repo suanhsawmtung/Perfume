@@ -197,9 +197,9 @@ export function getPaymentStatusVariant(status: OrderPaymentStatus | PaymentStat
   switch (status) {
     case "UNPAID":
       return "default";
-    case "PENDING":
-      return "secondary";
     case "PAID":
+    case "PARTIALLY_PAID":
+      return "secondary";
     case "SUCCESS":
       return "outline";
     case "FAILED":
@@ -210,6 +210,11 @@ export function getPaymentStatusVariant(status: OrderPaymentStatus | PaymentStat
     default:
       return "secondary";
   }
+}
+
+// Get order source variant for badge
+export function getOrderSourceVariant(source: OrderSource) {
+  return source === "ADMIN" ? "default" : "secondary";
 }
 
 // Get refund status variant for badge
@@ -330,10 +335,10 @@ export function isOrderPaymentStatus(
   return (
     value === "PAID" ||
     value === "UNPAID" ||
-    value === "PENDING" ||
     value === "FAILED" ||
     value === "REFUNDED" ||
-    value === "PARTIALLY_REFUNDED"
+    value === "PARTIALLY_REFUNDED" ||
+    value === "PARTIALLY_PAID"
   );
 }
 

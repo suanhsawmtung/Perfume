@@ -1,4 +1,4 @@
-import type { paymentFilterFormSchema } from "@/validations/payment.validation";
+import type { paymentFilterFormSchema, paymentSchema } from "@/validations/payment.validation";
 import type z from "zod";
 
 export type PaymentStatus = "PENDING" | "SUCCESS" | "FAILED" | "VOIDED";
@@ -53,6 +53,14 @@ export interface UpdatePaymentResponse {
   };
 }
 
+export interface VerifyPaymentResponse {
+  success: boolean;
+  message: string;
+  data: {
+    payment: PaymentType;
+  };
+}
+
 export interface CreatePaymentResponse {
   success: boolean;
   message: string;
@@ -61,6 +69,6 @@ export interface CreatePaymentResponse {
   };
 }
 
-export type { PaymentFormValues } from "@/validations/payment.validation";
+export type PaymentFormValues = z.infer<typeof paymentSchema>;
 
 export type PaymentFilterFormValues = z.infer<typeof paymentFilterFormSchema>;

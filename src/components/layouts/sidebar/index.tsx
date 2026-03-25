@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { formatUserDisplayName, getUserInitials } from "@/lib/utils";
 import { useAuthStore } from "@/stores/auth.store";
 import {
+  ArrowLeftRight,
   FileText,
   LayoutDashboard,
   Package,
@@ -48,7 +49,6 @@ const navItems: NavItemConfig[] = [
       { title: "Orders", href: "/admin/orders" },
       { title: "Payments", href: "/admin/payments" },
       { title: "Refunds", href: "/admin/refunds" },
-      { title: "Transactions", href: "/admin/transactions" },
     ],
   },
   {
@@ -72,6 +72,12 @@ const navItems: NavItemConfig[] = [
       { title: "Posts", href: "/admin/posts" },
       { title: "Categories", href: "/admin/categories" },
     ],
+  },
+  {
+    title: "Transactions",
+    href: "/admin/transactions",
+    icon: ArrowLeftRight,
+    roles: ["ADMIN"],
   },
   {
     title: "User Management",

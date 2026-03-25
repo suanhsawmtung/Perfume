@@ -3,7 +3,7 @@ import DialogWrapper from "@/components/wrapper/dialog-wrapper";
 import { useDeleteVariantMutation } from "@/services/product/queries/useDeleteVariant";
 import type { ProductVariantSummaryType } from "@/types/product.type";
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router";
 
 interface DeleteVariantDialogProps {
@@ -26,16 +26,14 @@ export function DeleteVariantDialog({
     throw new Response("Product slug is required", { status: 400 });
   }
 
-  useEffect(() => {
-    if (deleteVariantMutation.isSuccess) {
-      setOpen(false);
-    }
-  }, [deleteVariantMutation.isSuccess]);
-
   const handleDelete = () => {
     deleteVariantMutation.mutate({
       productSlug: slug,
       variantSlug: variant.slug,
+    }, {
+      onSuccess: () => {
+        setOpen(false);
+      },
     });
   };
 

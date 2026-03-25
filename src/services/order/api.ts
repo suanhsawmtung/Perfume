@@ -41,11 +41,7 @@ export async function createOrder(params: FormData): Promise<{
   message: string;
   data?: { order: OrderType };
 }> {
-  const response = await api.post("/admin/orders", params, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  const response = await api.post("/admin/orders", params);
   return response.data;
 }
 
@@ -54,11 +50,7 @@ export async function updateOrder(code: string, params: FormData): Promise<{
   message: string;
   data?: { order: OrderType };
 }> {
-  const response = await api.patch(`/admin/orders/${code}`, params, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  const response = await api.patch(`/admin/orders/${code}`, params);
   return response.data;
 }
 

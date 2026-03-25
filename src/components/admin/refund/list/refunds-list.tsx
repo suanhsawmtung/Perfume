@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import type { RefundType } from "@/types/refund.type";
 import { FilterTags } from "../../shared/filter-tags";
-import { columns } from "./table/columns";
+import { getColumns } from "./table/columns";
 import { DataTable } from "./table/data-table";
 
 export function RefundsList({
@@ -41,7 +41,7 @@ export function RefundsList({
       </CardHeader>
 
       <CardContent className="min-h-[600px] px-4 md:px-6">
-        <DataTable columns={columns} data={refunds} />
+        <DataTable columns={getColumns("list")} data={refunds} />
       </CardContent>
 
       {totalPages > 1 && (

@@ -36,7 +36,7 @@ export function OrderList({
             allowedFilters={{
               search: true,
               status: ["PENDING", "ACCEPTED", "REJECTED", "CANCELLED", "DONE"],
-              paymentStatus: ["PENDING", "UNPAID", "PAID", "FAILED", "REFUNDED", "PARTIALLY_REFUNDED"],
+              paymentStatus: ["PENDING", "UNPAID", "PAID", "FAILED", "REFUNDED", "PARTIALLY_REFUNDED", "PARTIALLY_PAID"],
               source: ["ADMIN", "CUSTOMER"],
             }}
           />

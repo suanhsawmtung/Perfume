@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import type { PaymentType } from "@/types/payment.type";
 import { FilterTags } from "../../shared/filter-tags";
-import { columns } from "./table/columns";
+import { getColumns } from "./table/columns";
 import { DataTable } from "./table/data-table";
 
 export function PaymentsList({
@@ -42,7 +42,7 @@ export function PaymentsList({
       </CardHeader>
 
       <CardContent className="min-h-[600px] px-4 md:px-6">
-        <DataTable columns={columns} data={payments} />
+        <DataTable columns={getColumns("list")} data={payments} />
       </CardContent>
 
       {totalPages > 1 && (

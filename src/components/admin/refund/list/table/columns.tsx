@@ -50,94 +50,109 @@ const ActionsCell = ({ refund }: { refund: RefundType }) => {
   );
 };
 
-export const columns: ColumnDef<RefundType>[] = [
-  {
-    accessorKey: "order",
-    header: () => {
-      return (
-        <div className="text-primary flex items-center justify-start text-sm font-semibold">
-          Order Code
+export type RefundTableMode = "list" | "detail" | "edit";
+
+export const getColumns = (mode: RefundTableMode): ColumnDef<RefundType>[] => {
+  const allColumns: ColumnDef<RefundType>[] = [
+    {
+      accessorKey: "order",
+      id: "orderCode",
+      header: () => {
+        return (
+          <div className="text-primary flex items-center justify-start text-sm font-semibold">
+            Order Code
+          </div>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="text-muted-foreground text-sm font-semibold">
+          {row.original.order?.code || "-"}
         </div>
-      );
+      ),
     },
-    cell: ({ row }) => (
-      <div className="text-muted-foreground text-sm font-semibold">
-        {row.original.order?.code || "-"}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "amount",
-    header: () => {
-      return (
-        <div className="text-primary flex items-center justify-center text-sm font-semibold">
-          Amount
+    {
+      accessorKey: "amount",
+      header: () => {
+        return (
+          <div className="text-primary flex items-center justify-center text-sm font-semibold">
+            Amount
+          </div>
+        );
+      },
+      cell: ({ row }) => {
+        const amount = Number(row.getValue("amount"));
+        return (
+          <div className="text-muted-foreground text-center text-sm font-normal">
+            ${amount.toFixed(2)}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "reason",
+      header: () => {
+        return (
+          <div className="text-primary flex items-center justify-center text-sm font-semibold">
+            Reason
+          </div>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="text-muted-foreground line-clamp-1 max-w-[200px] text-center text-sm font-normal">
+          {row.getValue("reason") || "-"}
         </div>
-      );
+      ),
     },
-    cell: ({ row }) => {
-      const amount = Number(row.getValue("amount"));
-      return (
+    {
+      accessorKey: "status",
+      header: () => {
+        return (
+          <div className="text-primary flex items-center justify-center text-sm font-semibold">
+            Status
+          </div>
+        );
+      },
+      cell: ({ row }) => {
+        const status = row.getValue("status") as RefundType["status"];
+        const statusVariant = getRefundStatusVariant(status);
+        return (
+          <div className="flex items-center justify-center">
+            <Badge variant={statusVariant}>{status}</Badge>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "createdAt",
+      header: () => {
+        return (
+          <div className="text-primary flex items-center justify-center text-sm font-semibold">
+            Created Date
+          </div>
+        );
+      },
+      cell: ({ row }) => (
         <div className="text-muted-foreground text-center text-sm font-normal">
-          ${amount.toFixed(2)}
+          {formatDate(row.getValue("createdAt"))}
         </div>
-      );
+      ),
     },
-  },
-  {
-    accessorKey: "reason",
-    header: () => {
-      return (
-        <div className="text-primary flex items-center justify-center text-sm font-semibold">
-          Reason
-        </div>
-      );
+    {
+      id: "actions",
+      header: "",
+      cell: ({ row }) => {
+        return <ActionsCell refund={row.original} />;
+      },
     },
-    cell: ({ row }) => (
-      <div className="text-muted-foreground line-clamp-1 max-w-[200px] text-center text-sm font-normal">
-        {row.getValue("reason") || "-"}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "status",
-    header: () => {
-      return (
-        <div className="text-primary flex items-center justify-center text-sm font-semibold">
-          Status
-        </div>
-      );
-    },
-    cell: ({ row }) => {
-      const status = row.getValue("status") as RefundType["status"];
-      const statusVariant = getRefundStatusVariant(status);
-      return (
-        <div className="flex items-center justify-center">
-          <Badge variant={statusVariant}>{status}</Badge>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "createdAt",
-    header: () => {
-      return (
-        <div className="text-primary flex items-center justify-center text-sm font-semibold">
-          Created Date
-        </div>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="text-muted-foreground text-center text-sm font-normal">
-        {formatDate(row.getValue("createdAt"))}
-      </div>
-    ),
-  },
-  {
-    id: "actions",
-    header: "",
-    cell: ({ row }) => {
-      return <ActionsCell refund={row.original} />;
-    },
-  },
-];
+  ];
+
+  if (mode === "detail") {
+    return allColumns.filter(col => col.id !== "orderCode" && col.id !== "actions");
+  }
+
+  if (mode === "edit") {
+    return allColumns.filter(col => col.id !== "orderCode");
+  }
+
+  return allColumns;
+};
