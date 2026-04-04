@@ -1,3 +1,4 @@
+import { currency } from "@/config/env";
 import type { OrderPaymentStatus, OrderSource, OrderStatus } from "@/types/order.type";
 import type { PaymentStatus } from "@/types/payment.type";
 import type { PostStatus } from "@/types/post.type";
@@ -21,7 +22,7 @@ export function formatPrice(
 ) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: opts.currency ?? "USD",
+    currency: opts.currency ?? currency,
     notation: opts.notation ?? "compact",
   }).format(Number(price));
 }

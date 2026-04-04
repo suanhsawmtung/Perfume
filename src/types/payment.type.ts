@@ -33,7 +33,6 @@ export interface PaymentListResult {
 
 export interface PaymentQueryParams {
   limit?: number;
-  pageSize?: number;
   offset?: number;
   search?: string;
   method?: string;

@@ -143,6 +143,10 @@ import { loader as adminPaymentDetailLoader } from "./pages/admin/payments/detai
 import { loader as adminPaymentsLoader } from "./pages/admin/payments/loader";
 import AdminPaymentUpdatePage from "./pages/admin/payments/update";
 import { action as adminUpdatePaymentAction } from "./pages/admin/payments/update/action";
+import AdminInventoriesPage from "@/pages/admin/inventories";
+import { action as adminInventoryCreateAction } from "./pages/admin/inventories/create/action";
+import AdminInventoryCreatePage from "./pages/admin/inventories/create";
+import { loader as adminInventoriesLoader } from "@/pages/admin/inventories/loader";
 
 export const router = createBrowserRouter([
   {
@@ -579,6 +583,21 @@ export const router = createBrowserRouter([
             path: "create",
             Component: AdminTransactionCreatePage,
             action: adminTransactionCreateAction,
+          },
+        ],
+      },
+      {
+        path: "inventories",
+        children: [
+          {
+            index: true,
+            Component: AdminInventoriesPage,
+            loader: adminInventoriesLoader,
+          },
+          {
+            path: "create",
+            Component: AdminInventoryCreatePage,
+            action: adminInventoryCreateAction,
           },
         ],
       },

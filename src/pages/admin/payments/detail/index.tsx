@@ -17,7 +17,7 @@ export default function AdminPaymentDetailPage() {
     throw new Response("Payment ID is required", { status: 400 });
   }
 
-  const { data: payment } = useGetPayment(id);
+  const { data: payment } = useGetPayment(Number(id));
 
   if (!payment) return <div>Payment not found</div>;
 
