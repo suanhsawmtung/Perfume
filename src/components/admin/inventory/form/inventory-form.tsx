@@ -20,6 +20,7 @@ import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigation, useSubmit } from "react-router";
+import { toast } from "sonner";
 
 export function InventoryForm() {
   const submit = useSubmit();
@@ -76,6 +77,11 @@ export function InventoryForm() {
   }, [productId]);
 
   const handleSubmit = (values: any) => {
+    if (values.type === "SALE") {
+      toast.error("Sale inventory is not allowed to be created manually.");
+      return;
+    }
+
     const formData = new FormData();
     Object.entries(values).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
@@ -96,7 +102,7 @@ export function InventoryForm() {
               <FormLabel>Inventory Type</FormLabel>
               <FormControl>
                 <div className="flex flex-wrap gap-2">
-                  {INVENTORY_TYPES.map((type) => (
+                  {INVENTORY_TYPES.filter(type => type.value !== "SALE").map((type) => (
                     <TabButton
                       key={type.value}
                       text={type.label}

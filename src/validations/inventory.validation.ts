@@ -5,7 +5,6 @@ export const inventoryBaseSchema = z.object({
   productVariantId: z.coerce.number().min(1, "Product variant is required"),
   type: z.enum([
     "PURCHASE",
-    "SALE",
     "DAMAGED",
     "ADJUSTMENT_IN",
     "ADJUSTMENT_OUT",
