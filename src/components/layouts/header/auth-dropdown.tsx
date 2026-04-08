@@ -8,6 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { baseImageUrl } from "@/config/env";
 import { formatUserDisplayName, getUserInitials } from "@/lib/utils";
 import type { AuthUser } from "@/stores/auth.store";
 import {
@@ -46,8 +47,9 @@ const AuthDropdown = ({ user }: Props) => {
         <Avatar>
           {user.image ? (
             <AvatarImage
-              src={user.image as string}
+              src={baseImageUrl + "user/" + user.image as string}
               alt={formatUserDisplayName(user)}
+              className="object-cover"
             />
           ) : null}
           <AvatarFallback>{getUserInitials(user)}</AvatarFallback>

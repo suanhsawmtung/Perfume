@@ -1,6 +1,6 @@
+import AdminHeaderSection from "@/components/admin/shared/admin-header-section";
 import { PasswordForm } from "@/components/shared/setting/password-form";
 import { ProfileForm } from "@/components/shared/setting/profile-form";
-import SectionHeader from "@/components/shared/section-header";
 import {
   Card,
   CardContent,
@@ -19,7 +19,7 @@ const AdminSettingsPage = () => {
 
   return (
     <div className="space-y-6">
-      <SectionHeader title="Settings" />
+      <AdminHeaderSection title="Settings" />
 
       <div className="grid gap-6">
         <Card>

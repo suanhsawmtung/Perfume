@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 
 import { NavItem } from "@/components/layouts/sidebar/nav-item";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { baseImageUrl } from "@/config/env";
 import { formatUserDisplayName, getUserInitials } from "@/lib/utils";
@@ -206,17 +207,16 @@ export function Sidebar({ onClose }: SidebarProps) {
       {authUser && (
         <div className="border-border border-t p-4">
           <div className="bg-muted flex items-center gap-3 rounded-lg px-3 py-2">
-            {authUser.image ? (
-              <img
-                src={baseImageUrl + "user/" + authUser.image as string}
-                alt={formatUserDisplayName(authUser)}
-                className="h-8 w-8 rounded-full object-cover"
-              />
-            ) : (
-              <div className="bg-primary text-primary-foreground flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold">
-                {getUserInitials(authUser)}
-              </div>
-            )}
+            <Avatar>
+              {authUser.image ? (
+                <AvatarImage
+                  src={baseImageUrl + "user/" + authUser.image as string}
+                  alt={formatUserDisplayName(authUser)}
+                  className="h-8 w-8 object-cover"
+                />
+              ) : null}
+              <AvatarFallback>{getUserInitials(authUser)}</AvatarFallback>
+            </Avatar>
             <div className="flex-1 text-sm">
               <div className="font-medium">
                 {formatUserDisplayName(authUser)}
