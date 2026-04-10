@@ -5,10 +5,12 @@ import { getConcentrationVariant, getGenderVariant } from "@/lib/utils";
 import type { ProductListType, ProductType } from "@/types/product.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowRightIcon, PencilLineIcon, Trash2Icon } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 // Actions cell component that can use hooks
 const ActionsCell = ({ product }: { product: ProductListType }) => {
+  const location = useLocation();
+
   return (
     <div className="flex items-center justify-end gap-1">
       <Button
@@ -19,6 +21,7 @@ const ActionsCell = ({ product }: { product: ProductListType }) => {
       >
         <Link
           to={`/admin/products/${product.slug}/variants`}
+          state={{ from: location }}
           className="flex items-center justify-center gap-1 bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
         >
           Variants
@@ -33,6 +36,7 @@ const ActionsCell = ({ product }: { product: ProductListType }) => {
       >
         <Link
           to={`/admin/products/${product.slug}`}
+          state={{ from: location }}
           className="flex items-center justify-center gap-1 bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
         >
           Details
@@ -46,7 +50,10 @@ const ActionsCell = ({ product }: { product: ProductListType }) => {
         className="h-7 w-7 rounded-sm border-none bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
         asChild
       >
-        <Link to={`/admin/products/${product.slug}/edit`}>
+        <Link 
+          to={`/admin/products/${product.slug}/edit`}
+          state={{ from: location }}
+        >
           <PencilLineIcon size={16} />
         </Link>
       </Button>

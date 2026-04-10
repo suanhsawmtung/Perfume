@@ -1,11 +1,12 @@
 import { DeleteUserDialog } from "@/components/admin/user/actions/delete-user-dialog";
 import DialogWrapper from "@/components/wrapper/dialog-wrapper";
 import { useGetUser } from "@/services/user/queries/useGetUser";
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 
 const AdminUserDeleteDialog = () => {
   const navigate = useNavigate();
   const { username } = useParams();
+  const location = useLocation();
 
   if (!username) {
     throw new Response("User username is required", { status: 400 });
@@ -15,12 +16,12 @@ const AdminUserDeleteDialog = () => {
 
   return (
     <DialogWrapper
-      title="Delete User"
-      close={() => navigate("/admin/users")}
-      onOpenChange={() => navigate("/admin/users")}
+      title="Ban User"
+      close={() => navigate(location.state?.from || "/admin/users")}
+      onOpenChange={() => navigate(location.state?.from || "/admin/users")}
       open={true}
     >
-      <DeleteUserDialog user={user} cancelUrl="/admin/users" />
+      <DeleteUserDialog user={user} cancelUrl={location.state?.from || "/admin/users"} />
     </DialogWrapper>
   );
 };

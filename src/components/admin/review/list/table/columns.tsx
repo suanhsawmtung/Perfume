@@ -5,10 +5,11 @@ import { useToggleReviewPublish } from "@/services/review/queries/useTogglePubli
 import type { ReviewListType } from "@/types/review.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowRightIcon } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 const ActionsCell = ({ review }: { review: ReviewListType }) => {
   const { mutate: togglePublish, isPending } = useToggleReviewPublish();
+  const location = useLocation();
 
   return (
     <div className="flex items-center justify-end gap-4">
@@ -32,6 +33,7 @@ const ActionsCell = ({ review }: { review: ReviewListType }) => {
       >
         <Link
           to={`/admin/reviews/${review.id}`}
+          state={{ from: location }}
           className="flex items-center justify-center gap-1 bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
         >
           Details

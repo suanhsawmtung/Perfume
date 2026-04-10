@@ -10,10 +10,11 @@ import {
 import type { PaymentType } from "@/types/payment.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowRightIcon, Ban, PencilLineIcon } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { VoidPaymentDialog } from "../../actions/void-payment-dialog";
 
 const ActionsCell = ({ payment }: { payment: PaymentType }) => {
+  const location = useLocation();
   return (
     <div className="flex items-center justify-end gap-1">
       <Button
@@ -24,6 +25,7 @@ const ActionsCell = ({ payment }: { payment: PaymentType }) => {
       >
         <Link
           to={`/admin/payments/${payment.id}`}
+          state={{ from: location }}
           className="flex items-center justify-center gap-1 bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
         >
           Details
@@ -37,7 +39,10 @@ const ActionsCell = ({ payment }: { payment: PaymentType }) => {
         className="h-7 w-7 rounded-sm border-none bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
         asChild
       >
-        <Link to={`/admin/payments/${payment.id}/edit`}>
+        <Link 
+          to={`/admin/payments/${payment.id}/edit`}
+          state={{ from: location }}
+        >
           <PencilLineIcon size={16} />
         </Link>
       </Button>

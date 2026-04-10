@@ -4,10 +4,12 @@ import { formatDateTime, formatPrice, getOrderSourceVariant, getOrderStatusVaria
 import type { OrderType } from "@/types/order.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowRightIcon, PencilLineIcon } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 // Actions cell component
 const ActionsCell = ({ order }: { order: OrderType }) => {
+  const location = useLocation();
+
   return (
     <div className="flex items-center justify-end gap-1">
       <Button
@@ -18,6 +20,7 @@ const ActionsCell = ({ order }: { order: OrderType }) => {
       >
         <Link
           to={`/admin/orders/${order.code}`}
+          state={{ from: location }}  
           className="flex items-center justify-center gap-1 bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
         >
           Details
@@ -31,7 +34,10 @@ const ActionsCell = ({ order }: { order: OrderType }) => {
           className="h-7 w-7 rounded-sm border-none bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
           asChild
         >
-          <Link to={`/admin/orders/${order.code}/edit`}>
+          <Link 
+            to={`/admin/orders/${order.code}/edit`}
+            state={{ from: location }}
+          >
             <PencilLineIcon size={16} />
           </Link>
         </Button>

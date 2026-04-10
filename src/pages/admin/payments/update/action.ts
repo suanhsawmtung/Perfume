@@ -42,7 +42,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
     toast.success(response.message || "Payment updated successfully");
 
-    return redirect("/admin/payments");
+    return redirect(`/admin/payments/${paymentId}`);
   } catch (error) {
     if (error instanceof AxiosError) {
       const errorData = error.response?.data;

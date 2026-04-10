@@ -26,7 +26,7 @@ export function DeleteUserDialog({
   return (
     <div className="space-y-6">
       <p className="text-muted-foreground text-sm">
-        Are you sure you want to delete the user{" "}
+        Are you sure you want to ban the user{" "}
         <span className="text-foreground font-semibold">
           &quot;{userName}&quot;
         </span>
@@ -45,7 +45,7 @@ export function DeleteUserDialog({
           </Button>
           <Button type="submit" variant="destructive" disabled={isSubmitting}>
             {isSubmitting && <Loader2 className="mr-2 size-4 animate-spin" />}
-            Delete
+            Ban
           </Button>
         </div>
       </Form>

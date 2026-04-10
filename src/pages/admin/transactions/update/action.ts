@@ -32,7 +32,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
       await queryClient.invalidateQueries({
         queryKey: transactionQueryKeys.lists(),
       });
-      return redirect("/admin/transactions");
+      return redirect(`/admin/transactions/${transactionId}`);
     }
 
     return { error: response.message };

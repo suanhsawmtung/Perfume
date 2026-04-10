@@ -1,26 +1,26 @@
 import { Button } from "@/components/ui/button";
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { TabButton } from "@/components/ui/tab-button";
 import { Textarea } from "@/components/ui/textarea";
 import type { TransactionType } from "@/types/transaction.type";
 import {
-    transactionSchema,
-    transactionTypeEnum,
-    updateTransactionSchema,
+  transactionSchema,
+  transactionTypeEnum,
+  updateTransactionSchema,
 } from "@/validations/transaction.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigation, useSubmit } from "react-router";
+import { useLocation, useNavigation, useSubmit } from "react-router";
 
 interface TransactionFormProps {
   transaction?: TransactionType;
@@ -29,6 +29,7 @@ interface TransactionFormProps {
 export function TransactionForm({ transaction }: TransactionFormProps) {
   const submit = useSubmit();
   const navigation = useNavigation();
+  const location = useLocation();
   const isSubmitting = navigation.state === "submitting";
   const isUpdate = !!transaction;
 
@@ -97,6 +98,9 @@ export function TransactionForm({ transaction }: TransactionFormProps) {
 
     submit(formData, {
       method: isUpdate ? "PATCH" : "POST",
+      state: {
+        from: location.state?.from || "/admin/transactions",
+      },
     });
   };
 

@@ -5,7 +5,7 @@ import { useAuthStore } from "@/stores/auth.store";
 import type { PostType } from "@/types/post.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowRightIcon, PencilLineIcon, Trash2Icon } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { DeletePostDialog } from "../../actions/delete-post-dialog";
 
 // Actions cell component that can use hooks
@@ -13,6 +13,7 @@ const ActionsCell = ({ post }: { post: PostType }) => {
   const authUser = useAuthStore((state) => state.authUser);
   const isAuthor = authUser?.id === post.authorId;
   const isAdmin = authUser?.role === "ADMIN";
+  const location = useLocation();
 
   return (
     <div className="flex items-center justify-end gap-1">
@@ -24,6 +25,7 @@ const ActionsCell = ({ post }: { post: PostType }) => {
       >
         <Link
           to={`/admin/posts/${post.slug}`}
+          state={{ from: location }}
           className="flex items-center justify-center gap-1 bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
         >
           Details
@@ -39,7 +41,10 @@ const ActionsCell = ({ post }: { post: PostType }) => {
             className="h-7 w-7 rounded-sm border-none bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
             asChild
           >
-            <Link to={`/admin/posts/${post.slug}/edit`}>
+            <Link 
+              to={`/admin/posts/${post.slug}/edit`}
+              state={{ from: location }}
+            >
               <PencilLineIcon size={16} />
             </Link>
           </Button>

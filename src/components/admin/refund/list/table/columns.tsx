@@ -4,10 +4,11 @@ import { formatDate, getRefundStatusVariant } from "@/lib/utils";
 import type { RefundType } from "@/types/refund.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowRightIcon, Ban, PencilLineIcon } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { VoidRefundDialog } from "../../actions/delete-refund-dialog";
 
 const ActionsCell = ({ refund }: { refund: RefundType }) => {
+  const location = useLocation();
   return (
     <div className="flex items-center justify-end gap-1">
       <Button
@@ -18,6 +19,7 @@ const ActionsCell = ({ refund }: { refund: RefundType }) => {
       >
         <Link
           to={`/admin/refunds/${refund.id}`}
+          state={{ from: location }}
           className="flex items-center justify-center gap-1 bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
         >
           Details
@@ -31,7 +33,10 @@ const ActionsCell = ({ refund }: { refund: RefundType }) => {
         className="h-7 w-7 rounded-sm border-none bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
         asChild
       >
-        <Link to={`/admin/refunds/${refund.id}/edit`}>
+        <Link 
+          to={`/admin/refunds/${refund.id}/edit`}
+          state={{ from: location }}
+        >
           <PencilLineIcon size={16} />
         </Link>
       </Button>

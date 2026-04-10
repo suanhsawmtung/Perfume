@@ -1,16 +1,16 @@
 import { Button } from "@/components/ui/button";
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { TabButton } from "@/components/ui/tab-button";
-import { USER_ROLES, USER_STATUSES } from "@/constants/user.constant";
-import { isRole, isStatus } from "@/lib/utils";
+import { USER_ROLES } from "@/constants/user.constant"; // , USER_STATUSES
+import { isRole } from "@/lib/utils";
 import type { UserFilterFormValues } from "@/types/user.type";
 import { UserFilterFormSchema } from "@/validations/user.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,7 +27,7 @@ export function UserFilterForm({ close }: { close: () => void }) {
     defaultValues: {
       search: "",
       role: undefined,
-      status: undefined,
+      // status: undefined,
     },
   });
 
@@ -37,13 +37,13 @@ export function UserFilterForm({ close }: { close: () => void }) {
     const search = searchParams.get("search") || "";
     const roleParam = searchParams.get("role");
     const role = isRole(roleParam) ? roleParam : undefined;
-    const statusParam = searchParams.get("status");
-    const status = isStatus(statusParam) ? statusParam : undefined;
+    // const statusParam = searchParams.get("status");
+    // const status = isStatus(statusParam) ? statusParam : undefined;
 
     form.reset({
       search,
       role,
-      status,
+      // status,
     });
   }, [location.search, form]);
 
@@ -68,11 +68,11 @@ export function UserFilterForm({ close }: { close: () => void }) {
     }
 
     // Update status param
-    if (data.status) {
+    /* if (data.status) {
       searchParams.set("status", data.status);
     } else {
       searchParams.delete("status");
-    }
+    } */
 
     const queryString = searchParams.toString();
     navigate(`${location.pathname}${queryString ? `?${queryString}` : ""}`, {
@@ -86,7 +86,7 @@ export function UserFilterForm({ close }: { close: () => void }) {
     form.reset({
       search: "",
       role: undefined,
-      status: undefined,
+      // status: undefined,
     });
     navigate(location.pathname, { replace: true });
     close();
@@ -141,7 +141,7 @@ export function UserFilterForm({ close }: { close: () => void }) {
         />
 
         {/* Status Filter */}
-        <FormField
+        {/* <FormField
           control={form.control}
           name="status"
           render={({ field }) => (
@@ -168,7 +168,7 @@ export function UserFilterForm({ close }: { close: () => void }) {
               </FormControl>
             </FormItem>
           )}
-        />
+        /> */}
 
         {/* Action Buttons */}
         <div className="flex justify-end gap-2">

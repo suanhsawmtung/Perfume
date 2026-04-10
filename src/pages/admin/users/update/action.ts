@@ -28,7 +28,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
      // Show success toast
     toast.success(response.message || "User updated successfully");
 
-    return redirect("/admin/users");
+    return redirect(`/admin/users/${username}`);
   } catch (error) {
     if (error instanceof AxiosError) {
       const errorData = error.response?.data;

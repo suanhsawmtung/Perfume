@@ -1,15 +1,15 @@
 import { Button } from "@/components/ui/button";
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { TabButton } from "@/components/ui/tab-button";
-import { USER_ROLES, USER_STATUSES } from "@/constants/user.constant";
+import { USER_ROLES } from "@/constants/user.constant";
 import type { UserFormValues, UserType } from "@/types/user.type";
 import { userSchema } from "@/validations/user.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -42,7 +42,7 @@ export function UserForm({
       lastName: user?.lastName || "",
       phone: user?.phone || "",
       role: user?.role || "USER",
-      status: user?.status || "ACTIVE",
+      // status: user?.status || "ACTIVE",
     },
   });
 
@@ -60,7 +60,7 @@ export function UserForm({
     }
     formData.append("role", values.role);
     // Status is always included (default ACTIVE for create, current value for update)
-    formData.append("status", values.status);
+    // formData.append("status", values.status);
 
     submit(formData, {
       method: isEditMode ? "PATCH" : "POST",
@@ -177,7 +177,7 @@ export function UserForm({
         />
 
         {/* Status Field - Only shown in update form */}
-        {isEditMode && (
+        {/* {isEditMode && (
           <FormField
             control={form.control}
             name="status"
@@ -202,7 +202,7 @@ export function UserForm({
               </FormItem>
             )}
           />
-        )}
+        )} */}
 
         {/* Action Buttons */}
         <div className="flex justify-end gap-2">

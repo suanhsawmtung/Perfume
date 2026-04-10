@@ -45,7 +45,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     toast.success(response.message || "Refund updated successfully");
 
     // Redirect to refunds list page
-    return redirect("/admin/refunds");
+    return redirect(`/admin/refunds/${refundId}`);
   } catch (error) {
     if (error instanceof AxiosError) {
       const errorData = error.response?.data;

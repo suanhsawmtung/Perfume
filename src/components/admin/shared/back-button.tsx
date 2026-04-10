@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
 import type { ComponentProps } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 interface BackButtonProps extends ComponentProps<typeof Button> {
   to: string;
@@ -16,13 +16,15 @@ export function BackButton({ to, className, ...props }: BackButtonProps) {
     </div>
   );
 
+  const location = useLocation();
+
   return (
     <Button
       asChild
       className={cn("h-10 flex-1 cursor-pointer px-4 sm:flex-none", className)}
       {...props}
     >
-      <Link to={to}>{buttonContent}</Link>
+      <Link to={location.state?.from || to}>{buttonContent}</Link>
     </Button>
   );
 }

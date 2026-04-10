@@ -4,11 +4,12 @@ import { formatPrice } from "@/lib/utils";
 import type { OrderItem } from "@/types/order.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ExternalLink, PencilLineIcon, Trash2Icon } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 const ActionsCell = ({ item }: { item: OrderItem }) => {
   const product = item.productVariant?.product;
   const variant = item.productVariant;
+  const location = useLocation();
 
   return (
     <div className="flex items-center justify-end gap-1">
@@ -21,7 +22,10 @@ const ActionsCell = ({ item }: { item: OrderItem }) => {
             asChild
             title="View Product"
           >
-            <Link to={`/admin/products/${product.slug}/variants/${variant.slug}`}>
+            <Link 
+              to={`/admin/products/${product.slug}/variants/${variant.slug}`}
+              state={{ from: location }}
+            >
               <ExternalLink size={16} />
             </Link>
           </Button>
@@ -33,7 +37,10 @@ const ActionsCell = ({ item }: { item: OrderItem }) => {
             asChild
             title="Edit Variant"
           >
-            <Link to={`/admin/products/${product.slug}/variants/${variant.slug}/edit`}>
+            <Link 
+              to={`/admin/products/${product.slug}/variants/${variant.slug}/edit`}
+              state={{ from: location }}
+            >
               <PencilLineIcon size={16} />
             </Link>
           </Button>

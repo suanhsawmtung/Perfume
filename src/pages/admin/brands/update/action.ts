@@ -35,7 +35,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
       queryKey: brandQueryKeys.lists,
     });
 
-    return redirect("/admin/brands");
+    return redirect(`/admin/brands/${slug}`);
   } catch (error) {
     if (error instanceof AxiosError) {
       const errorData = error.response?.data;

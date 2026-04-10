@@ -4,7 +4,7 @@ import { FilterBar } from "@/components/admin/shared/filter-bar";
 import { MoreFilterButton } from "@/components/admin/shared/more-filter-button";
 import { UserFilterDialog } from "@/components/admin/user/list/user-filter-dialog";
 import { UsersList } from "@/components/admin/user/list/users-list";
-import { isRole, isStatus } from "@/lib/utils";
+import { isRole } from "@/lib/utils"; // , isStatus
 import { DEFAULT_LIMIT } from "@/services/user/api";
 import { useListUsers } from "@/services/user/queries/useGetUsers";
 import { Outlet, useSearchParams } from "react-router";
@@ -14,8 +14,8 @@ const AdminUsersPage = () => {
   const search = searchParams.get("search") || "";
   const page = Number(searchParams.get("page") ?? 1);
 
-  const statusParam = searchParams.get("status");
-  const status = isStatus(statusParam) ? statusParam : undefined;
+  // const statusParam = searchParams.get("status");
+  // const status = isStatus(statusParam) ? statusParam : undefined;
 
   const roleParam = searchParams.get("role");
   const role = isRole(roleParam) ? roleParam : undefined;
@@ -26,7 +26,7 @@ const AdminUsersPage = () => {
     offset,
     search,
     limit: DEFAULT_LIMIT,
-    status,
+    // status,
     role,
   });
 

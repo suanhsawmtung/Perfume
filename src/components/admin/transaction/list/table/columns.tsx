@@ -9,9 +9,11 @@ import {
 import type { TransactionType } from "@/types/transaction.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowRightIcon, PencilLineIcon } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 const ActionsCell = ({ transaction }: { transaction: TransactionType }) => {
+  const location = useLocation();
+
   return (
     <div className="flex items-center justify-end gap-1">
       <Button
@@ -22,6 +24,7 @@ const ActionsCell = ({ transaction }: { transaction: TransactionType }) => {
       >
         <Link
           to={`/admin/transactions/${transaction.id}`}
+          state={{ from: location }}
           className="flex items-center justify-center gap-1 bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
         >
           Details
@@ -35,7 +38,10 @@ const ActionsCell = ({ transaction }: { transaction: TransactionType }) => {
         className="h-7 w-7 rounded-sm border-none bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
         asChild
       >
-        <Link to={`/admin/transactions/${transaction.id}/edit`}>
+        <Link 
+          to={`/admin/transactions/${transaction.id}/edit`}
+          state={{ from: location }}
+        >
           <PencilLineIcon size={16} />
         </Link>
       </Button>

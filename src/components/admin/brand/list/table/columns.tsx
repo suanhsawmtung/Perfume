@@ -3,7 +3,58 @@ import { formatDate } from "@/lib/utils";
 import type { BrandListType } from "@/types/brand.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowRightIcon, PencilLineIcon, Trash2Icon } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
+
+const ActionsCell = ({ brand }: { brand: BrandListType }) => {
+  const location = useLocation();
+  return (
+    <div className="flex items-center justify-end gap-1">
+      <Button
+        variant="outline"
+        size="sm"
+        className="h-7 rounded-sm border-none px-2 text-xs font-normal"
+        asChild
+      >
+        <Link
+          to={`/admin/brands/${brand.slug}`}
+          state={{ from: location }}
+          className="flex items-center justify-center gap-1 bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
+        >
+          Details
+          <ArrowRightIcon size={12} />
+        </Link>
+      </Button>
+
+      <Button
+        variant="outline"
+        size="sm"
+        className="h-7 w-7 rounded-sm border-none bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
+        asChild
+      >
+        <Link 
+          to={`/admin/brands/${brand.slug}/edit`} 
+          state={{ from: location }}
+        >
+          <PencilLineIcon size={16} />
+        </Link>
+      </Button>
+
+      <Button
+        variant="outline"
+        size="sm"
+        className="h-7 w-7 rounded-sm border-none bg-red-50 p-1 text-red-400 hover:bg-red-50 hover:text-red-400"
+        asChild
+      >
+        <Link 
+          to={`/admin/brands/${brand.slug}/delete`} 
+          state={{ from: location }}
+        >
+          <Trash2Icon size={16} />
+        </Link>
+      </Button>
+    </div>
+  );
+};  
 
 export const columns: ColumnDef<BrandListType>[] = [
   {
@@ -61,46 +112,7 @@ export const columns: ColumnDef<BrandListType>[] = [
     id: "actions",
     header: "",
     cell: ({ row }) => {
-      return (
-        <div className="flex items-center justify-end gap-1">
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-7 rounded-sm border-none px-2 text-xs font-normal"
-            asChild
-          >
-            <Link
-              to={`/admin/brands/${row.original.slug}`}
-              className="flex items-center justify-center gap-1 bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
-            >
-              Details
-              <ArrowRightIcon size={12} />
-            </Link>
-          </Button>
-
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-7 w-7 rounded-sm border-none bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
-            asChild
-          >
-            <Link to={`/admin/brands/${row.original.slug}/edit`}>
-              <PencilLineIcon size={16} />
-            </Link>
-          </Button>
-
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-7 w-7 rounded-sm border-none bg-red-50 p-1 text-red-400 hover:bg-red-50 hover:text-red-400"
-            asChild
-          >
-            <Link to={`/admin/brands/${row.original.slug}/delete`}>
-              <Trash2Icon size={16} />
-            </Link>
-          </Button>
-        </div>
-      );
+      return <ActionsCell brand={row.original} />
     },
   },
 ];

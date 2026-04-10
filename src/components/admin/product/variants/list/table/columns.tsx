@@ -4,7 +4,7 @@ import { formatPrice } from "@/lib/utils";
 import type { ProductVariantSummaryType } from "@/types/product.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowRightIcon, PencilLineIcon, Trash2Icon } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { DeleteVariantDialog } from "../../actions/delete-variant-dialog";
 
 const ActionsCell = ({
@@ -16,6 +16,8 @@ const ActionsCell = ({
   variant: ProductVariantSummaryType;
   totalVariantCount: number;
 }) => {
+  const location = useLocation();
+
   return (
     <div className="flex items-center justify-end gap-1">
       <Button
@@ -26,6 +28,7 @@ const ActionsCell = ({
       >
         <Link
           to={`/admin/products/${productSlug}/variants/${variant.slug}`}
+          state={{ from: location }}
           className="flex items-center justify-center gap-1 bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
         >
           Details
@@ -41,6 +44,7 @@ const ActionsCell = ({
       >
         <Link
           to={`/admin/products/${productSlug}/variants/${variant.slug}/edit`}
+          state={{ from: location }}
         >
           <PencilLineIcon size={16} />
         </Link>

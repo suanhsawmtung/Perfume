@@ -1,29 +1,31 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { formatName, getUserRoleVariant, getUserStatusVariant } from "@/lib/utils";
+import { formatName, getUserRoleVariant } from "@/lib/utils";
 import type { UserType } from "@/types/user.type";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowRightIcon, PencilLineIcon, Trash2Icon } from "lucide-react";
-import { Link } from "react-router";
+import { Ban, PencilLineIcon } from "lucide-react";
+import { Link, useLocation } from "react-router";
 
 // Actions cell component that can use hooks
 const ActionsCell = ({ user }: { user: UserType }) => {
+  const location = useLocation();
+
   return (
     <div className="flex items-center justify-end gap-1">
-      <Button
+      {/* <Button
         variant="outline"
         size="sm"
         className="h-7 rounded-sm border-none px-2 text-xs font-normal"
         asChild
       >
         <div
-          // to={`/${user.username}`}
+          to={`/${user.username}`}
           className="flex items-center justify-center gap-1 bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
         >
           See Profile
           <ArrowRightIcon size={12} />
         </div>
-      </Button>
+      </Button> */}
 
       <Button
         variant="outline"
@@ -31,7 +33,10 @@ const ActionsCell = ({ user }: { user: UserType }) => {
         className="h-7 w-7 rounded-sm border-none bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
         asChild
       >
-        <Link to={`/admin/users/${user.username}/edit`}>
+        <Link 
+          to={`/admin/users/${user.username}/edit`}
+          state={{ from: location }}
+        >
           <PencilLineIcon size={16} />
         </Link>
       </Button>
@@ -42,8 +47,11 @@ const ActionsCell = ({ user }: { user: UserType }) => {
         className="h-7 w-7 rounded-sm border-none bg-red-50 p-1 text-red-400 hover:bg-red-50 hover:text-red-400"
         asChild
       >
-        <Link to={`/admin/users/${user.username}/delete`}>
-          <Trash2Icon size={16} />
+        <Link 
+          to={`/admin/users/${user.username}/delete`}
+          state={{ from: location }}
+        >
+          <Ban size={16} />
         </Link>
       </Button>
     </div>
@@ -125,25 +133,25 @@ export const columns: ColumnDef<UserType>[] = [
       );
     },
   },
-  {
-    accessorKey: "status",
-    header: () => {
-      return (
-        <div className="text-primary flex items-center justify-center text-sm font-semibold">
-          Status
-        </div>
-      );
-    },
-    cell: ({ row }) => {
-      const status = row.getValue("status") as UserType["status"];
-      const statusVariant = getUserStatusVariant(status);
-      return (
-        <div className="flex items-center justify-center">
-          <Badge variant={statusVariant}>{status}</Badge>
-        </div>
-      );
-    },
-  },
+  // {
+  //   accessorKey: "status",
+  //   header: () => {
+  //     return (
+  //       <div className="text-primary flex items-center justify-center text-sm font-semibold">
+  //         Status
+  //       </div>
+  //     );
+  //   },
+  //   cell: ({ row }) => {
+  //     const status = row.getValue("status") as UserType["status"];
+  //     const statusVariant = getUserStatusVariant(status);
+  //     return (
+  //       <div className="flex items-center justify-center">
+  //         <Badge variant={statusVariant}>{status}</Badge>
+  //       </div>
+  //     );
+  //   },
+  // },
   {
     id: "actions",
     header: "",

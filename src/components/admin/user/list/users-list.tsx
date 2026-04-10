@@ -36,7 +36,7 @@ export function UsersList({
             allowedFilters={{
               search: true,
               role: ["USER", "ADMIN", "AUTHOR"],
-              status: ["ACTIVE", "INACTIVE", "FREEZE"],
+              // status: ["ACTIVE", "INACTIVE", "FREEZE"],
             }}
           />
         </div>

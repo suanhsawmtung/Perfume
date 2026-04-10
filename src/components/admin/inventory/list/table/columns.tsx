@@ -1,5 +1,3 @@
-"use client";
-
 import { formatDate, formatName, formatPrice } from "@/lib/utils";
 import { type InventoryItem } from "@/types/inventory.type.ts";
 import { type ColumnDef } from "@tanstack/react-table";

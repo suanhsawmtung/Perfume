@@ -100,8 +100,8 @@ import { loader as adminCategoriesLoader } from "@/pages/admin/categories/loader
 import AdminCategoryEditDialog from "@/pages/admin/categories/update";
 import { action as adminUpdateCategoryAction } from "@/pages/admin/categories/update/action";
 import { loader as adminEditCategoryLoader } from "@/pages/admin/categories/update/loader";
-import AdminDashboardPage from "./pages/admin/dashboard";
 import { loader as adminDashboardLoader } from "@/pages/admin/dashboard/loader";
+import AdminDashboardPage from "./pages/admin/dashboard";
 import AdminOrderCreatePage from "./pages/admin/orders/create";
 import { action as adminCreateOrderAction } from "./pages/admin/orders/create/action";
 import AdminOrderDetailPage from "./pages/admin/orders/detail";
@@ -334,54 +334,6 @@ export const router = createBrowserRouter([
           },
         ]
       },
-      // {
-      //   path: "materials",
-      //   Component: AdminMaterialsPage,
-      //   loader: adminMaterialsLoader,
-      //   children: [
-      //     {
-      //       path: "create",
-      //       Component: AdminMaterialCreateDialog,
-      //       action: adminCreateMaterialAction,
-      //     },
-      //     {
-      //       path: ":slug/edit",
-      //       Component: AdminMaterialEditDialog,
-      //       loader: adminEditMaterialLoader,
-      //       action: adminUpdateMaterialAction,
-      //     },
-      //     {
-      //       path: ":slug/delete",
-      //       Component: AdminMaterialDeleteDialog,
-      //       loader: adminDeleteMaterialLoader,
-      //       action: adminDeleteMaterialAction,
-      //     },
-      //   ],
-      // },
-      // {
-      //   path: "types",
-      //   Component: AdminTypesPage,
-      //   loader: adminTypesLoader,
-      //   children: [
-      //     {
-      //       path: "create",
-      //       Component: AdminTypeCreateDialog,
-      //       action: adminCreateTypeAction,
-      //     },
-      //     {
-      //       path: ":slug/edit",
-      //       Component: AdminTypeEditDialog,
-      //       loader: adminEditTypeLoader,
-      //       action: adminUpdateTypeAction,
-      //     },
-      //     {
-      //       path: ":slug/delete",
-      //       Component: AdminTypeDeleteDialog,
-      //       loader: adminDeleteTypeLoader,
-      //       action: adminDeleteTypeAction,
-      //     },
-      //   ],
-      // },
       {
         path: "brands",
         Component: AdminBrandsPage,
