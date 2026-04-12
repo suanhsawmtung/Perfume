@@ -41,7 +41,7 @@ const AdminBrandsPage = () => {
 
         {data && (
           <BrandList
-            brands={data.brands}
+            brands={data.items}
             total={data.totalPages}
             page={data.currentPage}
             size={data.pageSize}

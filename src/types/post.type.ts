@@ -35,7 +35,7 @@ export type PostType = {
 };
 
 export interface PostListResult {
-  posts: PostType[];
+  items: PostType[];
   currentPage: number;
   totalPages: number;
   pageSize: number;
@@ -57,17 +57,13 @@ export interface DeletePostResponse {
 export interface UpdatePostResponse {
   success: boolean;
   message: string;
-  data: {
-    post: PostType;
-  };
+  data: PostType;
 }
 
 export interface CreatePostResponse {
   success: boolean;
   message: string;
-  data: {
-    post: PostType;
-  };
+  data: PostType;
 }
 
 export type PostFormValues = z.infer<typeof postSchema>;

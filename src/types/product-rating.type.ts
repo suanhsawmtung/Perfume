@@ -33,14 +33,14 @@ export type ProductRatingSummaryType = {
 };
 
 export interface ProductRatingListResult {
-  productRatings: ProductRatingType[];
+  items: ProductRatingType[];
   currentPage: number;
   totalPages: number;
   pageSize: number;
 }
 
 export interface ProductRatingSummaryListResult {
-  summaries: ProductRatingSummaryType[];
+  items: ProductRatingSummaryType[];
   currentPage: number;
   totalPages: number;
   pageSize: number;

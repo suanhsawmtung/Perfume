@@ -33,7 +33,6 @@ export interface TransactionListResult {
   currentPage: number;
   totalPages: number;
   pageSize: number;
-  totalCount: number;
 }
 
 export interface TransactionQueryParams {
@@ -52,17 +51,13 @@ export interface DeleteTransactionResponse {
 export interface UpdateTransactionResponse {
   success: boolean;
   message: string;
-  data: {
-    transaction: TransactionType;
-  };
+  data: TransactionType;
 }
 
 export interface CreateTransactionResponse {
   success: boolean;
   message: string;
-  data: {
-    transaction: TransactionType;
-  };
+  data: TransactionType;
 }
 
 export type TransactionFormValues = z.infer<typeof transactionSchema>;

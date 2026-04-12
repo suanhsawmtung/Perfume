@@ -32,7 +32,7 @@ export async function fetchPosts(options: {
 
   // Backend returns: { success: true, data: { posts, currentPage, totalPages, pageSize }, message: null }
   return {
-    posts: response.data?.data?.posts || [],
+    items: response.data?.data?.items || [],
     currentPage: response.data?.data?.currentPage || 0,
     totalPages: response.data?.data?.totalPages || 0,
     pageSize: response.data?.data?.pageSize || 10,
@@ -43,7 +43,7 @@ export async function fetchPost(slug: string): Promise<PostType> {
   const response = await api.get(`/admin/posts/${slug}`);
 
   // Backend returns: { success: true, data: { post }, message: null }
-  return response.data?.data?.post;
+  return response.data?.data;
 }
 
 export async function createPost(

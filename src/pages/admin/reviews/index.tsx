@@ -34,7 +34,7 @@ const AdminReviewsPage = () => {
 
         {data && (
           <ReviewList
-            reviews={data.reviews}
+            reviews={data.items}
             total={data.totalPages}
             page={data.currentPage}
             size={data.pageSize}

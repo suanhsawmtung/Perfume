@@ -69,7 +69,7 @@ const AdminProductsPage = () => {
 
         {data && (
           <ProductList
-            products={data.products}
+            products={data.items}
             total={data.totalPages}
             page={data.currentPage}
             size={data.pageSize}

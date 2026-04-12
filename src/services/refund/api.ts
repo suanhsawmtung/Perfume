@@ -15,7 +15,7 @@ export const listRefunds = async (params?: RefundQueryParams): Promise<RefundLis
   const data = response.data?.data;
   
   return {
-    refunds: data?.items || [],
+    items: data?.items || [],
     currentPage: data?.currentPage || 1,
     totalPages: data?.totalPages || 1,
     pageSize: data?.pageSize || DEFAULT_LIMIT,
@@ -24,7 +24,7 @@ export const listRefunds = async (params?: RefundQueryParams): Promise<RefundLis
 
 export const getRefund = async (id: number): Promise<RefundType> => {
   const response = await axios.get(`/admin/refunds/${id}`);
-  return response.data.data?.refund;
+  return response.data.data;
 };
 
 export const createRefund = async (data: RefundFormValues): Promise<CreateRefundResponse> => {

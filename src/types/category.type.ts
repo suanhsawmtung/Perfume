@@ -27,7 +27,7 @@ export type CommonCategoryType = {
 };
 
 export interface CategoryListResult {
-  categories: CategoryListType[];
+  items: CategoryListType[];
   currentPage: number;
   totalPages: number;
   pageSize: number;
@@ -46,9 +46,7 @@ export interface CreateCategoryParams {
 export interface CreateCategoryResponse {
   success: boolean;
   message: string;
-  data: {
-    category: CategoryType;
-  };
+  data: CategoryType;
 }
 
 export interface UpdateCategoryParams {
@@ -59,9 +57,7 @@ export interface UpdateCategoryParams {
 export interface UpdateCategoryResponse {
   success: boolean;
   message: string;
-  data: {
-    category: CategoryType;
-  };
+  data: CategoryType;
 }
 
 export interface DeleteCategoryParams {

@@ -33,7 +33,7 @@ export async function fetchCategories(options: {
 
   // Backend returns: { success: true, data: { categories, currentPage, totalPages, pageSize }, message: null }
   return {
-    categories: response.data?.data?.categories || [],
+    items: response.data?.data?.items || [],
     currentPage: response.data?.data?.currentPage || 0,
     totalPages: response.data?.data?.totalPages || 0,
     pageSize: response.data?.data?.pageSize || 10,
@@ -44,7 +44,7 @@ export async function fetchCategory(slug: string): Promise<CategoryListType> {
   const response = await api.get(`/admin/categories/${slug}`);
 
   // Backend returns: { success: true, data: { category }, message: null }
-  return response.data?.data?.category;
+  return response.data?.data;
 }
 
 export async function createCategory(

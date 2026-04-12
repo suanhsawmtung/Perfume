@@ -32,7 +32,7 @@ export async function fetchBrands(options: {
 
   // Backend returns: { success: true, data: { brands, currentPage, totalPages, pageSize }, message: null }
   return {
-    brands: response.data?.data?.brands || [],
+    items: response.data?.data?.items || [],
     currentPage: response.data?.data?.currentPage || 0,
     totalPages: response.data?.data?.totalPages || 0,
     pageSize: response.data?.data?.pageSize || 10,
@@ -43,7 +43,7 @@ export async function fetchBrand(slug: string): Promise<BrandListType> {
   const response = await api.get(`/admin/brands/${slug}`);
 
   // Backend returns: { success: true, data: { brand }, message: null }
-  return response.data?.data?.brand;
+  return response.data?.data;
 }
 
 export async function createBrand(

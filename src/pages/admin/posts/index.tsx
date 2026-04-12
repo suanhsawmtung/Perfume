@@ -57,7 +57,7 @@ const AdminPostsPage = () => {
 
         {data && (
           <PostList
-            posts={data.posts}
+            posts={data.items}
             total={data.totalPages}
             page={data.currentPage}
             size={data.pageSize}

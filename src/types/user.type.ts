@@ -52,17 +52,13 @@ export interface UserQueryParams {
 export interface CreateUserResponse {
   success: boolean;
   message: string;
-  data?: {
-    user: UserType;
-  };
+  data: UserType;
 }
 
 export interface UpdateUserResponse {
   success: boolean;
   message: string;
-  data?: {
-    user: UserType;
-  };
+  data: UserType;
 }
 
 export interface DeleteUserParams {

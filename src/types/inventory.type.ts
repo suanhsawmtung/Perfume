@@ -40,7 +40,6 @@ export interface InventoryListResult {
   currentPage: number;
   totalPages: number;
   pageSize: number;
-  totalCount: number;
 }
 
 export interface InventoryQueryParams {

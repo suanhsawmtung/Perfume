@@ -18,7 +18,7 @@ export const listTransactions = async (params?: TransactionQueryParams): Promise
 
 export const getTransaction = async (id: number): Promise<TransactionType> => {
   const response = await axios.get(`/admin/transactions/${id}`);
-  return response.data.data?.transaction;
+  return response.data.data;
 };
 
 export const createTransaction = async (data: TransactionFormValues): Promise<CreateTransactionResponse> => {

@@ -20,7 +20,6 @@ export function ReviewDetailContent({ review }: { review: ReviewListType }) {
           <div>
             <h3 className="text-sm font-medium text-muted-foreground">Product</h3>
             <p className="mt-1 font-semibold text-primary">{review.product.name}</p>
-            <p className="text-sm text-muted-foreground">Slug: {review.product.slug}</p>
           </div>
         </div>
 

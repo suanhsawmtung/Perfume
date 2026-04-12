@@ -45,6 +45,8 @@ export const AddOrderItemForm = ({ onAdd }: AddOrderItemFormProps) => {
     search: productSearch,
   });
 
+  console.log(productsData)
+
   useEffect(() => {
     const getVariants = async () => {
       if (!selectedProductSlug) {
@@ -123,7 +125,7 @@ export const AddOrderItemForm = ({ onAdd }: AddOrderItemFormProps) => {
         <div className="lg:col-span-4 space-y-2">
           <label className="text-sm font-medium">Product</label>
           <SearchableSelect
-            items={productsData?.products.map(p => ({
+            items={productsData?.items.map(p => ({
               value: p.slug,
               label: `${p.name} (${p.brand.name})`
             })) || []}

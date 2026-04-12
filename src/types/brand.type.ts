@@ -23,7 +23,7 @@ export type BrandListType = {
 };
 
 export interface BrandListResult {
-  brands: BrandListType[];
+  items: BrandListType[];
   currentPage: number;
   totalPages: number;
   pageSize: number;
@@ -42,9 +42,7 @@ export interface CreateBrandParams {
 export interface CreateBrandResponse {
   success: boolean;
   message: string;
-  data: {
-    brand: BrandListType;
-  };
+  data: BrandListType;
 }
 
 export interface UpdateBrandParams {
@@ -55,9 +53,7 @@ export interface UpdateBrandParams {
 export interface UpdateBrandResponse {
   success: boolean;
   message: string;
-  data: {
-    brand: BrandListType;
-  };
+  data: BrandListType;
 }
 
 export interface DeleteBrandParams {

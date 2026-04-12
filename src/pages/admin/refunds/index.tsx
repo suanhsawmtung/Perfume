@@ -51,7 +51,7 @@ export default function AdminRefundsPage() {
 
         {data && (
           <RefundsList
-            refunds={data.refunds}
+            refunds={data.items}
             total={data.totalPages}
             page={data.currentPage}
           />

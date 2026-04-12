@@ -28,7 +28,6 @@ export interface PaymentListResult {
   currentPage: number;
   totalPages: number;
   pageSize: number;
-  totalCount: number;
 }
 
 export interface PaymentQueryParams {
@@ -47,25 +46,19 @@ export interface VoidPaymentResponse {
 export interface UpdatePaymentResponse {
   success: boolean;
   message: string;
-  data: {
-    payment: PaymentType;
-  };
+  data: PaymentType;
 }
 
 export interface VerifyPaymentResponse {
   success: boolean;
   message: string;
-  data: {
-    payment: PaymentType;
-  };
+  data: PaymentType;
 }
 
 export interface CreatePaymentResponse {
   success: boolean;
   message: string;
-  data: {
-    payment: PaymentType;
-  };
+  data: PaymentType;
 }
 
 export type PaymentFormValues = z.infer<typeof paymentSchema>;

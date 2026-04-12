@@ -128,7 +128,7 @@ export function InventoryForm() {
                 <FormLabel>Product</FormLabel>
                 <FormControl>
                   <SearchableSelect
-                    items={productsData?.products.map(p => ({
+                    items={productsData?.items.map(p => ({
                       value: p.slug,
                       label: `${p.name} (${p.brand.name})`
                     })) || []}

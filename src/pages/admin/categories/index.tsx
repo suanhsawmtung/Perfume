@@ -46,7 +46,7 @@ const AdminCategoriesPage = () => {
         {isError && <div>Failed to load jobs.</div>} */}
         {data && (
           <CategoryList
-            categories={data.categories}
+            categories={data.items}
             total={data.totalPages}
             page={data.currentPage}
             size={data.pageSize}

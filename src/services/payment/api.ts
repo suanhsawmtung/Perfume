@@ -21,13 +21,12 @@ export const listPayments = async (params?: PaymentQueryParams): Promise<Payment
     currentPage: data?.currentPage || 1,
     totalPages: data?.totalPages || 1,
     pageSize: data?.pageSize || DEFAULT_LIMIT,
-    totalCount: data?.totalCount || 0,
   };
 };
 
 export const getPayment = async (id: number): Promise<PaymentType> => {
   const response = await axios.get(`/admin/payments/${id}`);
-  return response.data.data?.payment;
+  return response.data.data;
 };
 
 export const createPayment = async (data: PaymentFormValues): Promise<CreatePaymentResponse> => {

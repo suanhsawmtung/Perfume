@@ -22,7 +22,7 @@ export type ReviewListType = {
 };
 
 export interface ReviewListResult {
-  reviews: ReviewListType[];
+  items: ReviewListType[];
   currentPage: number;
   totalPages: number;
   pageSize: number;
@@ -40,7 +40,5 @@ export interface ReviewQueryParams {
 export interface ToggleReviewPublishResponse {
   success: boolean;
   message: string;
-  data: {
-    review: ReviewListType;
-  };
+  data: ReviewListType;
 }

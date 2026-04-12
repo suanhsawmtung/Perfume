@@ -31,7 +31,7 @@ export async function fetchReviews(options: {
   });
 
   return {
-    reviews: response.data?.data?.reviews || [],
+    items: response.data?.data?.items || [],
     currentPage: response.data?.data?.currentPage || 0,
     totalPages: response.data?.data?.totalPages || 0,
     pageSize: response.data?.data?.pageSize || 10,
@@ -40,7 +40,7 @@ export async function fetchReviews(options: {
 
 export async function fetchReview(id: number): Promise<ReviewListType> {
   const response = await api.get(`/admin/reviews/${id}`);
-  return response.data?.data?.review;
+  return response.data?.data;
 }
 
 export async function toggleReviewPublish(id: number): Promise<ToggleReviewPublishResponse> {

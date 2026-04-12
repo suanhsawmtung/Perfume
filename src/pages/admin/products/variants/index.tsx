@@ -14,6 +14,8 @@ const AdminProductVariantsPage = () => {
 
   const { data: product } = useGetProductVariants(slug);
 
+  console.log(product);
+
   return (
     <section className="w-full">
       <AdminHeaderSection title="Product Variants" />

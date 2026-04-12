@@ -106,7 +106,7 @@ export interface OrderDetailType extends OrderType {
 }
 
 export interface OrderListResult {
-  orders: OrderType[];
+  items: OrderType[];
   currentPage: number;
   totalPages: number;
   pageSize: number;

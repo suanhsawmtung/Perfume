@@ -1,8 +1,8 @@
 import { RatingsList } from "@/components/admin/product-rating/list/ratings-list";
 import { SummaryList } from "@/components/admin/product-rating/list/summary-list";
+import { ProductRatingTabs } from "@/components/admin/product-rating/product-rating-tabs";
 import AdminHeaderSection from "@/components/admin/shared/admin-header-section";
 import { FilterBar } from "@/components/admin/shared/filter-bar";
-import { ProductRatingTabs } from "@/components/admin/product-rating/product-rating-tabs";
 import { DEFAULT_LIMIT } from "@/services/product-rating/api";
 import { useListProductRatingSummary } from "@/services/product-rating/queries/useGetListProductRatingSummary";
 import { useListProductRatings } from "@/services/product-rating/queries/useGetListProductRatings";
@@ -43,7 +43,7 @@ const AdminProductRatingsPage = () => {
 
         {activeTab === "detailed" && ratingsData && (
           <RatingsList
-            ratings={ratingsData.productRatings}
+            ratings={ratingsData.items}
             total={ratingsData.totalPages}
             page={ratingsData.currentPage}
           />
@@ -51,7 +51,7 @@ const AdminProductRatingsPage = () => {
 
         {activeTab === "summary" && summaryData && (
           <SummaryList
-            summaries={summaryData.summaries}
+            summaries={summaryData.items}
             total={summaryData.totalPages}
             page={summaryData.currentPage}
           />

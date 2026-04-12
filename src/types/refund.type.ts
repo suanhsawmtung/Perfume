@@ -19,7 +19,7 @@ export type RefundType = {
 };
 
 export interface RefundListResult {
-  refunds: RefundType[];
+  items: RefundType[];
   currentPage: number;
   totalPages: number;
   pageSize: number;
@@ -40,17 +40,13 @@ export interface VoidRefundResponse {
 export interface UpdateRefundResponse {
   success: boolean;
   message: string;
-  data: {
-    refund: RefundType;
-  };
+  data: RefundType;
 }
 
 export interface CreateRefundResponse {
   success: boolean;
   message: string;
-  data: {
-    refund: RefundType;
-  };
+  data: RefundType;
 }
 
 export type RefundFormValues = z.infer<typeof refundSchema>;

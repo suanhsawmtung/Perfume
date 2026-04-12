@@ -45,7 +45,7 @@ export async function fetchUser(username: string): Promise<UserType> {
   const response = await api.get(`/admin/users/${username}`);
 
   // Backend returns: { success: true, data: { user }, message: null }
-  return response.data?.data?.user;
+  return response.data?.data;
 }
 
 export async function createUser(formData: FormData): Promise<CreateUserResponse> {

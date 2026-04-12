@@ -24,7 +24,7 @@ export async function fetchOrders(options: OrderQueryParams): Promise<OrderListR
   });
 
   return {
-    orders: response.data?.data?.orders || [],
+    items: response.data?.data?.items || [],
     currentPage: response.data?.data?.currentPage || 0,
     totalPages: response.data?.data?.totalPages || 0,
     pageSize: response.data?.data?.pageSize || 10,
@@ -33,7 +33,7 @@ export async function fetchOrders(options: OrderQueryParams): Promise<OrderListR
 
 export async function fetchOrder(code: string): Promise<OrderDetailType> {
   const response = await api.get(`/admin/orders/${code}`);
-  return response.data?.data?.order;
+  return response.data?.data;
 }
 
 export async function createOrder(params: FormData): Promise<{

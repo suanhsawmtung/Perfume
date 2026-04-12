@@ -24,7 +24,7 @@ export async function fetchProductRatings(
     params: queryParams,
   });
 
-  return response.data?.data || { productRatings: [], currentPage: 0, totalPages: 0, pageSize: 10 };
+  return response.data?.data || { items: [], currentPage: 0, totalPages: 0, pageSize: 10 };
 }
 
 export async function fetchProductRatingSummary(

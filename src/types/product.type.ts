@@ -54,7 +54,7 @@ export interface ProductQueryParams {
 
 // Product list result from API
 export interface ProductListResult {
-  products: ProductListType[];
+  items: ProductListType[];
   currentPage: number;
   totalPages: number;
   pageSize: number;
@@ -198,9 +198,7 @@ export interface CreateProductParams {
 export interface CreateProductResponse {
   success: boolean;
   message: string;
-  data: {
-    product: ProductDetailType;
-  };
+  data: ProductDetailType;
 }
 
 export interface UpdateProductParams {
@@ -217,9 +215,7 @@ export interface UpdateProductParams {
 export interface UpdateProductResponse {
   success: boolean;
   message: string;
-  data: {
-    product: ProductDetailType;
-  };
+  data: ProductDetailType;
 }
 
 export interface DeleteProductResponse {
@@ -230,9 +226,7 @@ export interface DeleteProductResponse {
 export interface CreateProductVariantResponse {
   success: boolean;
   message: string;
-  data: {
-    variant: ProductVariantType;
-  };
+  data: ProductVariantType;
 }
 
 export interface DeleteProductVariantResponse {

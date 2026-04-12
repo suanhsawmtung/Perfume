@@ -59,7 +59,7 @@ const AdminOrdersPage = () => {
         
         {data && (
           <OrderList
-            orders={data.orders}
+            orders={data.items}
             total={data.totalPages}
             page={data.currentPage}
             size={data.pageSize}

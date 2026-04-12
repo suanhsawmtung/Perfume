@@ -57,7 +57,7 @@ export async function fetchProducts(options: {
 
   // Backend returns: { success: true, data: { products, currentPage, totalPages, pageSize }, message: null }
   return {
-    products: response.data?.data?.products || [],
+    items: response.data?.data?.items || [],
     currentPage: response.data?.data?.currentPage || 0,
     totalPages: response.data?.data?.totalPages || 0,
     pageSize: response.data?.data?.pageSize || 10,
@@ -68,7 +68,7 @@ export async function fetchProduct(slug: string): Promise<ProductDetailType> {
   const response = await api.get(`/admin/products/${slug}`);
 
   // Backend returns: { success: true, data: { product }, message: null }
-  return response.data?.data?.product;
+  return response.data?.data;
 }
 
 export async function fetchProductVariants(
@@ -77,7 +77,7 @@ export async function fetchProductVariants(
   const response = await api.get(`/admin/products/${slug}/variants`);
 
   // Backend returns: { success: true, data: { product }, message: null }
-  return response.data?.data?.product || [];
+  return response.data?.data;
 }
 
 export async function fetchProductVariant(
@@ -89,7 +89,7 @@ export async function fetchProductVariant(
   );
 
   // Backend returns: { success: true, data: { variant }, message: null }
-  return response.data?.data?.variant;
+  return response.data?.data;
 }
 
 export async function createProduct(
