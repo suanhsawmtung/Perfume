@@ -42,7 +42,7 @@ export function UserForm({
       lastName: user?.lastName || "",
       phone: user?.phone || "",
       role: user?.role || "USER",
-      // status: user?.status || "ACTIVE",
+      status: user?.status || "ACTIVE",
     },
   });
 
@@ -59,8 +59,7 @@ export function UserForm({
       formData.append("phone", values.phone);
     }
     formData.append("role", values.role);
-    // Status is always included (default ACTIVE for create, current value for update)
-    // formData.append("status", values.status);
+    formData.append("status", values.status);
 
     submit(formData, {
       method: isEditMode ? "PATCH" : "POST",

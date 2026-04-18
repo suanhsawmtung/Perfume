@@ -66,7 +66,6 @@ import { action as logoutAction } from "@/pages/auth/logout/action";
 import { action as resetPasswordAction } from "@/pages/auth/reset-passsword/action";
 import { loader as resetPasswordLoader } from "@/pages/auth/reset-passsword/loader";
 import { action as signInAction } from "@/pages/auth/sign-in/action";
-import { loader as signInLoader } from "@/pages/auth/sign-in/loader";
 import { action as signUpAction } from "@/pages/auth/sign-up/action";
 import { loader as signUpLoader } from "@/pages/auth/sign-up/loader";
 import { action as verifyOtpAction } from "@/pages/auth/verify-otp/action";
@@ -196,7 +195,6 @@ export const router = createBrowserRouter([
       {
         path: "/sign-in",
         Component: SignInPage,
-        loader: signInLoader,
         action: signInAction,
       },
       {

@@ -24,9 +24,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
   try {
     const response = await updateBrand({ slug, name });
 
-    // Show success toast
-    toast.success(response.message || "Brand updated successfully");
-
     await queryClient.invalidateQueries({
       queryKey: brandQueryKeys.detail(slug),
     });
@@ -35,7 +32,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
       queryKey: brandQueryKeys.lists,
     });
 
-    return redirect(`/admin/brands/${slug}`);
+    // Show success toast
+    toast.success(response.message || "Brand updated successfully");
+
+    return redirect(`/admin/brands`);
   } catch (error) {
     if (error instanceof AxiosError) {
       const errorData = error.response?.data;

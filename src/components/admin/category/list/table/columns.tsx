@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
 import type { CategoryListType } from "@/types/category.type";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowRightIcon, PencilLineIcon, Trash2Icon } from "lucide-react";
+import { PencilLineIcon, Trash2Icon } from "lucide-react";
 import { Link, useLocation } from "react-router";
 
 const ActionsCell = ({ category }: { category: CategoryListType }) => {
@@ -10,22 +10,6 @@ const ActionsCell = ({ category }: { category: CategoryListType }) => {
 
   return (
     <div className="flex items-center justify-end gap-1">
-      <Button
-        variant="outline"
-        size="sm"
-        className="h-7 rounded-sm border-none px-2 text-xs font-normal"
-        asChild
-      >
-        <Link
-          to={`/admin/categories/${category.slug}`}
-          state={{ from: location }}
-          className="flex items-center justify-center gap-1 bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
-        >
-          Details
-          <ArrowRightIcon size={12} />
-        </Link>
-      </Button>
-
       <Button
         variant="outline"
         size="sm"

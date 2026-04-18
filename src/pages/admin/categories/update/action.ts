@@ -35,7 +35,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     // Show success toast
     toast.success(response.message || "Category updated successfully");
 
-    return redirect(`/admin/categories/${slug}`);
+    return redirect(`/admin/categories`);
   } catch (error) {
     if (error instanceof AxiosError) {
       const errorData = error.response?.data;

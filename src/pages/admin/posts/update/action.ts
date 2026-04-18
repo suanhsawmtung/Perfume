@@ -55,7 +55,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     toast.success(response.message || "Post updated successfully");
 
     // Redirect to posts list page
-    return redirect(`/admin/posts/${slug}`);
+    return redirect(`/admin/posts/${response.data.slug}`);
   } catch (error) {
     if (error instanceof AxiosError) {
       const errorData = error.response?.data;

@@ -73,7 +73,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
     toast.success(response.message || "Product updated successfully");
 
-    return redirect(`/admin/products/${slug}`);
+    return redirect(`/admin/products/${response.data.slug}`);
   } catch (error) {
     if (error instanceof AxiosError) {
       const errorData = error.response?.data;
