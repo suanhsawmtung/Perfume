@@ -18,18 +18,17 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { useResendOtp } from "@/services/auth/queries/useResendOtp";
 import { useAuthStore } from "@/stores/auth.store";
 import type { AuthActionResponse } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
   useActionData,
-  useFetcher,
   useNavigation,
-  useSubmit,
+  useSubmit
 } from "react-router";
 import z from "zod";
-import { resendOtpSchema, type ResendOtpFormValues } from "./resend-schema";
 
 const verifyOtpSchema = z.object({
   otp: z
@@ -46,23 +45,15 @@ const VerifyOtpPage = () => {
   const submit = useSubmit();
   const navigation = useNavigation();
   const actionData = useActionData<AuthActionResponse>();
-  const resendFetcher = useFetcher<AuthActionResponse>();
   const authFlow = useAuthStore((state) => state.authFlow);
   const isSubmitting = navigation.state === "submitting";
-  const isResending = resendFetcher.state === "submitting";
+
+  const resendOtpMutation = useResendOtp();
 
   const form = useForm<VerifyOtpFormValues>({
     resolver: zodResolver(verifyOtpSchema),
     defaultValues: {
       otp: "",
-    },
-  });
-
-  // Resend OTP form
-  const resendForm = useForm<ResendOtpFormValues>({
-    resolver: zodResolver(resendOtpSchema),
-    defaultValues: {
-      email: authFlow?.email || "",
     },
   });
 
@@ -77,16 +68,10 @@ const VerifyOtpPage = () => {
     });
   };
 
-  const onResendSubmit = (values: ResendOtpFormValues) => {
-    // Determine resend action path based on flow
-    const resendActionPath =
-      authFlow?.flow === "sign-up"
-        ? "/verify-otp/resend"
-        : "/verify-password-otp/resend";
-
-    resendFetcher.submit(values, {
-      method: "POST",
-      action: resendActionPath,
+  const onResendSubmit = () => {
+    resendOtpMutation.mutate({
+      email: authFlow?.email || "",
+      type: authFlow?.flow === "sign-up" ? "VERIFY_EMAIL" : "RESET_PASSWORD",
     });
   };
 
@@ -158,18 +143,6 @@ const VerifyOtpPage = () => {
                   {actionData && actionData.message && (
                     <p className="text-xs text-red-400">{actionData.message}</p>
                   )}
-
-                  {resendFetcher.data && resendFetcher.data.message && (
-                    <p
-                      className={`text-xs ${
-                        resendFetcher.data.success
-                          ? "text-green-400"
-                          : "text-red-400"
-                      }`}
-                    >
-                      {resendFetcher.data.message}
-                    </p>
-                  )}
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -186,21 +159,15 @@ const VerifyOtpPage = () => {
           </Form>
           <div className="text-center text-sm">
             Didn&apos;t receive the code?{" "}
-            <Form {...resendForm}>
-              <form
-                onSubmit={resendForm.handleSubmit(onResendSubmit)}
-                className="inline"
-              >
-                <input type="hidden" {...resendForm.register("email")} />
-                <button
-                  type="submit"
-                  disabled={isResending || isSubmitting}
-                  className="cursor-pointer underline underline-offset-4 disabled:opacity-50"
-                >
-                  {isResending ? "Resending..." : "Resend"}
-                </button>
-              </form>
-            </Form>
+            <Button
+              type="button"
+              variant="link"
+              onClick={onResendSubmit}
+              disabled={resendOtpMutation.isPending || isSubmitting}
+              className="cursor-pointer underline underline-offset-4 disabled:opacity-50 p-0"
+            >
+              {resendOtpMutation.isPending ? "Resending..." : "Resend"}
+            </Button>
           </div>
         </CardContent>
       </Card>

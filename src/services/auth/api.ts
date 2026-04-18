@@ -29,3 +29,28 @@ export async function checkAuth(): Promise<AuthCheckResult> {
     };
   }
 }
+
+export const resendOtp = async ({
+  email,
+  type,
+}: {
+  email: string;
+  type: "VERIFY_EMAIL" | "RESET_PASSWORD";
+}): Promise<{
+  data: {
+    email: string;
+    token: string;
+  };
+  success: boolean;
+  message: string;
+}> => {
+  try {
+    const response = await api.post("/auth/resend-otp", {
+      email,
+      type,
+    });
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};

@@ -25,9 +25,6 @@ export async function loader() {
     if (authFlow.status === "sign-up") {
       return redirect("/sign-up");
     }
-    if (authFlow.status === "confirm-password") {
-      return redirect("/confirm-password");
-    }
   }
 
   if (authFlow.flow === "forgot-password") {

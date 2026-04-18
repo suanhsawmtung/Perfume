@@ -71,7 +71,6 @@ import { action as signUpAction } from "@/pages/auth/sign-up/action";
 import { loader as signUpLoader } from "@/pages/auth/sign-up/loader";
 import { action as verifyOtpAction } from "@/pages/auth/verify-otp/action";
 import { loader as verifyOtpLoader } from "@/pages/auth/verify-otp/loader";
-import { action as resendOtpAction } from "@/pages/auth/verify-otp/resend-action";
 import { loader as homeLoader } from "@/pages/home/loader";
 import { loader as rootLoader } from "@/pages/loader";
 import { action as productAction } from "@/pages/products/detail/action";
@@ -213,18 +212,10 @@ export const router = createBrowserRouter([
         action: verifyOtpAction,
       },
       {
-        path: "/verify-otp/resend",
-        action: resendOtpAction,
-      },
-      {
         path: "/verify-password-otp",
         Component: VerifyOtpPage,
         loader: verifyOtpLoader,
         action: verifyOtpAction,
-      },
-      {
-        path: "/verify-password-otp/resend",
-        action: resendOtpAction,
       },
       {
         path: "/forgot-password",
