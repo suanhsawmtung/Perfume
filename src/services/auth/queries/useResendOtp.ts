@@ -10,7 +10,6 @@ export function useResendOtp() {
       type: "VERIFY_EMAIL" | "RESET_PASSWORD";
     }) => resendOtp(data),
     onSuccess: (response) => {
-        console.log(response);
       if (response.success && response.data) {
         const { updateAuthFlow } = useAuthStore.getState();
         updateAuthFlow({
