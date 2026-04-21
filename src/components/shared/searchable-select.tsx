@@ -74,7 +74,7 @@ export function SearchableSelect({
   onChange,
   placeholder = "Search…",
   debounceMs = 300,
-  listHeight = 260,
+  listHeight = 160,
   disabled = false,
   className,
   renderOption,
