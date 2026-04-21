@@ -10,6 +10,7 @@ import type {
   UpdateBrandParams,
   UpdateBrandResponse
 } from "@/types/brand.type";
+import type { FetchSelectPageResult } from "@/types/select-option.type";
 
 export const DEFAULT_LIMIT = 10;
 
@@ -75,4 +76,22 @@ export async function deleteBrand(
 
   // Backend returns: { success: true, message: string }
   return response.data;
+}
+
+export async function fetchBrandSelectOptions(params: {
+  search: string;
+  cursor: number | null;
+}): Promise<FetchSelectPageResult> {
+  const { search, cursor } = params;
+
+  const response = await api.get("/brands/select-options", {
+    params: {
+      search,
+      limit: 15,
+      ...(cursor && { cursor }),
+    },
+  });
+
+  // Backend returns: { success: true, data: { items: [{ id, name, slug }], nextCursor }, message: null }
+  return response.data?.data;
 }

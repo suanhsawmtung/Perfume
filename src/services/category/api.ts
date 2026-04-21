@@ -11,6 +11,7 @@ import type {
   UpdateCategoryParams,
   UpdateCategoryResponse
 } from "@/types/category.type";
+import type { FetchSelectPageResult } from "@/types/select-option.type";
 
 export const DEFAULT_LIMIT = 10;
 
@@ -81,5 +82,23 @@ export async function deleteCategory(
 export async function fetchAllCategories(): Promise<CommonCategoryType[]> {
   const response = await api.get("/categories");
 
-  return response.data?.data?.categories || [];
+  return response.data?.data || [];
+}
+
+export async function fetchCategorySelectOptions(params: {
+  search: string;
+  cursor: number | null;
+}): Promise<FetchSelectPageResult> {
+  const { search, cursor } = params;
+
+  const response = await api.get("/categories/select-options", {
+    params: {
+      search,
+      limit: 15,
+      ...(cursor && { cursor }),
+    },
+  });
+
+  // Backend returns: { success: true, data: { items: [{ id, name, slug }], nextCursor }, message: null }
+  return response.data?.data;
 }

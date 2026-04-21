@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 export const inventoryBaseSchema = z.object({
-  productId: z.string().optional(),
   productVariantId: z.coerce.number().min(1, "Product variant is required"),
   type: z.enum([
     "PURCHASE",

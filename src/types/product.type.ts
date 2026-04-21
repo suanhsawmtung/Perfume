@@ -142,6 +142,10 @@ export interface ProductVariantDetailType {
   product: {
     id: number;
     slug: string;
+    name: string;
+    brand: {
+      name: string;
+    };
   };
 }
 

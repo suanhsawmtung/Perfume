@@ -1,6 +1,5 @@
 import api from "@/lib/api";
 import type {
-  CommonProductResult,
   Concentration,
   CreateProductParams,
   CreateProductResponse,
@@ -16,6 +15,7 @@ import type {
   UpdateProductParams,
   UpdateProductResponse
 } from "@/types/product.type";
+import type { FetchSelectPageResult } from "@/types/select-option.type";
 
 export const DEFAULT_LIMIT = 10;
 
@@ -174,19 +174,46 @@ export async function deleteProductVariant({
   return response.data;
 }
 
-export async function fetchAllProducts(
-  limit?: number,
-  cursor?: number,
-): Promise<CommonProductResult> {
-  const response = await api.get("/products", {
+export async function fetchProductSelectOptions(params: {
+  search: string;
+  cursor: number | null;
+}): Promise<FetchSelectPageResult> {
+  const { search, cursor } = params;
+
+  const response = await api.get("/products/select-options", {
     params: {
-      ...(limit && { limit }),
+      search,
+      limit: 15,
       ...(cursor && { cursor }),
     },
   });
 
-  return {
-    products: response.data?.data?.products || [],
-    nextCursor: response.data?.data?.nextCursor || null,
-  };
+  // Backend returns: { success: true, data: { items: [{ id, name, slug }], nextCursor }, message: null }
+  return response.data?.data;
+}
+
+export async function fetchProductVariantSelectOptions(params: {
+  productSlug: string | null;
+  search: string;
+  cursor: number | null;
+}): Promise<FetchSelectPageResult> {
+  const { productSlug, search, cursor } = params;
+
+  if(!productSlug) {
+    return {
+      items: [],
+      nextCursor: null,
+    };
+  }
+
+  const response = await api.get(`/products/${productSlug}/variants/select-options`, {
+    params: {
+      search,
+      limit: 15,
+      ...(cursor && { cursor }),
+    },
+  });
+
+  // Backend returns: { success: true, data: { items: [{ id, name, slug }], nextCursor }, message: null }
+  return response.data?.data;
 }

@@ -1,4 +1,5 @@
 import RichTextEditor from "@/components/shared/rich-text-editor";
+import { SearchableSelect } from "@/components/shared/searchable-select";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -9,18 +10,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { TabButton } from "@/components/ui/tab-button";
 import { Textarea } from "@/components/ui/textarea";
 import { POST_STATUSES } from "@/constants/post.constant";
 import { cn, formatImagePath } from "@/lib/utils";
-import { useGetAllCategories } from "@/services/category/queries/useGetAllCategories";
+import { fetchCategorySelectOptions } from "@/services/category/api";
 import { useAuthStore } from "@/stores/auth.store";
 import type { PostFormValues, PostType } from "@/types/post.type";
 import { postSchema } from "@/validations/post.validation";
@@ -48,8 +42,6 @@ export function PostForm({
   const isEditMode = !!post;
 
   const authUser = useAuthStore((state) => state.authUser);
-  const { data: categories, isLoading: isLoadingCategories } =
-    useGetAllCategories();
 
   // Filter statuses based on user role - AUTHOR can only select DRAFT and PUBLISHED
   const statuses =
@@ -210,34 +202,22 @@ export function PostForm({
               control={form.control}
               name="categoryId"
               render={({ field }) => {
-                const selectValue = field.value || undefined;
-
                 return (
                   <FormItem>
                     <FormLabel>Category</FormLabel>
-                    <Select
-                      onValueChange={(value) => {
-                        field.onChange(value);
-                      }}
-                      value={selectValue}
-                      disabled={isLoadingCategories || isSubmitting}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select a category" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {categories?.map((category) => (
-                          <SelectItem
-                            key={category.id}
-                            value={String(category.id)}
-                          >
-                            {category.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <SearchableSelect
+                      queryKey={["categories-select-options"]}
+                      onFetch={fetchCategorySelectOptions}
+                      value={field.value}
+                      initialOption={post?.category ? {
+                        id: post.category.id,
+                        name: post.category.name,
+                        slug: post.category.slug
+                      } : null}
+                      onChange={(option) => field.onChange(option ? String(option.id) : "")}
+                      placeholder="Select a category"
+                      disabled={isSubmitting}
+                    />
                     <FormMessage />
                   </FormItem>
                 );

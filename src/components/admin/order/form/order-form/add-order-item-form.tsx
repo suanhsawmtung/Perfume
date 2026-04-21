@@ -2,9 +2,8 @@ import { SearchableSelect } from "@/components/shared/searchable-select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { formatPrice } from "@/lib/utils";
-import { fetchProductVariants } from "@/services/product/api";
-import { useListProducts } from "@/services/product/queries/useGetProducts";
-import type { ProductVariantsSummaryType } from "@/types/product.type";
+import { fetchProductSelectOptions, fetchProductVariant, fetchProductVariantSelectOptions } from "@/services/product/api";
+import type { ProductVariantDetailType } from "@/types/product.type";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -28,46 +27,38 @@ interface AddOrderItemFormProps {
 }
 
 export const AddOrderItemForm = ({ onAdd }: AddOrderItemFormProps) => {
-  const searchParams = new URLSearchParams(location.search);
-  const productSearch = searchParams.get("product") || "";
+  // const searchParams = new URLSearchParams(location.search);
+  // const productSearch = searchParams.get("product") || "";
 
   const [isAdding, setIsAdding] = useState(false);
   const [selectedProductSlug, setSelectedProductSlug] = useState<string | null>(null);
-  const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
+  const [selectedVariantSlug, setSelectedVariantSlug] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
-  const [variantsData, setVariantsData] = useState<ProductVariantsSummaryType | null>(null);
-  const [isLoadingVariants, setIsLoadingVariants] = useState(false);
 
-  // Use standard useQuery for better UX (avoid suspending whole form)
-  const { data: productsData, isLoading: isLoadingProducts } = useListProducts({
-    offset: 0,
-    limit: 30,
-    search: productSearch,
-  });
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariantDetailType | null>(null);
+  const [isLoadingVariantDetail, setIsLoadingVariantDetail] = useState(false);
 
   useEffect(() => {
-    const getVariants = async () => {
-      if (!selectedProductSlug) {
-        setVariantsData(null);
+    const getVariantDetail = async () => {
+      if (!selectedProductSlug || !selectedVariantSlug) {
+        setSelectedVariant(null);
         return;
       }
 
       try {
-        setIsLoadingVariants(true);
-        const data = await fetchProductVariants(selectedProductSlug);
-        setVariantsData(data);
+        setIsLoadingVariantDetail(true);
+        const data = await fetchProductVariant(selectedProductSlug, selectedVariantSlug);
+        setSelectedVariant(data);
       } catch (error) {
-        console.error("Failed to fetch variants:", error);
-        setVariantsData(null);
+        setSelectedVariant(null);
       } finally {
-        setIsLoadingVariants(false);
+        setIsLoadingVariantDetail(false);
       }
     };
 
-    getVariants();
-  }, [selectedProductSlug]);
+    getVariantDetail();
+  }, [selectedVariantSlug]);
 
-  const selectedVariant = variantsData?.variants.find(v => String(v.id) === selectedVariantId);
   const price = selectedVariant?.discount && Number(selectedVariant.discount) > 0 
     ? Number(selectedVariant.discount) 
     : selectedVariant?.price || 0;
@@ -77,12 +68,12 @@ export const AddOrderItemForm = ({ onAdd }: AddOrderItemFormProps) => {
   const reset = () => {
     setIsAdding(false);
     setSelectedProductSlug(null);
-    setSelectedVariantId(null);
+    setSelectedVariantSlug(null);
     setQuantity(1);
   };
 
   const handleAdd = () => {
-    if (!selectedVariantId || !selectedVariant || !variantsData) return;
+    if (!selectedVariantSlug || !selectedVariant) return;
     
     onAdd({
       itemId: selectedVariant.id,
@@ -92,8 +83,8 @@ export const AddOrderItemForm = ({ onAdd }: AddOrderItemFormProps) => {
     }, {
       sku: selectedVariant.sku,
       size: selectedVariant.size,
-      productName: variantsData.name,
-      brandName: variantsData.brand.name,
+      productName: selectedVariant.product.name,
+      brandName: selectedVariant.product.brand.name,
       stock: maxQuantity,
       originalPrice: selectedVariant.price,
     });
@@ -123,47 +114,45 @@ export const AddOrderItemForm = ({ onAdd }: AddOrderItemFormProps) => {
         <div className="lg:col-span-4 space-y-2">
           <label className="text-sm font-medium">Product</label>
           <SearchableSelect
-            items={productsData?.items.map(p => ({
-              value: p.slug,
-              label: `${p.name} (${p.brand.name})`
-            })) || []}
-            paramKey="product"
-            placeholder="Select product..."
-            emptyMessage="No products found"
-            selectedValue={selectedProductSlug}
-            itemToStringValue={(item: { value: string; label: string }) => item.label}
-            onValueChange={(val: { value: string; label: string } | null) => {
-              setSelectedProductSlug(val?.value || null);
-              setSelectedVariantId(null);
+            queryKey={["products-select-options"]}
+            onFetch={fetchProductSelectOptions}
+            value={selectedProductSlug}
+            onChange={(option) => {
+              setSelectedProductSlug(option ? String(option.slug) : null);
+              setSelectedVariantSlug(null);
             }}
-            disabled={isLoadingProducts}
+            placeholder="Select a category"
+            // disabled={isSubmitting}
           />
         </div>
 
         {/* Variant Selection */}
         <div className="lg:col-span-4 space-y-2">
           <label className="text-sm font-medium">Variant</label>
-          <SearchableSelect 
-            items={variantsData?.variants.map(v => ({
-              value: String(v.id),
-              label: `${v.size}ml ${v.source === "DECANT" ? "(Decant)" : ""}`
-            })) || []}
-            paramKey="variant"
-            placeholder="Select variant..."
-            emptyMessage="No variants found"
-            selectedValue={selectedVariantId}
-            itemToStringValue={(item: { value: string; label: string }) => item.label}
-            onValueChange={(val: { value: string; label: string } | null) => {
-              setSelectedVariantId(val?.value || null);
+          <SearchableSelect
+            queryKey={[
+              "variants-select-options", 
+              ...(selectedProductSlug ? [selectedProductSlug] : [])
+            ]}
+            onFetch={({search, cursor}) => 
+              fetchProductVariantSelectOptions({ 
+                search, 
+                cursor, 
+                productSlug: selectedProductSlug 
+              })}
+            value={selectedVariantSlug}
+            onChange={(option) => {
+              setSelectedVariantSlug(option ? String(option.slug) : null);
             }}
-            disabled={!selectedProductSlug || isLoadingVariants}
+            placeholder="Select a variant"
+            disabled={!selectedProductSlug}
           />
         </div>
 
         {/* Quantity */}
         <div className="lg:col-span-2 space-y-2 h-full">
           <label className="text-sm font-medium">
-            Quantity {selectedVariantId && `(${maxQuantity} left)`}
+            Quantity {selectedVariantSlug && `(${maxQuantity} left)`}
           </label>
           <Input 
             type="number" 
@@ -171,7 +160,7 @@ export const AddOrderItemForm = ({ onAdd }: AddOrderItemFormProps) => {
             max={maxQuantity}
             value={quantity} 
             onChange={(e) => setQuantity(Math.min(maxQuantity, Math.max(1, parseInt(e.target.value) || 1)))} 
-            disabled={!selectedVariantId || !selectedProductSlug || isLoadingVariants}
+            disabled={!selectedVariantSlug || !selectedProductSlug || isLoadingVariantDetail}
           />
         </div>
 
@@ -198,7 +187,12 @@ export const AddOrderItemForm = ({ onAdd }: AddOrderItemFormProps) => {
         <Button size="sm" variant="ghost" type="button" onClick={reset}>
           Cancel
         </Button>
-        <Button size="sm" type="button" onClick={handleAdd} disabled={!selectedVariantId}>
+        <Button 
+          size="sm" 
+          type="button" 
+          onClick={handleAdd} 
+          disabled={!selectedVariantSlug || !selectedProductSlug || isLoadingVariantDetail}
+        >
           Confirm Add
         </Button>
       </div>

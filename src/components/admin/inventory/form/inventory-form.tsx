@@ -11,9 +11,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { TabButton } from "@/components/ui/tab-button";
 import { INVENTORY_TYPES } from "@/constants/inventory.constant";
-import { fetchProductVariants } from "@/services/product/api";
-import { useListProducts } from "@/services/product/queries/useGetProducts";
-import type { ProductVariantsSummaryType } from "@/types/product.type";
+import { fetchProductSelectOptions, fetchProductVariant, fetchProductVariantSelectOptions } from "@/services/product/api";
+import type { ProductVariantDetailType } from "@/types/product.type";
 import { type InventoryFormValues, inventorySchema } from "@/validations/inventory.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
@@ -27,11 +26,10 @@ export function InventoryForm() {
   const navigation = useNavigation();
   const isPending = navigation.state === "submitting";
 
-  const searchParams = new URLSearchParams(location.search);
-  const productSearch = searchParams.get("product") || "";
-
-  const [variantsData, setVariantsData] = useState<ProductVariantsSummaryType | null>(null);
-  const [isLoadingVariants, setIsLoadingVariants] = useState(false);
+  const [selectedProductSlug, setSelectedProductSlug] = useState<string | null>(null);
+  const [selectedVariantSlug, setSelectedVariantSlug] = useState<string | null>(null);
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariantDetailType | null>(null);
+  const [isLoadingVariantDetail, setIsLoadingVariantDetail] = useState(false);
 
   const form = useForm<InventoryFormValues>({
     resolver: zodResolver(inventorySchema) as any,
@@ -42,39 +40,37 @@ export function InventoryForm() {
   });
 
   const selectedType = form.watch("type");
-  const productId = form.watch("productId");
   const productVariantId = form.watch("productVariantId");
   const isPurchase = selectedType === "PURCHASE";
 
-  // Product Selection
-  const { data: productsData, isLoading: isLoadingProducts } = useListProducts({
-    offset: 0,
-    limit: 50,
-    search: productSearch,
-  });
+  const maxQuantity = (selectedVariant?.stock || 0) - (selectedVariant?.reserved || 0);
+  const isOutInventory = [
+    "SALE",
+    "DAMAGED",
+    "RETURN_TO_SUPPLIER",
+    "ADJUSTMENT_OUT"
+  ].includes(selectedType);
 
-  // Variant Fetching
   useEffect(() => {
-    const getVariants = async () => {
-      if (!productId) {
-        setVariantsData(null);
+    const getVariantDetail = async () => {
+      if (!selectedProductSlug || !selectedVariantSlug) {
+        setSelectedVariant(null);
         return;
       }
 
       try {
-        setIsLoadingVariants(true);
-        const data = await fetchProductVariants(productId);
-        setVariantsData(data);
+        setIsLoadingVariantDetail(true);
+        const data = await fetchProductVariant(selectedProductSlug, selectedVariantSlug);
+        setSelectedVariant(data);
       } catch (error) {
-        console.error("Failed to fetch variants:", error);
-        setVariantsData(null);
+        setSelectedVariant(null);
       } finally {
-        setIsLoadingVariants(false);
+        setIsLoadingVariantDetail(false);
       }
     };
 
-    getVariants();
-  }, [productId]);
+    getVariantDetail();
+  }, [selectedProductSlug, selectedVariantSlug]);
 
   const handleSubmit = (values: any) => {
     if (values.type === "SALE") {
@@ -120,34 +116,23 @@ export function InventoryForm() {
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {/* Product Selection */}
-          <FormField
-            control={form.control}
-            name="productId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Product</FormLabel>
-                <FormControl>
-                  <SearchableSelect
-                    items={productsData?.items.map(p => ({
-                      value: p.slug,
-                      label: `${p.name} (${p.brand.name})`
-                    })) || []}
-                    paramKey="product"
-                    placeholder="Select product..."
-                    emptyMessage="No products found"
-                    selectedValue={field.value}
-                    itemToStringValue={(item) => item.label}
-                    onValueChange={(val) => {
-                      field.onChange(val?.value || "");
-                      form.setValue("productVariantId", 0); // Reset variant on product change
-                    }}
-                    disabled={isPending || isLoadingProducts}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <FormItem>
+            <FormLabel>Product</FormLabel>
+            <FormControl>
+              <SearchableSelect
+                queryKey={["products-select-options"]}
+                onFetch={fetchProductSelectOptions}
+                value={selectedProductSlug}
+                onChange={(option) => {
+                  setSelectedProductSlug(option ? String(option.slug) : null);
+                  setSelectedVariantSlug(null);
+                  form.resetField("productVariantId");
+                }}
+                placeholder="Select a product"
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
 
           {/* Variant Selection */}
           <FormField
@@ -158,18 +143,23 @@ export function InventoryForm() {
                 <FormLabel>Variant</FormLabel>
                 <FormControl>
                   <SearchableSelect
-                    items={variantsData?.variants.map(v => ({
-                      value: String(v.id),
-                      label: `${v.size}ml ${v.source === "DECANT" ? "(Decant)" : ""}`
-                    })) || []}
-                    placeholder={!productId ? "Select product first..." : "Select variant..."}
-                    emptyMessage="No variants found"
-                    selectedValue={field.value ? String(field.value) : null}
-                    itemToStringValue={(item) => item.label}
-                    onValueChange={(val) => {
-                      field.onChange(val?.value ? Number(val.value) : 0);
+                    queryKey={[
+                      "variants-select-options", 
+                      ...(selectedProductSlug ? [selectedProductSlug] : [])
+                    ]}
+                    onFetch={({search, cursor}) => 
+                      fetchProductVariantSelectOptions({ 
+                        search, 
+                        cursor, 
+                        productSlug: selectedProductSlug 
+                      })}
+                    value={selectedVariantSlug}
+                    onChange={(option) => {
+                      setSelectedVariantSlug(option ? String(option.slug) : null);
+                      field.onChange(option ? Number(option.id) : null);
                     }}
-                    disabled={isPending || !productId || isLoadingVariants}
+                    placeholder="Select a variant"
+                    disabled={!selectedProductSlug}
                   />
                 </FormControl>
                 <FormMessage />
@@ -184,13 +174,15 @@ export function InventoryForm() {
             name="quantity"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Quantity</FormLabel>
+                <FormLabel>
+                  Quantity {selectedVariantSlug && `(${maxQuantity} left)`}
+                </FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     type="number"
                     placeholder="Enter quantity..."
-                    disabled={isPending}
+                    disabled={isPending || (isOutInventory && isLoadingVariantDetail) || !selectedVariantSlug}
                   />
                 </FormControl>
                 <FormMessage />

@@ -192,7 +192,7 @@ export function ProductFilterForm({ close }: { close: () => void }) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {brands?.brands?.map((brand) => (
+                    {brands?.items?.map((brand) => (
                       <SelectItem key={brand.id} value={brand.slug}>
                         {brand.name}
                       </SelectItem>

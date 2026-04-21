@@ -27,7 +27,6 @@ export async function action({ request }: ActionFunctionArgs) {
       toast.error(errorData?.message || "Failed to create order");
       return { error: errorData?.message || "Failed to create order" };
     }
-    console.error("Order creation error:", error);
     toast.error("An unexpected error occurred");
     return { error: "An unexpected error occurred" };
   }

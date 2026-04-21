@@ -1,3 +1,4 @@
+import { SearchableSelect } from "@/components/shared/searchable-select";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -8,16 +9,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { TabButton } from "@/components/ui/tab-button";
 import { Textarea } from "@/components/ui/textarea";
-import { useListBrands } from "@/services/brand/queries/useGetListBrands";
+import { fetchBrandSelectOptions } from "@/services/brand/api";
 import type { Concentration, Gender, ProductDetailType, ProductFormValues } from "@/types/product.type";
 import {
   productSchema,
@@ -62,10 +56,6 @@ export function ProductForm({
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
-  const { data: brands, isLoading: isLoadingBrands } = useListBrands({
-    offset: 0,
-    limit: 50,
-  });
 
   const currentYear = useMemo(() => new Date().getFullYear(), []);
 
@@ -137,29 +127,22 @@ export function ProductForm({
               control={form.control}
               name="brandId"
               render={({ field }) => {
-                const selectValue = field.value || undefined;
-
                 return (
                   <FormItem>
                     <FormLabel>Brand</FormLabel>
-                    <Select
-                      onValueChange={(value) => field.onChange(value)}
-                      value={selectValue}
-                      disabled={isLoadingBrands || isSubmitting}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select a brand" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {brands?.brands?.map((brand) => (
-                          <SelectItem key={brand.id} value={String(brand.id)}>
-                            {brand.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <SearchableSelect
+                      queryKey={["brands-select-options"]}
+                      onFetch={fetchBrandSelectOptions}
+                      value={field.value}
+                      initialOption={product?.brand ? {
+                        id: product.brand.id,
+                        name: product.brand.name,
+                        slug: product.brand.slug
+                      } : null}
+                      onChange={(option) => field.onChange(option ? String(option.id) : "")}
+                      placeholder="Select a brand"
+                      disabled={isSubmitting}
+                    />
                     <FormMessage />
                   </FormItem>
                 );

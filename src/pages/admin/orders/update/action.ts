@@ -39,7 +39,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
       toast.error(errorData?.message || "Failed to update order");
       return { error: errorData?.message || "Failed to update order" };
     }
-    console.error("Order update error:", error);
     toast.error("An unexpected error occurred");
     return { error: "An unexpected error occurred" };
   }
