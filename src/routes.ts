@@ -1,4 +1,3 @@
-import AboutPage from "@/pages/about";
 import ForgotPasswordPage from "@/pages/auth/forgot-password";
 import AuthLayout from "@/pages/auth/layout";
 import ResetPasswordPage from "@/pages/auth/reset-passsword";
@@ -12,7 +11,6 @@ import HomePage from "@/pages/home";
 import { RootLayout } from "@/pages/layout";
 import ProductPage from "@/pages/products";
 import ProductDetailPage from "@/pages/products/detail";
-import ServicePage from "@/pages/services";
 import { createBrowserRouter } from "react-router";
 // Import loaders and actions
 import AdminCategoriesPage from "@/pages/admin/categories";
@@ -114,7 +112,17 @@ import AdminProductRatingsPage from "@/pages/admin/product-ratings";
 import { loader as adminProductRatingsLoader } from "@/pages/admin/product-ratings/loader";
 
 import AdminInventoriesPage from "@/pages/admin/inventories";
+import AdminInventoryCreatePage from "@/pages/admin/inventories/create";
+import { action as adminInventoryCreateAction } from "@/pages/admin/inventories/create/action";
 import { loader as adminInventoriesLoader } from "@/pages/admin/inventories/loader";
+import AdminPaymentsPage from "@/pages/admin/payments";
+import AdminPaymentCreatePage from "@/pages/admin/payments/create";
+import { action as adminPaymentCreateAction } from "@/pages/admin/payments/create/action";
+import AdminPaymentDetailPage from "@/pages/admin/payments/detail";
+import { loader as adminPaymentDetailLoader } from "@/pages/admin/payments/detail/loader";
+import { loader as adminPaymentsLoader } from "@/pages/admin/payments/loader";
+import AdminPaymentUpdatePage from "@/pages/admin/payments/update";
+import { action as adminUpdatePaymentAction } from "@/pages/admin/payments/update/action";
 import { loader as adminEditPaymentLoader } from "@/pages/admin/payments/update/loader";
 import AdminRefundsPage from "@/pages/admin/refunds";
 import AdminRefundCreatePage from "@/pages/admin/refunds/create";
@@ -134,16 +142,10 @@ import { loader as adminTransactionsLoader } from "@/pages/admin/transactions/lo
 import AdminTransactionEditPage from "@/pages/admin/transactions/update";
 import { action as adminUpdateTransactionAction } from "@/pages/admin/transactions/update/action";
 import { loader as adminEditTransactionLoader } from "@/pages/admin/transactions/update/loader";
-import AdminInventoryCreatePage from "./pages/admin/inventories/create";
-import { action as adminInventoryCreateAction } from "./pages/admin/inventories/create/action";
-import AdminPaymentsPage from "./pages/admin/payments";
-import AdminPaymentCreatePage from "./pages/admin/payments/create";
-import { action as adminPaymentCreateAction } from "./pages/admin/payments/create/action";
-import AdminPaymentDetailPage from "./pages/admin/payments/detail";
-import { loader as adminPaymentDetailLoader } from "./pages/admin/payments/detail/loader";
-import { loader as adminPaymentsLoader } from "./pages/admin/payments/loader";
-import AdminPaymentUpdatePage from "./pages/admin/payments/update";
-import { action as adminUpdatePaymentAction } from "./pages/admin/payments/update/action";
+import ProfilePage from "@/pages/profile";
+import OrderHistoryPage from "@/pages/profile/orders";
+import WishlistPage from "@/pages/profile/wishlist";
+import SettingsPage from "@/pages/settings";
 
 export const router = createBrowserRouter([
   {
@@ -157,8 +159,18 @@ export const router = createBrowserRouter([
         Component: HomePage,
         loader: homeLoader,
       },
-      { path: "about", Component: AboutPage },
-      { path: "services", Component: ServicePage },
+      {
+        path: "profile",
+        children: [
+          { index: true, Component: ProfilePage },
+          { path: "wishlist", Component: WishlistPage },
+          { path: "orders", Component: OrderHistoryPage },
+        ],
+      },
+      { 
+        path: "settings", 
+        Component: SettingsPage 
+      },
       {
         path: "logout",
         action: logoutAction,

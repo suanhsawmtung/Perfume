@@ -16,6 +16,7 @@ import {
   LogInIcon,
   LogOutIcon,
   SettingsIcon,
+  User,
 } from "lucide-react";
 import { Form, Link, useLocation, useNavigation } from "react-router";
 
@@ -40,26 +41,37 @@ const AuthDropdown = ({ user }: Props) => {
       </Link>
     );
   }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="cursor-pointer">
-        <Avatar>
-          {user.image ? (
-            <AvatarImage
-              src={formatImagePath(user.image, "user")}
-              alt={formatUserDisplayName(user)}
-              className="object-cover"
-            />
-          ) : null}
-          <AvatarFallback>{getUserInitials(user)}</AvatarFallback>
-        </Avatar>
+        <Button variant="ghost" size="icon">
+          <User className="h-5 w-5" />
+          <span className="sr-only">Profile</span>
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel>
-          <div className="flex flex-col">
-            <h5 className="font-bold">{formatUserDisplayName(user)}</h5>
-            <p className="text-muted-foreground">{user.email}</p>
-          </div>
+          <DropdownMenuItem className="p-0" asChild>
+             <Link to="/profile">
+              <div className="flex items-center gap-x-2">
+                <Avatar>
+                  {user.image ? (
+                    <AvatarImage
+                      src={formatImagePath(user.image, "user")}
+                      alt={formatUserDisplayName(user)}
+                      className="object-cover"
+                    />
+                  ) : null}
+                  <AvatarFallback>{getUserInitials(user)}</AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col">
+                  <h5 className="font-bold">{formatUserDisplayName(user)}</h5>
+                  <p className="text-muted-foreground">{user.email}</p>
+                </div>
+              </div>
+            </Link>
+          </DropdownMenuItem>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         {isAdmin && (
@@ -82,7 +94,7 @@ const AuthDropdown = ({ user }: Props) => {
           </DropdownMenuItem>
         )}
         <DropdownMenuItem asChild>
-          <Link to="/admin/settings">
+          <Link to="/settings">
             <div className="flex items-center gap-x-2">
               <SettingsIcon />
               Setting

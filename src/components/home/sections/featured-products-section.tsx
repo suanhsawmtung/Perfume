@@ -1,4 +1,4 @@
-import ProductCard from "@/components/product/product-card";
+// import ProductCard from "@/components/product/product-card";
 import SectionHeader from "@/components/shared/section-header";
 import type { Product } from "@/types";
 
@@ -17,11 +17,11 @@ const FeaturedProductsSection = ({ products }: Props) => {
         }}
       />
 
-      <div className="grid grid-cols-1 gap-x-8 gap-y-10 sm:gap-y-12 md:grid-cols-2 lg:grid-cols-4 lg:gap-x-6">
+      {/* <div className="grid grid-cols-1 gap-x-8 gap-y-10 sm:gap-y-12 md:grid-cols-2 lg:grid-cols-4 lg:gap-x-6">
         {products.slice(0, 4).map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
-      </div>
+      </div> */}
     </section>
   );
 };

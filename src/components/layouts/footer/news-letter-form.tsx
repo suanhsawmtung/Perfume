@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, SendHorizonal } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
@@ -44,38 +44,40 @@ const NewsLetterForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full space-y-8 sm:w-3/5 xl:w-full 2xl:w-3/5"
       >
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-base font-semibold">
+              <FormLabel className="text-sm font-medium">
                 Subscribe to our newsletter
               </FormLabel>
-              <div className="relative">
+              <div className="relative flex gap-2">
                 <FormLabel className="sr-only">
                   Enter your email address
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter your email" {...field} />
+                  <Input 
+                    type="email"
+                    placeholder="Enter your email"
+                    className="max-w-[240px]"
+                    {...field} 
+                  />
                 </FormControl>
-                <div className="absolute top-1 right-1">
-                  <Button
-                    type="submit"
-                    disabled={
-                      form.formState.isSubmitting || !form.formState.isValid
-                    }
-                    className="size-7 cursor-pointer"
-                  >
-                    {form.formState.isSubmitting ? (
-                      <Loader2 className="animate-spin" />
-                    ) : (
-                      <SendHorizonal />
-                    )}
-                  </Button>
-                </div>
+                <Button
+                  type="submit"
+                  disabled={
+                    form.formState.isSubmitting
+                  }
+                  className="cursor-pointer"
+                >
+                  {form.formState.isSubmitting ? (
+                    <Loader2 className="animate-spin" />
+                  ) : (
+                    "Subscribe"
+                  )}
+                </Button>
               </div>
               <FormMessage />
             </FormItem>

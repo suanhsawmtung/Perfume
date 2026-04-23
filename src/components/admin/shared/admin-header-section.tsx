@@ -1,5 +1,5 @@
 import AuthDropdown from "@/components/layouts/header/auth-dropdown";
-import { ModeToggle } from "@/components/layouts/header/mode-toggle";
+import { ThemeToggle } from "@/components/layouts/header/theme-toggle";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/stores/auth.store";
 
@@ -8,7 +8,7 @@ export const AdminHeaderActions = ({ className }: { className?: string }) => {
 
   return (
     <div className={cn("font-medium", className)}>
-      <ModeToggle />
+      <ThemeToggle />
       {/* <p className="text-secondary font-medium text-sm">Walking Brands</p> */}
       <AuthDropdown user={authUser} />
     </div>

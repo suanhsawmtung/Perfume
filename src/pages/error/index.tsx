@@ -1,4 +1,4 @@
-import Footer from "@/components/layouts/footer";
+import { Footer } from "@/components/layouts/footer";
 import { Header } from "@/components/layouts/header";
 import { Button } from "@/components/ui/button";
 import {

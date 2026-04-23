@@ -1,4 +1,3 @@
-import BlogCard from "@/components/blog/blog-card";
 import SectionHeader from "@/components/shared/section-header";
 import type { Post } from "@/types";
 
@@ -17,11 +16,11 @@ const RecentBlogsSection = ({ posts }: Props) => {
         }}
       />
 
-      <div className="grid grid-cols-1 gap-x-8 gap-y-10 sm:gap-y-12 md:grid-cols-2 lg:grid-cols-3">
+      {/* <div className="grid grid-cols-1 gap-x-8 gap-y-10 sm:gap-y-12 md:grid-cols-2 lg:grid-cols-3">
         {posts.slice(0, 3).map((post) => (
           <BlogCard key={post.id} post={post} type="recent-section-card" />
         ))}
-      </div>
+      </div> */}
     </section>
   );
 };

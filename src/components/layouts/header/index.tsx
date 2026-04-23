@@ -1,8 +1,8 @@
+import CartSheet from "@/components/layouts/header/_cart-sheet";
 import AuthDropdown from "@/components/layouts/header/auth-dropdown";
-import CartSheet from "@/components/layouts/header/cart-sheet";
 import { MainNavigation } from "@/components/layouts/header/main-navigation";
 import { MobileNavigation } from "@/components/layouts/header/mobile-navigation";
-import { ModeToggle } from "@/components/layouts/header/mode-toggle";
+import { ThemeToggle } from "@/components/layouts/header/theme-toggle";
 import ContentWrapper from "@/components/wrapper/content-wrapper";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
@@ -63,7 +63,7 @@ export const Header = () => {
         <div className="flex items-center justify-end gap-x-4">
           <CartSheet />
 
-          <ModeToggle />
+          <ThemeToggle />
 
           <AuthDropdown user={authUser} />
         </div>
