@@ -1,5 +1,5 @@
 import { queryClient } from "@/lib/query-client";
-import type { ProductVariantsSummaryType } from "@/types/product.type";
+import type { AdminProductDetailType } from "@/types/product.type";
 import {
   useSuspenseQuery,
   type UseSuspenseQueryResult,
@@ -9,8 +9,8 @@ import { productQueryKeys } from "../key";
 
 export function useGetProductVariants(
   slug: string,
-): UseSuspenseQueryResult<ProductVariantsSummaryType, Error> {
-  return useSuspenseQuery<ProductVariantsSummaryType, Error>({
+): UseSuspenseQueryResult<AdminProductDetailType, Error> {
+  return useSuspenseQuery<AdminProductDetailType, Error>({
     queryKey: productQueryKeys.variants(slug),
     queryFn: () => fetchProductVariants(slug),
   });

@@ -3,11 +3,11 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import ContentWrapper from "@/components/wrapper/content-wrapper"
-import { products } from "@/lib/data"
 import { useWishlistStore } from "@/stores/wishlist.store"
 import {
   ChevronRight,
   Heart,
+  MessageCircleIcon,
   Package,
   Settings,
 } from "lucide-react"
@@ -48,14 +48,13 @@ const recentOrders = [
 const quickLinks = [
   { icon: Package, label: "Order History", href: "/profile/orders" },
   { icon: Heart, label: "Wishlist", href: "/profile/wishlist" },
+  { icon: MessageCircleIcon, label: "Reviews", href: "/profile/reviews" },
   { icon: Settings, label: "Settings", href: "/settings" },
 ]
 
 export default function ProfilePage() {
   const { items: wishlistItems } = useWishlistStore()
-  const wishlistProducts = wishlistItems.length > 0 
-    ? wishlistItems.slice(0, 3) 
-    : products.slice(0, 3)
+  const wishlistProducts = wishlistItems.slice(0, 3)
 
   return (
     <div className="min-h-screen bg-secondary/20">
@@ -115,28 +114,43 @@ export default function ProfilePage() {
                 </Button>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {recentOrders.map((order) => (
-                    <div
-                      key={order.id}
-                      className="flex items-center justify-between rounded-lg border border-border/50 p-4"
-                    >
-                      <div>
-                        <p className="font-medium">{order.id}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {order.date} &middot; {order.items} item
-                          {order.items > 1 ? "s" : ""}
-                        </p>
+                {recentOrders.length > 0 ? (
+                  <div className="space-y-4">
+                    {recentOrders.map((order) => (
+                      <div
+                        key={order.id}
+                        className="flex items-center justify-between rounded-lg border border-border/50 p-4 transition-colors hover:bg-secondary/5"
+                      >
+                        <div>
+                          <p className="font-medium">{order.id}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {order.date} &middot; {order.items} item
+                            {order.items > 1 ? "s" : ""}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-medium">${order.total}</p>
+                          <span className="inline-flex items-center rounded-full bg-secondary px-2 py-0.5 text-xs font-medium text-muted-foreground">
+                            {order.status}
+                          </span>
+                        </div>
                       </div>
-                      <div className="text-right">
-                        <p className="font-medium">${order.total}</p>
-                        <span className="inline-flex items-center rounded-full bg-secondary px-2 py-0.5 text-xs font-medium text-muted-foreground">
-                          {order.status}
-                        </span>
-                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-12 text-center">
+                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-secondary/50">
+                      <Package className="h-8 w-8 text-muted-foreground" />
                     </div>
-                  ))}
-                </div>
+                    <h3 className="mt-4 text-lg font-semibold">No orders yet</h3>
+                    <p className="mt-2 text-sm text-muted-foreground max-w-[280px]">
+                      You haven't placed any orders yet. Start your fragrance journey today.
+                    </p>
+                    <Button className="mt-6" variant="outline" asChild>
+                      <Link to="/products">Start Shopping</Link>
+                    </Button>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
@@ -173,10 +187,15 @@ export default function ProfilePage() {
                     ))}
                   </div>
                 ) : (
-                  <div className="py-8 text-center text-muted-foreground">
-                    <Heart className="mx-auto h-8 w-8 mb-2" />
-                    <p>Your wishlist is empty</p>
-                    <Button variant="link" asChild className="mt-2">
+                  <div className="flex flex-col items-center justify-center py-12 text-center">
+                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-secondary/50">
+                      <Heart className="h-8 w-8 text-muted-foreground" />
+                    </div>
+                    <h3 className="mt-4 text-lg font-semibold">Wishlist is empty</h3>
+                    <p className="mt-2 text-sm text-muted-foreground max-w-[280px]">
+                      Save items you love to your wishlist and they'll appear here.
+                    </p>
+                    <Button className="mt-6" variant="outline" asChild>
                       <Link to="/products">Browse Products</Link>
                     </Button>
                   </div>

@@ -9,12 +9,12 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { TabButton } from "@/components/ui/tab-button";
 import { formatImagePath, formatPrice } from "@/lib/utils";
-import type { ProductDetailType } from "@/types/product.type";
+import type { AdminProductDetailType } from "@/types/product.type";
 import { CircleChevronDown, CircleChevronUp } from "lucide-react";
 import { useRef, useState } from "react";
 
 type ProductVariantsPanelProps = {
-  product: ProductDetailType;
+  product: AdminProductDetailType;
 };
 
 const ProductVariantsPanel = ({ product }: ProductVariantsPanelProps) => {
@@ -29,13 +29,6 @@ const ProductVariantsPanel = ({ product }: ProductVariantsPanelProps) => {
     null,
   );
   const highlightDurationMs = 1000;
-
-  const originalVariants = product.variants.filter(
-    (variant) => variant.source === "ORIGINAL",
-  );
-  const decantVariants = product.variants.filter(
-    (variant) => variant.source === "DECANT",
-  );
 
   const handleVariantClick = (slug: string) => {
     setOpenVariantSlug(slug);
@@ -56,7 +49,7 @@ const ProductVariantsPanel = ({ product }: ProductVariantsPanelProps) => {
 
   const renderVariantTabs = (
     title: string,
-    variants: ProductDetailType["variants"],
+    variants: AdminProductDetailType["variants"],
   ) => (
     <div className="flex flex-col items-start justify-start gap-y-1">
       <h3 className="text-muted-foreground text-base font-semibold">{title}</h3>
@@ -76,25 +69,19 @@ const ProductVariantsPanel = ({ product }: ProductVariantsPanelProps) => {
 
   return (
     <div className="w-full space-y-4">
-      {originalVariants.length > 0 &&
-        renderVariantTabs("Original Variants", originalVariants)}
-      {decantVariants.length > 0 &&
-        renderVariantTabs("Decant Variants", decantVariants)}
-
+      {renderVariantTabs("Variants", product.variants)}
       <div className="space-y-4">
         {product.variants.map((variant) => {
           const price = Number(variant.price);
           const discount = Number(variant.discount);
           const hasDiscount = Number.isFinite(discount) && discount > 0;
           const discountedPrice = hasDiscount ? price - discount : price;
-          const inventory = variant.inventories[0];
 
           const detailItems = [
             { label: "SKU", value: variant.sku },
             { label: "Size", value: `${variant.size}ml` },
-            { label: "Source", value: variant.source },
             { label: "Stock", value: variant.stock ?? 0 },
-            { label: "Reserved", value: inventory?.reserved ?? 0 },
+            { label: "Reserved", value: variant.reserved ?? 0 },
           ];
 
           return (

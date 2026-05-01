@@ -1,4 +1,3 @@
-import type { VariantSource } from "./product.type";
 
 export type InventoryType =
   | "PURCHASE"
@@ -23,7 +22,6 @@ export type InventoryItem = {
     sku: string;
     slug: string;
     size: string;
-    source: VariantSource;
     product: {
       name: string;
     };

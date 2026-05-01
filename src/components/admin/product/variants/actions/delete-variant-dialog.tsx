@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button";
 import DialogWrapper from "@/components/wrapper/dialog-wrapper";
 import { useDeleteVariantMutation } from "@/services/product/queries/useDeleteVariant";
-import type { ProductVariantSummaryType } from "@/types/product.type";
+import type { ProductVariantType } from "@/types/product.type";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useParams } from "react-router";
 
 interface DeleteVariantDialogProps {
-  variant: ProductVariantSummaryType;
+  variant: ProductVariantType;
   children: React.ReactNode;
   totalVariantCount: number;
 }

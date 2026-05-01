@@ -62,7 +62,6 @@ const navItems: NavItemConfig[] = [
       // { title: "Types", href: "/admin/types" },
       { title: "Brands", href: "/admin/brands" },
       { title: "Inventories", href: "/admin/inventories" },
-      { title: "Ratings", href: "/admin/product-ratings" },
       { title: "Reviews", href: "/admin/reviews" },
     ],
   },

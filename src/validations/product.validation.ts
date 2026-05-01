@@ -38,7 +38,6 @@ export const productVariantSchema = z.object({
     .number()
     .int("Size must be a valid number")
     .min(1, "Size is required"),
-  source: z.enum(["ORIGINAL", "DECANT"]).optional(),
   price: z
     .number()
     .min(0, "Price must be a positive number")

@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { ProductVariantSummaryType } from "@/types/product.type";
+import type { ProductVariantType } from "@/types/product.type";
 import { getVariantColumns } from "./table/columns";
 import { DataTable } from "./table/data-table";
 
@@ -12,7 +12,7 @@ export function ProductVariantsList({
   brandName: string;
   productName: string;
   productSlug: string;
-  variants: ProductVariantSummaryType[];
+  variants: ProductVariantType[];
 }) {
   const columns = getVariantColumns({ productSlug, totalVariantCount: variants.length });
 

@@ -108,8 +108,6 @@ import AdminReviewDetailPage from "@/pages/admin/reviews/detail";
 import { loader as adminReviewDetailLoader } from "@/pages/admin/reviews/detail/loader";
 import { loader as adminReviewsLoader } from "@/pages/admin/reviews/loader";
 
-import AdminProductRatingsPage from "@/pages/admin/product-ratings";
-import { loader as adminProductRatingsLoader } from "@/pages/admin/product-ratings/loader";
 
 import AdminInventoriesPage from "@/pages/admin/inventories";
 import AdminInventoryCreatePage from "@/pages/admin/inventories/create";
@@ -436,21 +434,6 @@ export const router = createBrowserRouter([
             path: ":id",
             Component: AdminReviewDetailPage,
             loader: adminReviewDetailLoader,
-          },
-        ],
-      },
-      {
-        path: "product-ratings",
-        children: [
-          {
-            index: true,
-            Component: AdminProductRatingsPage,
-            loader: adminProductRatingsLoader,
-          },
-          {
-            path: "summary",
-            Component: AdminProductRatingsPage,
-            loader: adminProductRatingsLoader,
           },
         ],
       },

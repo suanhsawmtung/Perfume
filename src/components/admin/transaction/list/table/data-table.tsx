@@ -1,17 +1,17 @@
 import {
-    type ColumnDef,
-    flexRender,
-    getCoreRowModel,
-    useReactTable,
+  type ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
 } from "@tanstack/react-table";
 
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
 
 interface DataTableProps<TData, TValue> {
@@ -38,7 +38,7 @@ export function DataTable<TData, TValue>({
               return (
                 <TableHead
                   key={header.id}
-                  className="text-primary h-14 w-[14%] font-medium"
+                  className="text-primary h-14 min-w-[180px] font-medium"
                 >
                   {header.isPlaceholder
                     ? null

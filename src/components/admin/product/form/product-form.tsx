@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { TabButton } from "@/components/ui/tab-button";
 import { Textarea } from "@/components/ui/textarea";
 import { fetchBrandSelectOptions } from "@/services/brand/api";
-import type { Concentration, Gender, ProductDetailType, ProductFormValues } from "@/types/product.type";
+import type { AdminProductDetailType, Concentration, Gender, ProductFormValues } from "@/types/product.type";
 import {
   productSchema,
 } from "@/validations/product.validation";
@@ -23,7 +23,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useNavigation, useSubmit } from "react-router";
 
 interface ProductFormProps {
-  product?: ProductDetailType;
+  product?: AdminProductDetailType;
   cancelUrl?: string;
   submitButtonText?: string;
 }

@@ -18,7 +18,6 @@ export const orderFormSchema = z.object({
   source: z.enum(["ADMIN", "CUSTOMER"]),
   items: z.array(z.object({
     itemId: z.number(),
-    itemType: z.enum(["PRODUCT_VARIANT", "BUNDLE"]),
     quantity: z.number().min(1, "Quantity must be at least 1"),
     price: z.number().min(0, "Price must be non-negative"),
   })).min(1, "Add at least one item to the order"),

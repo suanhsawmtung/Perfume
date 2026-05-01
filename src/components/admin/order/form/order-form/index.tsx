@@ -88,7 +88,6 @@ export const OrderForm = ({ order }: { order?: OrderDetailType }) => {
       source: order?.source || "ADMIN",
       items: order?.orderItems?.map(item => ({
         itemId: item.itemId,
-        itemType: item.itemType,
         quantity: item.quantity,
         price: Number(item.price),
       })) || [],

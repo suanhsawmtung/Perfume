@@ -4,7 +4,6 @@ import type z from "zod";
 // Product enums (based on backend $Enums)
 export type Concentration = "EDC" | "EDT" | "EDP" | "PARFUM";
 export type Gender = "MALE" | "FEMALE" | "UNISEX";
-export type VariantSource = "ORIGINAL" | "DECANT";
 
 export interface ProductType {
   id: number;
@@ -25,19 +24,13 @@ export interface ProductType {
 }
 
 // Product type from backend response
-export interface ProductListType {
-  slug: string;
-  name: string;
+export interface ProductListType extends ProductType {
   brand: {
     name: string;
   };
   _count: {
     variants: number;
   };
-  concentration: Concentration;
-  gender: Gender;
-  rating: number;
-  isActive: boolean;
 }
 
 // Product list query parameters
@@ -60,32 +53,11 @@ export interface ProductListResult {
   pageSize: number;
 }
 
-export interface CommonProductType {
-  id: number;
-  name: string;
-  slug: string;
-  brand: {
-    name: string;
-  };
-}
-
-export interface CommonProductResult {
-  products: CommonProductType[];
-  nextCursor: number | null;
-}
-
 // Product variant image
 export interface ProductVariantImage {
   path: string;
   isPrimary: boolean;
   order: number;
-}
-
-export interface ProductVariantInventory {
-  id: number;
-  productVariantId: number;
-  quantity: number;
-  reserved: number;
 }
 
 export interface ProductVariantType {
@@ -94,7 +66,6 @@ export interface ProductVariantType {
   productId: number;
   sku: string;
   size: number;
-  source: VariantSource;
   price: number;
   discount: number;
   stock: number;
@@ -103,24 +74,6 @@ export interface ProductVariantType {
   isPrimary: boolean;
   isActive: boolean;
   images: ProductVariantImage[];
-  inventories: ProductVariantInventory[];
-}
-
-export interface ProductVariantSummaryType {
-  id: number;
-  slug: string;
-  productId: number;
-  sku: string;
-  size: number;
-  source: VariantSource;
-  price: number;
-  discount: number;
-  stock: number;
-  reserved: number;
-  totalCost: number;
-  isPrimary: boolean;
-  isActive: boolean;
-  inventories: ProductVariantInventory[];
 }
 
 export interface ProductVariantDetailType {
@@ -129,7 +82,6 @@ export interface ProductVariantDetailType {
   productId: number;
   sku: string;
   size: number;
-  source: VariantSource;
   price: number;
   discount: number;
   stock: number;
@@ -138,7 +90,6 @@ export interface ProductVariantDetailType {
   isPrimary: boolean;
   isActive: boolean;
   images: ProductVariantImage[];
-  inventories: ProductVariantInventory[];
   product: {
     id: number;
     slug: string;
@@ -146,6 +97,34 @@ export interface ProductVariantDetailType {
     brand: {
       name: string;
     };
+  };
+}
+
+export interface AdminProductDetailType {
+  id: number;
+  slug: string;
+  name: string;
+  description: string;
+  concentration: Concentration;
+  gender: Gender;
+  releasedYear: number | null;
+  isActive: boolean;
+  isLimited: boolean;
+  rating: string;
+  ratingCount: number;
+  createdAt: string;
+  updatedAt: string;
+  brand: {
+    id: number;
+    name: string;
+    slug: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+  variants: ProductVariantType[];
+  _count: {
+    variants: number;
+    reviews: number;
   };
 }
 
@@ -171,21 +150,10 @@ export interface ProductDetailType {
     updatedAt: string;
   };
   variants: ProductVariantType[];
-  _count: {
-    wishlists: number;
-    ratings: number;
-    orders: number;
-    variants: number;
-  };
-}
-
-export interface ProductVariantsSummaryType {
-  name: string;
-  slug: string;
-  brand: {
-    name: string;
-  };
-  variants: ProductVariantSummaryType[];
+  wishlists?: {
+    id: number;
+    userId: number;
+  }[];
 }
 
 export interface CreateProductParams {
@@ -202,7 +170,7 @@ export interface CreateProductParams {
 export interface CreateProductResponse {
   success: boolean;
   message: string;
-  data: ProductDetailType;
+  data: ProductType;
 }
 
 export interface UpdateProductParams {
@@ -219,7 +187,7 @@ export interface UpdateProductParams {
 export interface UpdateProductResponse {
   success: boolean;
   message: string;
-  data: ProductDetailType;
+  data: ProductType;
 }
 
 export interface DeleteProductResponse {

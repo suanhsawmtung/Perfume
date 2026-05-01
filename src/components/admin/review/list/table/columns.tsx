@@ -1,3 +1,4 @@
+import { RatingDisplay } from "@/components/shared/rating";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { formatDate, formatName } from "@/lib/utils";
@@ -46,22 +47,9 @@ const ActionsCell = ({ review }: { review: ReviewListType }) => {
 
 export const columns: ColumnDef<ReviewListType>[] = [
   {
-    accessorKey: "content",
-    header: () => (
-      <div className="text-primary flex items-center justify-start text-sm font-semibold">
-        Comment
-      </div>
-    ),
-    cell: ({ row }) => (
-      <div className="max-w-[300px] truncate text-muted-foreground text-sm font-normal">
-        {row.getValue("content")}
-      </div>
-    ),
-  },
-  {
     id: "user",
     header: () => (
-      <div className="text-primary flex items-center justify-center text-sm font-semibold">
+      <div className="text-primary flex items-center justify-start text-sm font-semibold">
         User
       </div>
     ),
@@ -72,9 +60,7 @@ export const columns: ColumnDef<ReviewListType>[] = [
         username: row.original.user.username,
       });
       return (
-        <div className="text-muted-foreground text-center text-sm font-normal">
-          {name}
-        </div>
+        <div className="text-muted-foreground text-sm font-normal">{name}</div>
       );
     },
   },
@@ -88,6 +74,31 @@ export const columns: ColumnDef<ReviewListType>[] = [
     cell: ({ row }) => (
       <div className="text-muted-foreground text-center text-sm font-normal">
         {row.original.product.name}
+      </div>
+    ),
+  },
+  {
+    accessorKey: "rating",
+    header: () => (
+      <div className="text-primary flex items-center justify-center text-sm font-semibold">
+        Rating
+      </div>
+    ),
+    cell: ({ row }) => {
+      const rating = row.getValue("rating") as number;
+      return <RatingDisplay rating={rating} />;
+    },
+  },
+  {
+    accessorKey: "content",
+    header: () => (
+      <div className="text-primary flex items-center justify-center text-sm font-semibold">
+        Comment
+      </div>
+    ),
+    cell: ({ row }) => (
+      <div className="max-w-[300px] truncate text-muted-foreground text-center text-sm font-normal">
+        {row.getValue("content")}
       </div>
     ),
   },

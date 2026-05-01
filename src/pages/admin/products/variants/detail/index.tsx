@@ -18,7 +18,6 @@ const AdminProductVariantDetailPage = () => {
   }
 
   const { data: variant } = useGetProductVariant(slug, variantSlug);
-  const inventory = variant.inventories[0];
   const hasDiscount = Number(variant.discount) > 0;
   const discountedPrice = hasDiscount
     ? Number(variant.price) - Number(variant.discount)
@@ -27,9 +26,8 @@ const AdminProductVariantDetailPage = () => {
   const detailItems = [
     { label: "SKU", value: variant.sku },
     { label: "Size", value: `${variant.size}ml` },
-    { label: "Source", value: variant.source },
     { label: "Stock", value: variant.stock ?? 0 },
-    { label: "Reserved", value: inventory?.reserved ?? 0 },
+    { label: "Reserved", value: variant.reserved ?? 0 },
   ];
 
   return (

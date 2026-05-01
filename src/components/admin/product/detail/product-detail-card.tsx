@@ -1,14 +1,14 @@
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { getConcentrationVariant, getGenderVariant } from "@/lib/utils";
+import { getConcentrationVariant, getGenderVariant, pluralize } from "@/lib/utils";
 import type {
+  AdminProductDetailType,
   Concentration,
   Gender,
-  ProductDetailType,
 } from "@/types/product.type";
 
 type ProductDetailCardProps = {
-  product: ProductDetailType;
+  product: AdminProductDetailType;
 };
 
 const ProductDetailCard = ({ product }: ProductDetailCardProps) => {
@@ -16,7 +16,11 @@ const ProductDetailCard = ({ product }: ProductDetailCardProps) => {
     { label: "Brand", value: product.brand.name },
     {
       label: "Rating",
-      value: `${product.rating} (${product.ratingCount} reviews)`,
+      value: `${product.rating} (${product.ratingCount} ${pluralize(product.ratingCount, "rating")})`,
+    },
+    {
+      label: "Reviews",
+      value: `${product._count.reviews} ${pluralize(product._count.reviews, "written review")}`,
     },
     { label: "Variants", value: product._count.variants },
     { label: "Release Year", value: product.releasedYear ?? "-" },

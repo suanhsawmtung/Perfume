@@ -2,13 +2,11 @@ import type { orderFilterFormSchema } from "@/validations/order.validation";
 import type z from "zod";
 import type { BrandType } from "./brand.type";
 import type { PaymentMethod, PaymentStatus } from "./payment.type";
-import type { VariantSource } from "./product.type";
 import type { RefundStatus } from "./refund.type";
 
 export type OrderStatus = "PENDING" | "REJECTED" | "ACCEPTED" | "SHIPPED" | "DELIVERED" | "DONE" | "CANCELLED";
 export type OrderPaymentStatus = "UNPAID" | "PARTIALLY_PAID" | "PAID" | "FAILED" | "REFUNDED" | "PARTIALLY_REFUNDED";
 export type OrderSource = "CUSTOMER" | "ADMIN";
-export type OrderItemType = "PRODUCT_VARIANT" | "BUNDLE";
 
 export type PaymentType = {
   id: number;
@@ -67,7 +65,6 @@ export interface OrderItem {
   id: number;
   orderId: number;
   itemId: number;
-  itemType: OrderItemType;
   quantity: number;
   price: string | number;
   createdAt: string;
@@ -82,7 +79,6 @@ export interface OrderItem {
     reserved: number;
     totalCost: number;
     productId: number;
-    source: VariantSource;
     isPrimary: boolean;
     isActive: boolean;
     createdAt: string;
@@ -125,7 +121,6 @@ export type OrderFilterFormValues = z.infer<typeof orderFilterFormSchema>;
 
 export interface OrderItemCreateInput {
   itemId: number;
-  itemType: OrderItemType;
   quantity: number;
   price: number;
 }

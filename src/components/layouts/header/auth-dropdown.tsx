@@ -34,8 +34,8 @@ const AuthDropdown = ({ user }: Props) => {
   if (!user) {
     return (
       <Link to="/sign-in">
-        <Button variant="outline" size="icon" className="cursor-pointer">
-          <LogInIcon className="h-[1.2rem] w-[1.2rem]" />
+        <Button variant="ghost" size="icon" className="cursor-pointer">
+          <LogInIcon className="h-5 w-5" />
           <span className="sr-only">Sign In</span>
         </Button>
       </Link>
@@ -52,26 +52,22 @@ const AuthDropdown = ({ user }: Props) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel>
-          <DropdownMenuItem className="p-0" asChild>
-             <Link to="/profile">
-              <div className="flex items-center gap-x-2">
-                <Avatar>
-                  {user.image ? (
-                    <AvatarImage
-                      src={formatImagePath(user.image, "user")}
-                      alt={formatUserDisplayName(user)}
-                      className="object-cover"
-                    />
-                  ) : null}
-                  <AvatarFallback>{getUserInitials(user)}</AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col">
-                  <h5 className="font-bold">{formatUserDisplayName(user)}</h5>
-                  <p className="text-muted-foreground">{user.email}</p>
-                </div>
-              </div>
-            </Link>
-          </DropdownMenuItem>
+          <div className="flex items-center gap-x-2">
+            <Avatar>
+              {user.image ? (
+                <AvatarImage
+                  src={formatImagePath(user.image, "user")}
+                  alt={formatUserDisplayName(user)}
+                  className="object-cover"
+                />
+              ) : null}
+              <AvatarFallback>{getUserInitials(user)}</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col">
+              <h5 className="font-bold">{formatUserDisplayName(user)}</h5>
+              <p className="text-muted-foreground">{user.email}</p>
+            </div>
+          </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         {isAdmin && (
@@ -94,10 +90,20 @@ const AuthDropdown = ({ user }: Props) => {
           </DropdownMenuItem>
         )}
         <DropdownMenuItem asChild>
+          <Link to="/profile">
+            <div className="flex items-center gap-x-2">
+              <User />
+              <span className="sr-only">Profile</span>
+              Profile
+            </div>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
           <Link to="/settings">
             <div className="flex items-center gap-x-2">
               <SettingsIcon />
-              Setting
+              <span className="sr-only">Settings</span>
+              Settings
             </div>
           </Link>
         </DropdownMenuItem>

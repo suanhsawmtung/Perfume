@@ -1,4 +1,5 @@
 import { DeleteProductDialog } from "@/components/admin/product/actions/delete-product-dialog";
+import { RatingDisplay } from "@/components/shared/rating";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getConcentrationVariant, getGenderVariant } from "@/lib/utils";
@@ -175,11 +176,7 @@ export const columns: ColumnDef<ProductListType>[] = [
     },
     cell: ({ row }) => {
       const rating = Number(row.getValue("rating"));
-      return (
-        <div className="text-muted-foreground text-center text-sm font-normal">
-          {Number.isFinite(rating) ? rating : "-"}
-        </div>
-      );
+      return <RatingDisplay rating={rating} />;
     },
   },
   {

@@ -1,6 +1,7 @@
 export type ReviewListType = {
   id: number;
-  content: string;
+  rating: number;
+  content: string | null;
   isPublish: boolean;
   userId: number;
   productId: number;

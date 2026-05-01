@@ -1,3 +1,4 @@
+import { RatingDisplay } from "@/components/shared/rating";
 import { formatDate, formatName } from "@/lib/utils";
 import type { ReviewListType } from "@/types/review.type";
 
@@ -20,6 +21,12 @@ export function ReviewDetailContent({ review }: { review: ReviewListType }) {
           <div>
             <h3 className="text-sm font-medium text-muted-foreground">Product</h3>
             <p className="mt-1 font-semibold text-primary">{review.product.name}</p>
+          </div>
+          <div>
+            <h3 className="text-sm font-medium text-muted-foreground">Rating</h3>
+            <div className="mt-1">
+              <RatingDisplay rating={Number(review.rating)} />
+            </div>
           </div>
         </div>
 

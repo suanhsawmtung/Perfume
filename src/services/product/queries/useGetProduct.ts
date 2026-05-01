@@ -1,5 +1,5 @@
 import { queryClient } from "@/lib/query-client";
-import type { ProductDetailType } from "@/types/product.type";
+import type { AdminProductDetailType } from "@/types/product.type";
 import {
   useSuspenseQuery,
   type UseSuspenseQueryResult,
@@ -9,8 +9,8 @@ import { productQueryKeys } from "../key";
 
 export function useGetProduct(
   slug: string,
-): UseSuspenseQueryResult<ProductDetailType, Error> {
-  return useSuspenseQuery<ProductDetailType, Error>({
+): UseSuspenseQueryResult<AdminProductDetailType, Error> {
+  return useSuspenseQuery<AdminProductDetailType, Error>({
     queryKey: productQueryKeys.detail(slug),
     queryFn: () => fetchProduct(slug),
   });

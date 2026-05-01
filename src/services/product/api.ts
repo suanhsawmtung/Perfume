@@ -1,5 +1,6 @@
 import api from "@/lib/api";
 import type {
+  AdminProductDetailType,
   Concentration,
   CreateProductParams,
   CreateProductResponse,
@@ -7,11 +8,9 @@ import type {
   DeleteProductResponse,
   DeleteProductVariantResponse,
   Gender,
-  ProductDetailType,
   ProductListResult,
   ProductQueryParams,
   ProductVariantDetailType,
-  ProductVariantsSummaryType,
   UpdateProductParams,
   UpdateProductResponse
 } from "@/types/product.type";
@@ -64,7 +63,7 @@ export async function fetchProducts(options: {
   };
 }
 
-export async function fetchProduct(slug: string): Promise<ProductDetailType> {
+export async function fetchProduct(slug: string): Promise<AdminProductDetailType> {
   const response = await api.get(`/admin/products/${slug}`);
 
   // Backend returns: { success: true, data: { product }, message: null }
@@ -73,7 +72,7 @@ export async function fetchProduct(slug: string): Promise<ProductDetailType> {
 
 export async function fetchProductVariants(
   slug: string,
-): Promise<ProductVariantsSummaryType> {
+): Promise<AdminProductDetailType> {
   const response = await api.get(`/admin/products/${slug}/variants`);
 
   // Backend returns: { success: true, data: { product }, message: null }

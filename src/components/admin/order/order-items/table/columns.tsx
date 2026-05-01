@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/utils";
 import type { OrderItem } from "@/types/order.type";
@@ -111,24 +110,6 @@ export const getOrderItemColumns = (
         return (
           <div className="text-muted-foreground text-center text-sm font-normal">
             {size ? `${size}ml` : "-"}
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: "itemType",
-      header: () => (
-        <div className="text-primary flex items-center justify-center text-sm font-semibold">
-          Type
-        </div>
-      ),
-      cell: ({ row }) => {
-        const type = row.original.itemType;
-        return (
-          <div className="flex items-center justify-center">
-            <Badge variant="outline" className="text-[10px] uppercase font-bold">
-              {type.replace("_", " ")}
-            </Badge>
           </div>
         );
       },

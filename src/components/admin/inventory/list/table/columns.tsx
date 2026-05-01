@@ -11,7 +11,7 @@ export const columns: ColumnDef<InventoryItem>[] = [
       return (
         <div className="flex flex-col">
           <span className="font-medium">{variant.product.name}</span>
-          <span className="text-xs text-muted-foreground">{variant.size}ml {variant.source === "DECANT" ? "(Decant)" : ""}</span>
+          <span className="text-xs text-muted-foreground">{variant.size}ml</span>
         </div>
       );
     },

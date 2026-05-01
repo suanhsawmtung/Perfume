@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/utils";
-import type { ProductVariantSummaryType } from "@/types/product.type";
+import type { ProductVariantType } from "@/types/product.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowRightIcon, PencilLineIcon, Trash2Icon } from "lucide-react";
 import { Link, useLocation } from "react-router";
@@ -13,7 +13,7 @@ const ActionsCell = ({
   totalVariantCount,
 }: {
   productSlug: string;
-  variant: ProductVariantSummaryType;
+  variant: ProductVariantType;
   totalVariantCount: number;
 }) => {
   const location = useLocation();
@@ -70,7 +70,7 @@ export const getVariantColumns = ({
 }: {
   productSlug: string;
   totalVariantCount: number;
-}): ColumnDef<ProductVariantSummaryType>[] => [
+}): ColumnDef<ProductVariantType>[] => [
   {
     accessorKey: "sku",
     header: () => (
@@ -96,22 +96,6 @@ export const getVariantColumns = ({
       return (
         <div className="text-muted-foreground text-center text-sm font-normal">
           {size}ml
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "source",
-    header: () => (
-      <div className="text-primary flex items-center justify-center text-sm font-semibold">
-        Source
-      </div>
-    ),
-    cell: ({ row }) => {
-      const source = row.getValue("source") as string;
-      return (
-        <div className="flex items-center justify-center">
-          <Badge variant="outline">{source}</Badge>
         </div>
       );
     },
@@ -210,10 +194,9 @@ export const getVariantColumns = ({
       </div>
     ),
     cell: ({ row }) => {
-      const inventory = row.original.inventories[0];
       return (
         <div className="text-muted-foreground text-center text-sm font-normal">
-          {inventory?.reserved ?? 0}
+          {row.original.reserved ?? 0}
         </div>
       );
     },

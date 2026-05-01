@@ -11,7 +11,6 @@ interface AddOrderItemFormProps {
   onAdd: (
     item: {
       itemId: number;
-      itemType: "PRODUCT_VARIANT";
       quantity: number;
       price: number
     },
@@ -77,7 +76,6 @@ export const AddOrderItemForm = ({ onAdd }: AddOrderItemFormProps) => {
     
     onAdd({
       itemId: selectedVariant.id,
-      itemType: "PRODUCT_VARIANT",
       quantity,
       price: Number(price),
     }, {

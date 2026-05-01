@@ -364,5 +364,10 @@ export function parseBoolean(value: string | null) {
   return undefined;
 }
 
+export function pluralize(count: number, singular: string, plural?: string) {
+  if (count === 1) return singular;
+  return plural ?? `${singular}s`;
+}
+
 export const sleep = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));

@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { TabButton } from "@/components/ui/tab-button";
 import { cn, formatImagePath } from "@/lib/utils";
-import type { ProductVariantType, VariantSource } from "@/types/product.type";
+import type { ProductVariantDetailType } from "@/types/product.type";
 import {
   productVariantSchema,
   type ProductVariantFormValues,
@@ -26,13 +26,8 @@ interface ProductVariantFormProps {
   productSlug: string;
   cancelUrl?: string;
   submitButtonText?: string;
-  variant?: ProductVariantType;
+  variant?: ProductVariantDetailType;
 }
-
-const sourceOptions: Array<{ key: VariantSource; text: string }> = [
-  { key: "ORIGINAL", text: "Original" },
-  { key: "DECANT", text: "Decant" },
-];
 
 const yesNoOptions = [
   { key: true, text: "Yes" },
@@ -76,7 +71,6 @@ export function ProductVariantForm({
     resolver: zodResolver(productVariantSchema),
     defaultValues: {
       size: variant?.size || undefined,
-      source: variant?.source || "ORIGINAL",
       price: variant?.price ? Number(variant.price) : undefined,
       discount: variant?.discount ? Number(variant.discount) : undefined,
       isPrimary: variant?.isPrimary || false,
@@ -162,9 +156,6 @@ export function ProductVariantForm({
 
     const formData = new FormData();
     formData.append("size", String(values.size));
-    if (values.source) {
-      formData.append("source", values.source);
-    }
     formData.append("price", String(values.price));
     if (typeof values.discount === "number") {
       formData.append("discount", String(values.discount));
@@ -326,29 +317,6 @@ export function ProductVariantForm({
                       }
                       disabled={isSubmitting}
                     />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="source"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Source</FormLabel>
-                  <FormControl>
-                    <div className="flex flex-wrap gap-2">
-                      {sourceOptions.map((option) => (
-                        <TabButton
-                          key={option.key}
-                          text={option.text}
-                          isSelected={field.value === option.key}
-                          onClick={() => field.onChange(option.key)}
-                        />
-                      ))}
-                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
