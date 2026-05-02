@@ -22,6 +22,7 @@ export interface UserType {
   emailVerifiedAt: string | Date | null;
   provider: AuthProvider;
   image: string | null;
+  points: number;
   createdAt: string | Date;
   updatedAt: string | Date;
 }

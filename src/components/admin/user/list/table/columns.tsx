@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { formatName, getUserRoleVariant } from "@/lib/utils";
+import { formatName, getGrade, getGradeVariant, getUserRoleVariant } from "@/lib/utils";
 import type { UserType } from "@/types/user.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Ban, PencilLineIcon } from "lucide-react";
@@ -133,25 +133,33 @@ export const columns: ColumnDef<UserType>[] = [
       );
     },
   },
-  // {
-  //   accessorKey: "status",
-  //   header: () => {
-  //     return (
-  //       <div className="text-primary flex items-center justify-center text-sm font-semibold">
-  //         Status
-  //       </div>
-  //     );
-  //   },
-  //   cell: ({ row }) => {
-  //     const status = row.getValue("status") as UserType["status"];
-  //     const statusVariant = getUserStatusVariant(status);
-  //     return (
-  //       <div className="flex items-center justify-center">
-  //         <Badge variant={statusVariant}>{status}</Badge>
-  //       </div>
-  //     );
-  //   },
-  // },
+  {
+    accessorKey: "points",
+    header: () => {
+      return (
+        <div className="text-primary flex items-center justify-center text-sm font-semibold">
+          Membership
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      const points = row.getValue("points") as number;
+      const grade = getGrade(points);
+      const variant = getGradeVariant(grade);
+
+      return (
+        <div className="flex flex-col items-center justify-center gap-1">
+          <div className="text-sm font-medium">{points} pts</div>
+          <Badge
+            variant={variant}
+            className="text-[10px] px-1.5 py-0 uppercase tracking-wider"
+          >
+            {grade}
+          </Badge>
+        </div>
+      );
+    },
+  },
   {
     id: "actions",
     header: "",

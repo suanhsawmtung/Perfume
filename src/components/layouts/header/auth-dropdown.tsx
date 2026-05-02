@@ -44,7 +44,7 @@ const AuthDropdown = ({ user }: Props) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="cursor-pointer">
+      <DropdownMenuTrigger className="cursor-pointer" asChild>
         <Button variant="ghost" size="icon">
           <User className="h-5 w-5" />
           <span className="sr-only">Profile</span>

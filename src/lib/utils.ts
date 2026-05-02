@@ -358,6 +358,28 @@ export const isOrderSource = (
   return value === "ADMIN" || value === "CUSTOMER";
 }
 
+export const getGrade = (points: number) => {
+  if (points >= 4000) return "PLATINUM";
+  if (points >= 1500) return "GOLD";
+  if (points >= 500) return "SILVER";
+  return "BRONZE";
+};
+
+export function getGradeVariant(grade: string) {
+  switch (grade) {
+    case "PLATINUM":
+      return "default";
+    case "GOLD":
+      return "secondary";
+    case "SILVER":
+      return "outline";
+    case "BRONZE":
+      return "secondary";
+    default:
+      return "outline";
+  }
+}
+
 export function parseBoolean(value: string | null) {
   if (value === "true") return true;
   if (value === "false") return false;
