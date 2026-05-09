@@ -1,36 +1,32 @@
-import { ProductCard } from "@/components/product/product-card"
+import { NProductCard } from "@/components/product/product-card"
+import { HomeSectionHeader } from "../home-section-header"
 import ContentWrapper from "@/components/wrapper/content-wrapper"
-import { products } from "@/lib/data"
+import type { HomeProductType } from "@/types/home.type"
 import { ArrowRight } from "lucide-react"
 import { Link } from "react-router"
 
-export function BestSellersSection() {
-  const bestSellers = products.filter((p) => p.isBestSeller)
+export function BestSellersSection({
+  products
+}: {
+  products: HomeProductType[]
+}) {
+  if (!products) {
+    return null
+  }
 
   return (
     <section className="bg-secondary/30 py-20">
       <ContentWrapper>
-        <div className="flex items-end justify-between">
-          <div>
-            <span className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-              Most Popular
-            </span>
-            <h2 className="mt-2 font-serif text-3xl font-medium md:text-4xl">
-              Best Sellers
-            </h2>
-          </div>
-          <Link
-            to="/products?sort=bestseller"
-            className="hidden items-center gap-2 text-sm font-medium hover:underline md:flex"
-          >
-            Shop Best Sellers
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
+        <HomeSectionHeader
+          title="Best Sellers"
+          subtitle="Most Popular"
+          linkHref="/products"
+          linkLabel="View All"
+        />
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {bestSellers.map((product) => (
-            <ProductCard key={product.id} {...product} />
+          {products.map((product) => (
+            <NProductCard key={product.id} product={product} />
           ))}
         </div>
 

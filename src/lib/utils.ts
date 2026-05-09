@@ -25,16 +25,20 @@ export const formatImagePath = (imagePath: string, folder: string) => {
   }
 };
 
-export function formatPrice(
-  price: number | string,
-  opts: Intl.NumberFormatOptions = {},
-) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: opts.currency ?? currency,
-    notation: opts.notation ?? "compact",
-  }).format(Number(price));
-}
+// export function formatPrice(
+//   price: number | string,
+//   opts: Intl.NumberFormatOptions = {},
+// ) {
+//   return new Intl.NumberFormat("en-US", {
+//     style: "currency",
+//     currency: opts.currency ?? currency,
+//     notation: opts.notation ?? "compact",
+//   }).format(Number(price));
+// }
+
+export const formatPrice = (price: number) => {
+  return `${price.toLocaleString()} ${currency}`;
+};
 
 // Format user display name from AuthUser
 // Returns firstName + lastName if available, otherwise username, email, or "User"

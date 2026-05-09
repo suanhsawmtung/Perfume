@@ -43,16 +43,16 @@ export const columns: ColumnDef<InventoryItem>[] = [
     accessorKey: "unitCost",
     header: "Unit Cost",
     cell: ({ row }) => {
-      const amount = row.getValue("unitCost");
-      return <span>{amount ? formatPrice(amount as string) : "-"}</span>;
+      const amount = row.original.unitCost;
+      return <span>{amount ? formatPrice(amount) : "-"}</span>;
     },
   },
   {
     accessorKey: "totalCost",
     header: "Total Cost",
     cell: ({ row }) => {
-      const amount = row.getValue("totalCost");
-      return <span>{amount ? formatPrice(amount as string) : "-"}</span>;
+      const amount = row.original.totalCost;
+      return <span>{amount ? formatPrice(amount) : "-"}</span>;
     },
   },
 ];

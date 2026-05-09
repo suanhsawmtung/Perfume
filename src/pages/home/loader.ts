@@ -1,23 +1,16 @@
-import api from "@/lib/api";
+import { ensureHomeData } from "@/services/home/queries/useGetHomeData";
+import { usePreferenceStore } from "@/stores/preference.store";
 
-// Loader for home page
 export async function loader() {
-  try {
-    // Fetch featured products, recent blogs, etc.
-    const [productsResponse, blogsResponse] = await Promise.all([
-      api.get("/products/featured"),
-      api.get("/blogs/recent"),
-    ]);
+  const gender = usePreferenceStore.getState().gender;
 
-    return {
-      featuredProducts: productsResponse.data,
-      recentBlogs: blogsResponse.data,
-    };
-  } catch (error) {
-    // Return empty data on error, or handle differently
-    return {
-      featuredProducts: [],
-      recentBlogs: [],
-    };
+  try {
+    await ensureHomeData({ gender });
+    return null;
+  } catch (error: any) {
+    if (error.response?.status === 400) {
+      throw new Response("Invalid query parameters", { status: 400 });
+    }
+    throw error;
   }
 }

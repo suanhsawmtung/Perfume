@@ -13,8 +13,8 @@ export type InventoryItem = {
   productVariantId: number;
   type: InventoryType;
   quantity: number;
-  unitCost: string | null;
-  totalCost: string | null;
+  unitCost: number;
+  totalCost: number;
   createdById: number | null;
   createdAt: string;
   updatedAt: string;

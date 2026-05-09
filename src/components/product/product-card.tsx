@@ -72,7 +72,8 @@
 
 // export default ProductCard;
 
-import { cn } from "@/lib/utils"
+import { cn, formatPrice } from "@/lib/utils"
+import type { HomeProductType } from "@/types/home.type"
 import { Star } from "lucide-react"
 import { Link } from "react-router"
 
@@ -150,6 +151,61 @@ export function ProductCard({
           {originalPrice && (
             <span className="text-sm text-muted-foreground line-through">
               ${originalPrice}
+            </span>
+          )}
+        </div>
+      </div>
+    </Link>
+  )
+}
+
+export function NProductCard({
+  product,
+}: {
+  product: HomeProductType;
+}) {
+  return (
+    <Link to={`/products/${product.slug}`} className="group block">
+      <div className="relative aspect-[3/4] overflow-hidden bg-secondary/50">
+        <img
+          src={product.variants[0].images[0].path}
+          alt={product.name}
+          className="object-cover transition-transform duration-500 group-hover:scale-105 w-full h-full"
+        />
+      </div>
+      <div className="mt-4">
+        <p className="text-xs text-muted-foreground uppercase tracking-wide">
+          {product.brand.name}
+        </p>
+        <h3 className="mt-1 font-medium text-foreground line-clamp-1">
+          {product.name}
+        </h3>
+        <div className="mt-2 flex items-center gap-1">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Star
+              key={i}
+              className={cn(
+                "h-3 w-3",
+                i < Math.floor(product.rating)
+                  ? "fill-foreground text-foreground"
+                  : "fill-muted text-muted"
+              )}
+            />
+          ))}
+          <span className="ml-1 text-xs text-muted-foreground">
+            ({product.ratingCount} ratings)
+          </span>
+        </div>
+        <div className="mt-2 flex items-center gap-2">
+          <span className="font-semibold">{
+            product.variants[0].discount > 0
+              ? formatPrice(product.variants[0].discount)
+              : formatPrice(product.variants[0].price)
+            } 
+          </span>
+          {product.variants[0].discount > 0 && (
+            <span className="text-sm text-muted-foreground line-through">
+              {formatPrice(product.variants[0].price)}
             </span>
           )}
         </div>

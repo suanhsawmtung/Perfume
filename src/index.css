@@ -144,6 +144,7 @@
     margin-right: auto;
     padding-left: 1rem;
     padding-right: 1rem;
+    min-width: 100%;
   }
 
   /* Large screens (1024px and up) */

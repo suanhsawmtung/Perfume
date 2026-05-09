@@ -1,7 +1,25 @@
 import { Button } from "@/components/ui/button"
 import ContentWrapper from "@/components/wrapper/content-wrapper"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, RefreshCcw, ShieldCheck, Truck } from "lucide-react"
 import { Link } from "react-router"
+
+const HERO_FEATURES = [
+  {
+    icon: ShieldCheck,
+    title: "Authenticity",
+    subtitle: "Guaranteed",
+  },
+  {
+    icon: Truck,
+    title: "Fast Delivery",
+    subtitle: "On-time arrival",
+  },
+  {
+    icon: RefreshCcw,
+    title: "Easy Returns",
+    subtitle: "& Exchanges",
+  },
+]
 
 export function HeroSection() {
   return (
@@ -40,7 +58,7 @@ export function HeroSection() {
             </Button>
           </div>
 
-          <div className="mt-16 flex gap-12">
+          {/* <div className="mt-16 flex gap-12">
             <div>
               <p className="text-3xl font-semibold">150+</p>
               <p className="mt-1 text-sm text-muted-foreground">
@@ -59,6 +77,25 @@ export function HeroSection() {
                 Awards Won
               </p>
             </div>
+          </div> */}
+
+          {/* Hero Info Section */}
+          <div className="mt-16 flex sm:justify-start justify-between flex-wrap items-center gap-x-2 sm:gap-x-12 gap-y-8 border-t border-border/40 pt-10">
+            {HERO_FEATURES.map((feature, index) => (
+              <div key={index} className="flex flex-col sm:flex-row items-center gap-4 group">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-secondary/50 text-foreground transition-all duration-300 group-hover:bg-foreground group-hover:text-background">
+                  <feature.icon className="h-5 w-5" strokeWidth={1.5} />
+                </div>
+                <div className="space-y-0.5 sm:text-start text-center">
+                  <p className="text-sm font-semibold tracking-wide">
+                    {feature.title}
+                  </p>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                    {feature.subtitle}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </ContentWrapper>

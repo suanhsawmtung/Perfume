@@ -10,7 +10,7 @@ import { router } from "./routes";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AppQueryClientProvider>
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <ThemeProvider>
         <RouterProvider router={router} />
         <Toaster />
       </ThemeProvider>

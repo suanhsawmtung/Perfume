@@ -301,7 +301,7 @@ export const reviews = [
   {
     name: "Sarah M.",
     rating: 5,
-    comment: "Absolutely stunning fragrance! The Midnight Oud has become my signature scent. It's sophisticated, long-lasting, and I receive compliments everywhere I go.",
+    comment: "Absolutely stunning fragrance! The Midnight Oud has become my signature scent. It's sophisticated, long-lasting, and I receive compliments everywhere I go. Absolutely stunning fragrance! The Midnight Oud has become my signature scent. It's sophisticated, long-lasting, and I receive compliments everywhere I go. Absolutely stunning fragrance! The Midnight Oud has become my signature scent. It's sophisticated, long-lasting, and I receive compliments everywhere I go. Absolutely stunning fragrance! The Midnight Oud has become my signature scent. It's sophisticated, long-lasting, and I receive compliments everywhere I go. Absolutely stunning fragrance! The Midnight Oud has become my signature scent. It's sophisticated, long-lasting, and I receive compliments everywhere I go.",
     product: "Midnight Oud",
     date: "Mar 12, 2024",
     verified: true,
