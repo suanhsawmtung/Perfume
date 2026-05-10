@@ -1,17 +1,17 @@
 import { queryClient } from "@/lib/query-client";
 import type { Gender } from "@/stores/preference.store";
-import type { HomeData } from "@/types/home.type";
+import type { HomeDataT } from "@/types/home.type";
 import {
-    useSuspenseQuery,
-    type UseSuspenseQueryResult,
+  useSuspenseQuery,
+  type UseSuspenseQueryResult,
 } from "@tanstack/react-query";
 import { fetchHomeData } from "../api";
 import { homeQueryKeys } from "../key";
 
 export function useHomeData(
   gender?: Gender | null,
-): UseSuspenseQueryResult<HomeData, Error> {
-  return useSuspenseQuery<HomeData, Error>({
+): UseSuspenseQueryResult<HomeDataT, Error> {
+  return useSuspenseQuery<HomeDataT, Error>({
     queryKey: homeQueryKeys.data(gender),
     queryFn: () => fetchHomeData(gender),
   });

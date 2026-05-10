@@ -164,14 +164,18 @@ export function NProductCard({
 }: {
   product: HomeProductType;
 }) {
+  const rating = product.rating || 0;
+
   return (
     <Link to={`/products/${product.slug}`} className="group block">
       <div className="relative aspect-[3/4] overflow-hidden bg-secondary/50">
-        <img
-          src={product.variants[0].images[0].path}
-          alt={product.name}
-          className="object-cover transition-transform duration-500 group-hover:scale-105 w-full h-full"
-        />
+        {product.image && (
+          <img
+            src={product.image}
+            alt={product.name}
+            className="object-cover transition-transform duration-500 group-hover:scale-105 w-full h-full"
+          />
+        )}
       </div>
       <div className="mt-4">
         <p className="text-xs text-muted-foreground uppercase tracking-wide">
@@ -186,7 +190,7 @@ export function NProductCard({
               key={i}
               className={cn(
                 "h-3 w-3",
-                i < Math.floor(product.rating)
+                i < Math.floor(rating)
                   ? "fill-foreground text-foreground"
                   : "fill-muted text-muted"
               )}
@@ -198,14 +202,14 @@ export function NProductCard({
         </div>
         <div className="mt-2 flex items-center gap-2">
           <span className="font-semibold">{
-            product.variants[0].discount > 0
-              ? formatPrice(product.variants[0].discount)
-              : formatPrice(product.variants[0].price)
+            product.primaryVariant.discount > 0
+              ? formatPrice(product.primaryVariant.discount)
+              : formatPrice(product.primaryVariant.price)
             } 
           </span>
-          {product.variants[0].discount > 0 && (
+          {product.primaryVariant.discount > 0 && (
             <span className="text-sm text-muted-foreground line-through">
-              {formatPrice(product.variants[0].price)}
+              {formatPrice(product.primaryVariant.price)}
             </span>
           )}
         </div>

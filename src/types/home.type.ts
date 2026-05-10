@@ -1,29 +1,22 @@
-import type { PostStatus, PostType } from "./post.type";
-
-export interface HomeProductVariantType {
-  price: number;
-  discount: number;
-  stock: number;
-  reserved: number;
-  images: {
-    path: string;
-  }[];
-}
+import type { PostStatus } from "./post.type";
 
 export interface HomeProductType {
   id: number;
   name: string;
   slug: string;
-  concentration: string;
-  gender: string;
-  description: string;
-  rating: number;
+  rating: number | null;
   ratingCount: number;
   brand: {
     name: string;
     slug: string;
   };
-  variants: HomeProductVariantType[];
+  image: string | null;
+  primaryVariant: {
+    price: number;
+    discount: number;
+    stock: number;
+    reserved: number;
+  };
 }
 
 export interface HomePostType {
@@ -43,29 +36,31 @@ export interface HomePostType {
     id: number;
     firstName: string | null;
     lastName: string | null;
-    username: string | null;
+    username: string;
   };
   category: {
     id: number;
-    slug: string;
     name: string;
+    slug: string;
   };
-};
+}
 
-export type HomeReviewType = {
+export interface HomeReviewType {
   id: number;
-  rating: number;
   content: string | null;
+  rating: number;
   isPublish: boolean;
   userId: number;
   productId: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
   user: {
     id: number;
-    username: string;
     firstName: string | null;
     lastName: string | null;
+    username: string;
+    email: string;
+    image: string | null;
     emailVerifiedAt: string | null;
   };
   product: {
@@ -73,11 +68,11 @@ export type HomeReviewType = {
     name: string;
     slug: string;
   };
-};
+}
 
-export interface HomeData {
+export interface HomeDataT {
   bestSellerProducts: HomeProductType[];
   productsForYou: HomeProductType[];
   latestReviews: HomeReviewType[];
-  latestPosts: PostType[];
+  latestPosts: HomePostType[];
 }
