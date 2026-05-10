@@ -2,8 +2,8 @@ import { queryClient } from "@/lib/query-client";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
-import { deleteProduct } from "../api";
-import { productQueryKeys } from "../key";
+import { deleteProduct } from "../../api";
+import { productQueryKeys } from "../../key";
 
 export const useDeleteProductMutation = () => {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ export const useDeleteProductMutation = () => {
     mutationFn: (params: { slug: string }) => deleteProduct(params),
     onSuccess: (_, variables) => {
       queryClient.removeQueries({
-        queryKey: productQueryKeys.detail(variables.slug),
+        queryKey: productQueryKeys.admin.detail(variables.slug),
       });
 
       queryClient.invalidateQueries({

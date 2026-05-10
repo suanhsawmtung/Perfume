@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { TabButton } from "@/components/ui/tab-button";
 import { INVENTORY_TYPES } from "@/constants/inventory.constant";
-import { fetchProductSelectOptions, fetchProductVariant, fetchProductVariantSelectOptions } from "@/services/product/api";
+import { fetchAdminProductVariant, fetchProductSelectOptions, fetchProductVariantSelectOptions } from "@/services/product/api";
 import type { ProductVariantDetailType } from "@/types/product.type";
 import { type InventoryFormValues, inventorySchema } from "@/validations/inventory.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -60,7 +60,7 @@ export function InventoryForm() {
 
       try {
         setIsLoadingVariantDetail(true);
-        const data = await fetchProductVariant(selectedProductSlug, selectedVariantSlug);
+        const data = await fetchAdminProductVariant(selectedProductSlug, selectedVariantSlug);
         setSelectedVariant(data);
       } catch (error) {
         setSelectedVariant(null);

@@ -1,4 +1,4 @@
-import { ensureProductVariant } from "@/services/product/queries/useGetProductVariant";
+import { ensureProductVariant } from "@/services/product/queries/admin/useGetProductVariant";
 import type { LoaderFunctionArgs } from "react-router";
 
 // Loader for product variant detail page - fetches variant by product slug and variant slug

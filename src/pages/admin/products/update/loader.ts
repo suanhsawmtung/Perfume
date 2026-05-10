@@ -1,4 +1,4 @@
-import { ensureProduct } from "@/services/product/queries/useGetProduct";
+import { ensureProduct } from "@/services/product/queries/admin/useGetProduct";
 import type { LoaderFunctionArgs } from "react-router";
 
 // Loader for product edit page - fetches product data by slug

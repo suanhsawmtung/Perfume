@@ -2,7 +2,7 @@ import { SearchableSelect } from "@/components/shared/searchable-select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { formatPrice } from "@/lib/utils";
-import { fetchProductSelectOptions, fetchProductVariant, fetchProductVariantSelectOptions } from "@/services/product/api";
+import { fetchAdminProductVariant, fetchProductSelectOptions, fetchProductVariantSelectOptions } from "@/services/product/api";
 import type { ProductVariantDetailType } from "@/types/product.type";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -46,7 +46,7 @@ export const AddOrderItemForm = ({ onAdd }: AddOrderItemFormProps) => {
 
       try {
         setIsLoadingVariantDetail(true);
-        const data = await fetchProductVariant(selectedProductSlug, selectedVariantSlug);
+        const data = await fetchAdminProductVariant(selectedProductSlug, selectedVariantSlug);
         setSelectedVariant(data);
       } catch (error) {
         setSelectedVariant(null);

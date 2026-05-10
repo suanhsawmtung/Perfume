@@ -14,15 +14,27 @@ export type ProductListQueryOptions = {
 export const productQueryKeys = {
   all: ["products"] as const,
 
+  admin: {
+    lists: ["products", "admin", "list"] as const,
+
+    list: (options: ProductListQueryOptions) =>
+      ["products", "admin", "list", options] as const,
+
+    detail: (slug: string) =>
+      ["products", "admin", "detail", slug] as const,
+
+    variants: (slug: string) =>
+      ["products", "admin", "variants", slug] as const,
+
+    variantDetail: (slug: string, variantSlug: string) =>
+      ["products", "admin", "variants", slug, variantSlug] as const,
+  },
+
   lists: ["products", "list"] as const,
 
   list: (options: ProductListQueryOptions) =>
     ["products", "list", options] as const,
 
-  detail: (slug: string) => ["products", "detail", slug] as const,
-
-  variants: (slug: string) => ["products", "variants", slug] as const,
-
-  variantDetail: (slug: string, variantSlug: string) =>
-    ["products", "variants", slug, variantSlug] as const,
+  detail: (slug: string) =>
+    ["products", "detail", slug] as const,
 };

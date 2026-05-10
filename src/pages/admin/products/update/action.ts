@@ -64,7 +64,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     });
 
     await queryClient.invalidateQueries({
-      queryKey: productQueryKeys.detail(slug),
+      queryKey: productQueryKeys.admin.detail(slug),
     });
 
     await queryClient.invalidateQueries({

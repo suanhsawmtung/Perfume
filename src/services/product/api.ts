@@ -8,6 +8,7 @@ import type {
   DeleteProductResponse,
   DeleteProductVariantResponse,
   Gender,
+  ProductCardType,
   ProductListResult,
   ProductQueryParams,
   ProductVariantDetailType,
@@ -16,9 +17,49 @@ import type {
 } from "@/types/product.type";
 import type { FetchSelectPageResult } from "@/types/select-option.type";
 
-export const DEFAULT_LIMIT = 10;
+export const DEFAULT_LIMIT = 8;
+export const ADMIN_DEFAULT_LIMIT = 10;
 
 export async function fetchProducts(options: {
+  page?: number;
+  search?: string;
+  limit?: number;
+  brand?: string;
+  gender?: Gender;
+  concentration?: Concentration;
+  isLimited?: boolean;
+}): Promise<ProductListResult<ProductCardType>> {
+  const {
+    page = 1,
+    search,
+    limit = DEFAULT_LIMIT,
+    brand,
+    gender,
+    concentration,
+    isLimited,
+  } = options;
+
+  const offset = (page - 1) * limit;
+
+  const queryParams: ProductQueryParams = {
+    limit,
+    offset,
+    ...(search && { search }),
+    ...(brand && { brandSlug: brand }),
+    ...(gender && { gender }),
+    ...(concentration && { concentration }),
+    ...(typeof isLimited === "boolean" && { isLimited }),
+    isActive: true,
+  };
+
+  const response = await api.get("/products", {
+    params: queryParams,
+  });
+
+  return response.data?.data;
+}
+
+export async function fetchAdminProducts(options: {
   offset?: number;
   search?: string;
   limit?: number;
@@ -63,14 +104,14 @@ export async function fetchProducts(options: {
   };
 }
 
-export async function fetchProduct(slug: string): Promise<AdminProductDetailType> {
+export async function fetchAdminProduct(slug: string): Promise<AdminProductDetailType> {
   const response = await api.get(`/admin/products/${slug}`);
 
   // Backend returns: { success: true, data: { product }, message: null }
   return response.data?.data;
 }
 
-export async function fetchProductVariants(
+export async function fetchAdminProductVariants(
   slug: string,
 ): Promise<AdminProductDetailType> {
   const response = await api.get(`/admin/products/${slug}/variants`);
@@ -79,7 +120,7 @@ export async function fetchProductVariants(
   return response.data?.data;
 }
 
-export async function fetchProductVariant(
+export async function fetchAdminProductVariant(
   slug: string,
   variantSlug: string,
 ): Promise<ProductVariantDetailType> {

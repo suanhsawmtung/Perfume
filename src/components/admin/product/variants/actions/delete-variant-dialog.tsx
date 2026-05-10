@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import DialogWrapper from "@/components/wrapper/dialog-wrapper";
-import { useDeleteVariantMutation } from "@/services/product/queries/useDeleteVariant";
+import { useDeleteVariantMutation } from "@/services/product/queries/admin/useDeleteVariant";
 import type { ProductVariantType } from "@/types/product.type";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";

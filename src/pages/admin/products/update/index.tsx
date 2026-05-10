@@ -4,7 +4,7 @@ import AdminHeaderSection from "@/components/admin/shared/admin-header-section";
 import { BackButton } from "@/components/admin/shared/back-button";
 import { CreateButton } from "@/components/admin/shared/create-button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useGetProduct } from "@/services/product/queries/useGetProduct";
+import { useGetProduct } from "@/services/product/queries/admin/useGetProduct";
 import { useParams } from "react-router";
 
 const AdminProductEditPage = () => {

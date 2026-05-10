@@ -1,5 +1,5 @@
 import { queryClient } from "@/lib/query-client";
-import type { ProductListResult } from "@/types/product.type";
+import type { ProductCardType, ProductListResult } from "@/types/product.type";
 import {
   useSuspenseQuery,
   type UseSuspenseQueryResult,
@@ -7,15 +7,15 @@ import {
 import { fetchProducts } from "../api";
 import { productQueryKeys, type ProductListQueryOptions } from "../key";
 
-type UseListProductsParams = ProductListQueryOptions & {
-  offset: number;
+type UseListProductsParams = Omit<ProductListQueryOptions, "offset"> & {
+  page?: number;
 };
 
 export function useListProducts(
   params: UseListProductsParams,
-): UseSuspenseQueryResult<ProductListResult, Error> {
+): UseSuspenseQueryResult<ProductListResult<ProductCardType>, Error> {
   const {
-    offset,
+    page = 1,
     search,
     limit,
     brand,
@@ -25,8 +25,8 @@ export function useListProducts(
     isLimited,
   } = params;
 
-  const listOptions: ProductListQueryOptions = {
-    offset,
+  const listOptions: UseListProductsParams = {
+    page,
     search,
     limit,
     brand,
@@ -36,8 +36,8 @@ export function useListProducts(
     isLimited,
   };
 
-  return useSuspenseQuery<ProductListResult, Error>({
-    queryKey: productQueryKeys.list(listOptions),
+  return useSuspenseQuery<ProductListResult<ProductCardType>, Error>({
+    queryKey: productQueryKeys.list({ ...listOptions, offset: (page - 1) * (limit || 8) } as any),
     queryFn: () => fetchProducts(listOptions),
   });
 }
@@ -46,7 +46,7 @@ export async function ensureListProducts(
   params: UseListProductsParams,
 ): Promise<void> {
   const {
-    offset,
+    page = 1,
     search,
     limit,
     brand,
@@ -56,8 +56,8 @@ export async function ensureListProducts(
     isLimited,
   } = params;
 
-  const listOptions: ProductListQueryOptions = {
-    offset,
+  const listOptions: UseListProductsParams = {
+    page,
     search,
     limit,
     brand,
@@ -68,7 +68,7 @@ export async function ensureListProducts(
   };
 
   await queryClient.ensureQueryData({
-    queryKey: productQueryKeys.list(listOptions),
+    queryKey: productQueryKeys.list({ ...listOptions, offset: (page - 1) * (limit || 8) } as any),
     queryFn: () => fetchProducts(listOptions),
   });
 }

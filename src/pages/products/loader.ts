@@ -1,30 +1,33 @@
-import api from "@/lib/api";
+import { ensureListProducts } from "@/services/product/queries/useGetProducts";
+import type { Concentration, Gender } from "@/types/product.type";
 import type { LoaderFunctionArgs } from "react-router";
 
-// Loader for products list page
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
-  const categories = url.searchParams.get("categories");
-  const page = url.searchParams.get("page") || "1";
+  const searchParams = url.searchParams;
 
-  try {
-    const response = await api.get("/products", {
-      params: {
-        categories,
-        page,
-      },
-    });
+  const page = Number(searchParams.get("page")) || 1;
+  const search = searchParams.get("search") || undefined;
+  const brand = searchParams.get("brand") || undefined;
+  const gender = (searchParams.get("gender") as Gender) || undefined;
+  const concentration = (searchParams.get("concentration") as Concentration) || undefined;
+  const isLimited = searchParams.get("isLimited") === "true" 
+    ? true 
+    : searchParams.get("isLimited") === "false" 
+      ? false 
+      : undefined;
 
-    return {
-      products: response.data.products,
-      pagination: response.data.pagination,
-    };
-  } catch (error) {
-    // Handle error
-    return {
-      products: [],
-      pagination: null,
-      error: "Failed to load products",
-    };
-  }
+  const params = {
+    page,
+    search,
+    brand,
+    gender,
+    concentration,
+    isLimited,
+    limit: 8,
+  };
+
+  await ensureListProducts(params);
+
+  return { params };
 }

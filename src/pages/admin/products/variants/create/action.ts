@@ -44,11 +44,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
     const response = await createProductVariant(slug, formData);
 
     await queryClient.invalidateQueries({
-      queryKey: productQueryKeys.variants(slug),
+      queryKey: productQueryKeys.admin.variants(slug),
     });
 
     await queryClient.invalidateQueries({
-      queryKey: productQueryKeys.detail(slug),
+      queryKey: productQueryKeys.admin.detail(slug),
     });
 
     toast.success(response.message || "Product variant created successfully");

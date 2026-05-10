@@ -4,16 +4,16 @@ import {
   useSuspenseQuery,
   type UseSuspenseQueryResult,
 } from "@tanstack/react-query";
-import { fetchProductVariant } from "../api";
-import { productQueryKeys } from "../key";
+import { fetchAdminProductVariant } from "../../api";
+import { productQueryKeys } from "../../key";
 
 export function useGetProductVariant(
   slug: string,
   variantSlug: string,
 ): UseSuspenseQueryResult<ProductVariantDetailType, Error> {
   return useSuspenseQuery<ProductVariantDetailType, Error>({
-    queryKey: productQueryKeys.variantDetail(slug, variantSlug),
-    queryFn: () => fetchProductVariant(slug, variantSlug),
+    queryKey: productQueryKeys.admin.variantDetail(slug, variantSlug),
+    queryFn: () => fetchAdminProductVariant(slug, variantSlug),
   });
 }
 
@@ -22,7 +22,7 @@ export async function ensureProductVariant(
   variantSlug: string,
 ): Promise<void> {
   await queryClient.ensureQueryData({
-    queryKey: productQueryKeys.variantDetail(slug, variantSlug),
-    queryFn: () => fetchProductVariant(slug, variantSlug),
+    queryKey: productQueryKeys.admin.variantDetail(slug, variantSlug),
+    queryFn: () => fetchAdminProductVariant(slug, variantSlug),
   });
 }

@@ -1,6 +1,6 @@
 import { isConcentration, isGender, parseBoolean } from "@/lib/utils";
 import { DEFAULT_LIMIT } from "@/services/product/api";
-import { ensureListProducts } from "@/services/product/queries/useGetProducts";
+import { ensureListProducts } from "@/services/product/queries/admin/useGetProducts";
 
 import type { LoaderFunctionArgs } from "react-router";
 import { redirect } from "react-router";

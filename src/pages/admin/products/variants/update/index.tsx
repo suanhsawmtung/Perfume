@@ -2,7 +2,7 @@ import { ProductVariantForm } from "@/components/admin/product/variants/form/var
 import AdminHeaderSection from "@/components/admin/shared/admin-header-section";
 import { BackButton } from "@/components/admin/shared/back-button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useGetProductVariant } from "@/services/product/queries/useGetProductVariant";
+import { useGetProductVariant } from "@/services/product/queries/admin/useGetProductVariant";
 import { useParams } from "react-router";
 
 const AdminProductVariantUpdatePage = () => {

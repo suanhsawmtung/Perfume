@@ -6,7 +6,7 @@ import { FilterBar } from "@/components/admin/shared/filter-bar";
 import { MoreFilterButton } from "@/components/admin/shared/more-filter-button";
 import { isConcentration, isGender, parseBoolean } from "@/lib/utils";
 import { DEFAULT_LIMIT } from "@/services/product/api";
-import { useListProducts } from "@/services/product/queries/useGetProducts";
+import { useListProducts } from "@/services/product/queries/admin/useGetProducts";
 import { useSearchParams } from "react-router";
 
 const AdminProductsPage = () => {

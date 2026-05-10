@@ -1,4 +1,4 @@
-import { ProductCard } from "@/components/product/product-card"
+import { NProductCard as ProductCard } from "@/components/product/product-card"
 import { Pagination } from "@/components/shared/pagination"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -18,108 +18,68 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import ContentWrapper from "@/components/wrapper/content-wrapper"
-import { products } from "@/lib/data"
 import { cn } from "@/lib/utils"
+import { useListProducts } from "@/services/product/queries/useGetProducts"
 import { ChevronDown, Grid3X3, LayoutGrid, Search, SlidersHorizontal, X } from "lucide-react"
-import { useMemo, useState } from "react"
+import { useEffect, useState } from "react"
+import { useLoaderData, useSearchParams } from "react-router"
 
-const categories = [
-  { value: "all", label: "All Products" },
-  { value: "men", label: "For Men" },
-  { value: "women", label: "For Women" },
-  { value: "unisex", label: "Unisex" },
+const genderOptions = [
+  { value: "MALE", label: "For Men" },
+  { value: "FEMALE", label: "For Women" },
+  { value: "UNISEX", label: "Unisex" },
 ]
 
-const sortOptions = [
-  { value: "featured", label: "Featured" },
-  { value: "price-asc", label: "Price: Low to High" },
-  { value: "price-desc", label: "Price: High to Low" },
-  { value: "rating", label: "Highest Rated" },
-  { value: "newest", label: "Newest" },
+const concentrationOptions = [
+  { value: "EDC", label: "Eau de Cologne (EDC)" },
+  { value: "EDT", label: "Eau de Toilette (EDT)" },
+  { value: "EDP", label: "Eau de Parfum (EDP)" },
+  { value: "PARFUM", label: "Parfum" },
 ]
-
-const ITEMS_PER_PAGE = 8
 
 export default function ProductsPage() {
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
-  const [selectedSort, setSelectedSort] = useState<string>("featured")
-  const [searchQuery, setSearchQuery] = useState("")
+  const { params } = useLoaderData() as any
+  const [searchParams, setSearchParams] = useSearchParams()
+  
+  const { data } = useListProducts(params)
+  
+  const [searchQuery, setSearchQuery] = useState(params.search || "")
   const [gridCols, setGridCols] = useState<3 | 4>(4)
   const [filterOpen, setFilterOpen] = useState(false)
-  const [categoryOpen, setCategoryOpen] = useState(true)
-  const [sortOpen, setSortOpen] = useState(true)
-  const [currentPage, setCurrentPage] = useState(1)
+  const [genderOpen, setGenderOpen] = useState(true)
+  const [concentrationOpen, setConcentrationOpen] = useState(true)
 
-  const filteredProducts = useMemo(() => {
-    let result = products
+  // Sync local search query with params
+  useEffect(() => {
+    setSearchQuery(params.search || "")
+  }, [params.search])
 
-    // Filter by search
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase()
-      result = result.filter(
-        (p) =>
-          p.name.toLowerCase().includes(query) ||
-          p.brand.toLowerCase().includes(query) ||
-          p.description.toLowerCase().includes(query)
-      )
-    }
-
-    // Filter by categories
-    if (selectedCategories.length > 0 && !selectedCategories.includes("all")) {
-      result = result.filter((p) => selectedCategories.includes(p.category))
-    }
-
-    // Sort
-    result = [...result].sort((a, b) => {
-      switch (selectedSort) {
-        case "price-asc":
-          return a.price - b.price
-        case "price-desc":
-          return b.price - a.price
-        case "rating":
-          return b.rating - a.rating
-        case "newest":
-          return a.isNew ? -1 : 1
-        default:
-          return 0
-      }
-    })
-
-    return result
-  }, [searchQuery, selectedCategories, selectedSort])
-
-  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)
-  const paginatedProducts = filteredProducts.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  )
-
-  const toggleCategory = (value: string) => {
-    if (value === "all") {
-      setSelectedCategories([])
+  const handleParamChange = (key: string, value: string | null) => {
+    const newSearchParams = new URLSearchParams(searchParams)
+    if (value) {
+      newSearchParams.set(key, value)
     } else {
-      setSelectedCategories((prev) =>
-        prev.includes(value)
-          ? prev.filter((c) => c !== value)
-          : [...prev.filter((c) => c !== "all"), value]
-      )
+      newSearchParams.delete(key)
     }
-    setCurrentPage(1)
+    newSearchParams.set("page", "1") // Reset to page 1 on filter change
+    setSearchParams(newSearchParams)
   }
 
-  const handleSortChange = (value: string) => {
-    setSelectedSort(value)
-    setCurrentPage(1)
+  const toggleFilter = (key: string, value: string) => {
+    const current = searchParams.get(key)
+    if (current === value) {
+      handleParamChange(key, null)
+    } else {
+      handleParamChange(key, value)
+    }
   }
 
   const clearFilters = () => {
-    setSelectedCategories([])
-    setSelectedSort("featured")
-    setCurrentPage(1)
+    setSearchParams({})
+    setSearchQuery("")
   }
 
-  const activeFilterCount =
-    (selectedCategories.length > 0 ? 1 : 0) + (selectedSort !== "featured" ? 1 : 0)
+  const activeFilterCount = Array.from(searchParams.keys()).filter(k => k !== "page").length
 
   return (
     <div className="min-h-screen">
@@ -139,18 +99,21 @@ export default function ProductsPage() {
       <ContentWrapper className="py-8">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-3">
-            <div className="relative flex-1 md:w-64">
+            <form 
+              className="relative flex-1 md:w-64"
+              onSubmit={(e) => {
+                e.preventDefault()
+                handleParamChange("search", searchQuery)
+              }}
+            >
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 placeholder="Search fragrances..."
                 value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value)
-                  setCurrentPage(1)
-                }}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-9"
               />
-            </div>
+            </form>
             <Sheet open={filterOpen} onOpenChange={setFilterOpen}>
               <SheetTrigger asChild>
                 <Button variant="outline" className="relative">
@@ -169,34 +132,30 @@ export default function ProductsPage() {
                 </SheetHeader>
                 <div className="flex-1 overflow-y-auto py-4">
                   <div className="space-y-4">
-                    <Collapsible open={categoryOpen} onOpenChange={setCategoryOpen}>
+                    <Collapsible open={genderOpen} onOpenChange={setGenderOpen}>
                       <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium hover:bg-secondary">
-                        Product Type
+                        Gender
                         <ChevronDown
                           className={cn(
                             "h-4 w-4 transition-transform",
-                            categoryOpen && "rotate-180"
+                            genderOpen && "rotate-180"
                           )}
                         />
                       </CollapsibleTrigger>
                       <CollapsibleContent className="px-3 pt-2">
                         <div className="space-y-3">
-                          {categories.map((cat) => (
-                            <div key={cat.value} className="flex items-center gap-3">
+                          {genderOptions.map((opt) => (
+                            <div key={opt.value} className="flex items-center gap-3">
                               <Checkbox
-                                id={`cat-${cat.value}`}
-                                checked={
-                                  cat.value === "all"
-                                    ? selectedCategories.length === 0
-                                    : selectedCategories.includes(cat.value)
-                                }
-                                onCheckedChange={() => toggleCategory(cat.value)}
+                                id={`gender-${opt.value}`}
+                                checked={searchParams.get("gender") === opt.value}
+                                onCheckedChange={() => toggleFilter("gender", opt.value)}
                               />
                               <Label
-                                htmlFor={`cat-${cat.value}`}
+                                htmlFor={`gender-${opt.value}`}
                                 className="text-sm font-normal cursor-pointer"
                               >
-                                {cat.label}
+                                {opt.label}
                               </Label>
                             </div>
                           ))}
@@ -206,36 +165,54 @@ export default function ProductsPage() {
 
                     <div className="border-t border-border/50" />
 
-                    <Collapsible open={sortOpen} onOpenChange={setSortOpen}>
+                    <Collapsible open={concentrationOpen} onOpenChange={setConcentrationOpen}>
                       <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium hover:bg-secondary">
-                        Sort By
+                        Concentration
                         <ChevronDown
                           className={cn(
                             "h-4 w-4 transition-transform",
-                            sortOpen && "rotate-180"
+                            concentrationOpen && "rotate-180"
                           )}
                         />
                       </CollapsibleTrigger>
                       <CollapsibleContent className="px-3 pt-2">
                         <div className="space-y-3">
-                          {sortOptions.map((option) => (
-                            <div key={option.value} className="flex items-center gap-3">
+                          {concentrationOptions.map((opt) => (
+                            <div key={opt.value} className="flex items-center gap-3">
                               <Checkbox
-                                id={`sort-${option.value}`}
-                                checked={selectedSort === option.value}
-                                onCheckedChange={() => handleSortChange(option.value)}
+                                id={`conc-${opt.value}`}
+                                checked={searchParams.get("concentration") === opt.value}
+                                onCheckedChange={() => toggleFilter("concentration", opt.value)}
                               />
                               <Label
-                                htmlFor={`sort-${option.value}`}
+                                htmlFor={`conc-${opt.value}`}
                                 className="text-sm font-normal cursor-pointer"
                               >
-                                {option.label}
+                                {opt.label}
                               </Label>
                             </div>
                           ))}
                         </div>
                       </CollapsibleContent>
                     </Collapsible>
+
+                    <div className="border-t border-border/50" />
+
+                    <div className="flex items-center gap-3 px-3 py-2">
+                      <Checkbox
+                        id="isLimited"
+                        checked={searchParams.get("isLimited") === "true"}
+                        onCheckedChange={(checked) => 
+                          handleParamChange("isLimited", checked ? "true" : null)
+                        }
+                      />
+                      <Label
+                        htmlFor="isLimited"
+                        className="text-sm font-medium cursor-pointer"
+                      >
+                        Limited Edition Only
+                      </Label>
+                    </div>
                   </div>
                 </div>
                 <SheetFooter className="border-t border-border/50 pt-4">
@@ -251,7 +228,7 @@ export default function ProductsPage() {
                       className="flex-1"
                       onClick={() => setFilterOpen(false)}
                     >
-                      Apply
+                      Show Results
                     </Button>
                   </div>
                 </SheetFooter>
@@ -283,31 +260,49 @@ export default function ProductsPage() {
           </div>
         </div>
 
-        {(selectedCategories.length > 0 || selectedSort !== "featured") && (
+        {activeFilterCount > 0 && (
           <div className="mt-4 flex flex-wrap items-center gap-2">
-            {selectedCategories.map((cat) => {
-              const category = categories.find((c) => c.value === cat)
-              return (
-                <Button
-                  key={cat}
-                  variant="secondary"
-                  size="sm"
-                  className="gap-1 text-xs"
-                  onClick={() => toggleCategory(cat)}
-                >
-                  {category?.label}
-                  <X className="h-3 w-3" />
-                </Button>
-              )
-            })}
-            {selectedSort !== "featured" && (
+            {searchParams.get("gender") && (
               <Button
                 variant="secondary"
                 size="sm"
                 className="gap-1 text-xs"
-                onClick={() => setSelectedSort("featured")}
+                onClick={() => handleParamChange("gender", null)}
               >
-                {sortOptions.find((s) => s.value === selectedSort)?.label}
+                {genderOptions.find(o => o.value === searchParams.get("gender"))?.label}
+                <X className="h-3 w-3" />
+              </Button>
+            )}
+            {searchParams.get("concentration") && (
+              <Button
+                variant="secondary"
+                size="sm"
+                className="gap-1 text-xs"
+                onClick={() => handleParamChange("concentration", null)}
+              >
+                {searchParams.get("concentration")}
+                <X className="h-3 w-3" />
+              </Button>
+            )}
+            {searchParams.get("isLimited") === "true" && (
+              <Button
+                variant="secondary"
+                size="sm"
+                className="gap-1 text-xs"
+                onClick={() => handleParamChange("isLimited", null)}
+              >
+                Limited Edition
+                <X className="h-3 w-3" />
+              </Button>
+            )}
+            {searchParams.get("search") && (
+              <Button
+                variant="secondary"
+                size="sm"
+                className="gap-1 text-xs"
+                onClick={() => handleParamChange("search", null)}
+              >
+                Search: {searchParams.get("search")}
                 <X className="h-3 w-3" />
               </Button>
             )}
@@ -323,7 +318,7 @@ export default function ProductsPage() {
         )}
 
         <p className="mt-4 text-sm text-muted-foreground">
-          Showing {paginatedProducts.length} of {filteredProducts.length} products
+          Showing {data.items.length} of products
         </p>
 
         <div
@@ -331,15 +326,15 @@ export default function ProductsPage() {
             "mt-8 grid gap-6",
             gridCols === 3
               ? "sm:grid-cols-2 lg:grid-cols-3"
-              : "sm:grid-cols-2 lg:grid-cols-4"
+              : "sm:grid-cols-2 xl:grid-cols-4"
           )}
         >
-          {paginatedProducts.map((product) => (
-            <ProductCard key={product.id} {...product} />
+          {data.items.map((product) => (
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
 
-        {filteredProducts.length === 0 && (
+        {data.items.length === 0 && (
           <div className="py-20 text-center">
             <p className="text-muted-foreground">
               No products found matching your criteria.
@@ -350,13 +345,15 @@ export default function ProductsPage() {
           </div>
         )}
 
-        {totalPages > 1 && (
+        {data.totalPages > 1 && (
           <div className="mt-12">
             <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
+              currentPage={data.currentPage}
+              totalPages={data.totalPages}
               onPageChange={(page) => {
-                setCurrentPage(page)
+                const newSearchParams = new URLSearchParams(searchParams)
+                newSearchParams.set("page", page.toString())
+                setSearchParams(newSearchParams)
                 window.scrollTo({ top: 0, behavior: "smooth" })
               }}
             />

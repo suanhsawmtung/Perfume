@@ -3,7 +3,7 @@ import { BackButton } from "@/components/admin/shared/back-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatImagePath, formatPrice } from "@/lib/utils";
-import { useGetProductVariant } from "@/services/product/queries/useGetProductVariant";
+import { useGetProductVariant } from "@/services/product/queries/admin/useGetProductVariant";
 import { useParams } from "react-router";
 
 const AdminProductVariantDetailPage = () => {

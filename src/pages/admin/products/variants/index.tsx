@@ -2,7 +2,7 @@ import { ProductVariantsList } from "@/components/admin/product/variants/list/va
 import AdminHeaderSection from "@/components/admin/shared/admin-header-section";
 import { BackButton } from "@/components/admin/shared/back-button";
 import { CreateButton } from "@/components/admin/shared/create-button";
-import { useGetProductVariants } from "@/services/product/queries/useGetProductVariants";
+import { useGetProductVariants } from "@/services/product/queries/admin/useGetProductVariants";
 import { useParams } from "react-router";
 
 const AdminProductVariantsPage = () => {

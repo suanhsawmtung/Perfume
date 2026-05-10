@@ -23,6 +23,25 @@ export interface ProductType {
   deletedAt: string | null;
 }
 
+export interface ProductCardType {
+  id: number;
+  name: string;
+  slug: string;
+  rating: number | null;
+  ratingCount: number;
+  brand: {
+    name: string;
+    slug: string;
+  };
+  image: string | null;
+  primaryVariant: {
+    price: number;
+    discount: number;
+    stock: number;
+    reserved: number;
+  };
+}
+
 // Product type from backend response
 export interface ProductListType extends ProductType {
   brand: {
@@ -46,8 +65,8 @@ export interface ProductQueryParams {
 }
 
 // Product list result from API
-export interface ProductListResult {
-  items: ProductListType[];
+export interface ProductListResult<T = ProductListType> {
+  items: T[];
   currentPage: number;
   totalPages: number;
   pageSize: number;

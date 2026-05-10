@@ -1,23 +1,7 @@
 import type { PostStatus } from "./post.type";
+import type { ProductCardType } from "./product.type";
 
-export interface HomeProductType {
-  id: number;
-  name: string;
-  slug: string;
-  rating: number | null;
-  ratingCount: number;
-  brand: {
-    name: string;
-    slug: string;
-  };
-  image: string | null;
-  primaryVariant: {
-    price: number;
-    discount: number;
-    stock: number;
-    reserved: number;
-  };
-}
+export type HomeProductType = ProductCardType;
 
 export interface HomePostType {
   id: number;
