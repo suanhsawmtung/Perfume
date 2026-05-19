@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { SearchIcon, X } from "lucide-react";
 import type { ComponentProps } from "react";
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { useSearchParams } from "react-router";
 
 interface SearchInputProps
   extends Omit<ComponentProps<typeof Input>, "value" | "onChange"> {
@@ -19,19 +19,19 @@ export function SearchInput({
   className,
   ...props
 }: SearchInputProps) {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const searchParams = new URLSearchParams(location.search);
+  const [searchParams, setSearchParams] = useSearchParams();
   const initialValue = searchParams.get(paramKey) || "";
 
   const [value, setValue] = useState(initialValue);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Sync with URL when location changes (e.g., browser back/forward)
+  const currentParamValue = searchParams.get(paramKey);
+
+  // Sync with URL when search parameter changes from outside (safe dependency tracking)
   useEffect(() => {
-    const currentValue = searchParams.get(paramKey) || "";
+    const currentValue = currentParamValue || "";
     setValue(currentValue);
-  }, [location.search, paramKey]);
+  }, [currentParamValue]);
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -43,7 +43,7 @@ export function SearchInput({
   }, []);
 
   const updateUrl = (newValue: string) => {
-    const newSearchParams = new URLSearchParams(location.search);
+    const newSearchParams = new URLSearchParams(searchParams);
 
     if (newValue.trim()) {
       newSearchParams.set(paramKey, newValue.trim());
@@ -56,9 +56,7 @@ export function SearchInput({
       newSearchParams.delete("page");
     }
 
-    navigate(`${location.pathname}?${newSearchParams.toString()}`, {
-      replace: true,
-    });
+    setSearchParams(newSearchParams, { replace: true });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,7 +100,7 @@ export function SearchInput({
         )}
         {...props}
       />
-      <div className="absolute top-0 left-0 flex h-12 w-10 items-center justify-center">
+      <div className="absolute top-1/2 -translate-y-1/2 left-0 flex justify-center w-10">
         <SearchIcon className="text-muted-foreground size-4" />
       </div>
       {hasSearchParam && (

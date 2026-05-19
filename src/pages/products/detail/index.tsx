@@ -1,4 +1,3 @@
-import { ProductCard } from "@/components/product/product-card"
 import { ReviewCard } from "@/components/shared/review-card"
 import { Button } from "@/components/ui/button"
 import {
@@ -12,7 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import ContentWrapper from "@/components/wrapper/content-wrapper"
-import { getProductById, products, reviews } from "@/lib/data"
+import { getProductById, reviews } from "@/lib/data"
 import { cn } from "@/lib/utils"
 import { useCartStore } from "@/stores/cart.store"
 import { useWishlistStore } from "@/stores/wishlist.store"
@@ -65,9 +64,9 @@ export default function ProductDetailPage() {
   }, [product, hasItem]);
 
 
-  const relatedProducts = products
-    .filter((p) => p.id !== product.id && p.category === product.category)
-    .slice(0, 4)
+  // const relatedProducts = products
+  //   .filter((p) => p.id !== product.id && p.category === product.category)
+  //   .slice(0, 4)
 
   const productReviews = reviews.filter((r) =>
     r.product.toLowerCase().includes(product.name.toLowerCase().split(" ")[0])
@@ -450,7 +449,7 @@ export default function ProductDetailPage() {
           </div>
         </div>
 
-        {relatedProducts.length > 0 && (
+        {/* {relatedProducts.length > 0 && (
           <div className="mt-16 border-t border-border/50 pt-16">
             <h2 className="font-serif text-2xl font-medium">You May Also Like</h2>
             <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -459,7 +458,7 @@ export default function ProductDetailPage() {
               ))}
             </div>
           </div>
-        )}
+        )} */}
       </ContentWrapper>
     </div>
   )

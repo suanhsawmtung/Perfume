@@ -7,68 +7,60 @@ import {
 import { fetchProducts } from "../api";
 import { productQueryKeys, type ProductListQueryOptions } from "../key";
 
-type UseListProductsParams = Omit<ProductListQueryOptions, "offset"> & {
-  page?: number;
-};
-
 export function useListProducts(
-  params: UseListProductsParams,
+  params: ProductListQueryOptions,
 ): UseSuspenseQueryResult<ProductListResult<ProductCardType>, Error> {
   const {
-    page = 1,
+    offset,
     search,
     limit,
     brand,
     gender,
     concentration,
-    isActive,
     isLimited,
   } = params;
 
-  const listOptions: UseListProductsParams = {
-    page,
+  const listOptions: ProductListQueryOptions = {
+    offset,
     search,
     limit,
     brand,
     gender,
     concentration,
-    isActive,
     isLimited,
   };
 
   return useSuspenseQuery<ProductListResult<ProductCardType>, Error>({
-    queryKey: productQueryKeys.list({ ...listOptions, offset: (page - 1) * (limit || 8) } as any),
+    queryKey: productQueryKeys.list(listOptions),
     queryFn: () => fetchProducts(listOptions),
   });
 }
 
 export async function ensureListProducts(
-  params: UseListProductsParams,
+  params: ProductListQueryOptions,
 ): Promise<void> {
   const {
-    page = 1,
+    offset,
     search,
     limit,
     brand,
     gender,
     concentration,
-    isActive,
     isLimited,
   } = params;
 
-  const listOptions: UseListProductsParams = {
-    page,
+  const listOptions: ProductListQueryOptions = {
+    offset,
     search,
     limit,
     brand,
     gender,
     concentration,
-    isActive,
     isLimited,
   };
 
   await queryClient.ensureQueryData({
-    queryKey: productQueryKeys.list({ ...listOptions, offset: (page - 1) * (limit || 8) } as any),
+    queryKey: productQueryKeys.list(listOptions),
     queryFn: () => fetchProducts(listOptions),
   });
 }

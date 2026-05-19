@@ -395,5 +395,13 @@ export function pluralize(count: number, singular: string, plural?: string) {
   return plural ?? `${singular}s`;
 }
 
+export const toTitleCase = (str: string) =>
+  str.split(" ")
+    .map((word) => {
+      if (!word) return "";
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    })
+    .join(" ");
+
 export const sleep = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));

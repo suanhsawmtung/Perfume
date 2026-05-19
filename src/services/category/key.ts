@@ -7,4 +7,5 @@ export const categoryQueryKeys = {
     ["categories", "list", options] as const,
 
   detail: (slug: string) => ["categories", "detail", slug] as const,
+  selectOptions: (search?: string) => ["categories", "select-options", { search }] as const,
 };

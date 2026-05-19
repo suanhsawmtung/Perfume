@@ -29,6 +29,9 @@ export interface ProductCardType {
   slug: string;
   rating: number | null;
   ratingCount: number;
+  gender: Gender;
+  concentration: Concentration;
+  isLimited: boolean;
   brand: {
     name: string;
     slug: string;

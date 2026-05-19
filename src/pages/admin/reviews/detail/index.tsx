@@ -4,9 +4,10 @@ import { BackButton } from "@/components/admin/shared/back-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useGetReview } from "@/services/review/queries/useGetReview";
 import { useLoaderData } from "react-router";
+import type { loader } from "./loader";
 
 const AdminReviewDetailPage = () => {
-  const { id } = useLoaderData() as { id: number };
+  const { id } = useLoaderData<typeof loader>();
   const { data: review } = useGetReview(id);
 
   return (

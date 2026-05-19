@@ -16,21 +16,14 @@ import type {
   UpdateProductResponse
 } from "@/types/product.type";
 import type { FetchSelectPageResult } from "@/types/select-option.type";
+import type { ProductListQueryOptions } from "./key";
 
 export const DEFAULT_LIMIT = 8;
 export const ADMIN_DEFAULT_LIMIT = 10;
 
-export async function fetchProducts(options: {
-  page?: number;
-  search?: string;
-  limit?: number;
-  brand?: string;
-  gender?: Gender;
-  concentration?: Concentration;
-  isLimited?: boolean;
-}): Promise<ProductListResult<ProductCardType>> {
+export async function fetchProducts(options: ProductListQueryOptions): Promise<ProductListResult<ProductCardType>> {
   const {
-    page = 1,
+    offset = 0,
     search,
     limit = DEFAULT_LIMIT,
     brand,
@@ -38,8 +31,6 @@ export async function fetchProducts(options: {
     concentration,
     isLimited,
   } = options;
-
-  const offset = (page - 1) * limit;
 
   const queryParams: ProductQueryParams = {
     limit,
@@ -72,7 +63,7 @@ export async function fetchAdminProducts(options: {
   const {
     offset = 0,
     search,
-    limit = 10,
+    limit = ADMIN_DEFAULT_LIMIT,
     brand,
     gender,
     concentration,

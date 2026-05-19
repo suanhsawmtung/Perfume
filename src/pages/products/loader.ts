@@ -1,3 +1,4 @@
+import { DEFAULT_LIMIT } from "@/services/product/api";
 import { ensureListProducts } from "@/services/product/queries/useGetProducts";
 import type { Concentration, Gender } from "@/types/product.type";
 import type { LoaderFunctionArgs } from "react-router";
@@ -17,14 +18,16 @@ export async function loader({ request }: LoaderFunctionArgs) {
       ? false 
       : undefined;
 
+  const offset = (page - 1) * DEFAULT_LIMIT;
+
   const params = {
-    page,
+    offset,
     search,
     brand,
     gender,
     concentration,
     isLimited,
-    limit: 8,
+    limit: DEFAULT_LIMIT,
   };
 
   await ensureListProducts(params);
