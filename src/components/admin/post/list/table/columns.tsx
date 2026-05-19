@@ -2,16 +2,16 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatDate, formatName, getPostStatusVariant } from "@/lib/utils";
 import { useAuthStore } from "@/stores/auth.store";
-import type { PostType } from "@/types/post.type";
+import type { AdminListPostT } from "@/types/post.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowRightIcon, PencilLineIcon, Trash2Icon } from "lucide-react";
 import { Link, useLocation } from "react-router";
 import { DeletePostDialog } from "../../actions/delete-post-dialog";
 
 // Actions cell component that can use hooks
-const ActionsCell = ({ post }: { post: PostType }) => {
+const ActionsCell = ({ post }: { post: AdminListPostT }) => {
   const authUser = useAuthStore((state) => state.authUser);
-  const isAuthor = authUser?.id === post.authorId;
+  const isAuthor = authUser?.id === post.author.id;
   const isAdmin = authUser?.role === "ADMIN";
   const location = useLocation();
 
@@ -65,7 +65,7 @@ const ActionsCell = ({ post }: { post: PostType }) => {
   );
 };
 
-export const columns: ColumnDef<PostType>[] = [
+export const columns: ColumnDef<AdminListPostT>[] = [
   {
     accessorKey: "title",
     header: () => {
@@ -131,7 +131,7 @@ export const columns: ColumnDef<PostType>[] = [
       );
     },
     cell: ({ row }) => {
-      const status = row.getValue("status") as PostType["status"];
+      const status = row.getValue("status") as AdminListPostT["status"];
       const statusVariant = getPostStatusVariant(status);
       return (
         <div className="flex items-center justify-center">

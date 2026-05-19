@@ -3,15 +3,16 @@ import { BackButton } from "@/components/admin/shared/back-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatImagePath, getPostStatusVariant } from "@/lib/utils";
-import { useGetPost } from "@/services/post/queries/useGetPost";
+import { useGetPost } from "@/services/post/queries/admin/useGetPost";
 import type { PostStatus } from "@/types/post.type";
+import { ImageIcon } from "lucide-react";
 import { useParams } from "react-router";
 
 // Format author name from firstName and lastName
 const formatAuthorName = (author: {
   firstName: string | null;
   lastName: string | null;
-  email: string;
+  username: string | null;
 }): string => {
   const firstName = author.firstName || "";
   const lastName = author.lastName || "";
@@ -24,7 +25,7 @@ const formatAuthorName = (author: {
   if (lastName) {
     return lastName;
   }
-  return author.email;
+  return author.username || "Unknown";
 };
 
 const AdminPostDetailPage = () => {
@@ -49,13 +50,19 @@ const AdminPostDetailPage = () => {
             <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
               {/* Image section */}
               <div className="w-full lg:w-1/2">
-                <img
-                  src={formatImagePath(post.image, "post")}
-                  alt={post.title}
-                  className="h-auto w-full rounded-lg object-cover"
-                  loading="lazy"
-                  decoding="async"
-                />
+                {post.image ? (
+                  <img
+                    src={formatImagePath(post.image, "post")}
+                    alt={post.title}
+                    className="h-auto w-full rounded-lg object-cover"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ): (
+                  <div className="flex h-full w-full items-center justify-center bg-secondary/20">
+                    <ImageIcon className="h-12 w-12 text-muted-foreground/30" />
+                  </div>
+                )}
               </div>
 
               {/* Data section */}

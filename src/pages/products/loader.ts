@@ -30,7 +30,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
     limit: DEFAULT_LIMIT,
   };
 
-  await ensureListProducts(params);
-
-  return { params };
+  try {
+    await ensureListProducts(params);
+    return { params };
+  } catch (error: any) {
+    if (error.response?.status === 400) {
+      throw new Response("Invalid query parameters", { status: 400 });
+    }
+    throw error;
+  }
 }

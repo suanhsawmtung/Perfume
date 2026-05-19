@@ -6,7 +6,7 @@ import { FilterBar } from "@/components/admin/shared/filter-bar";
 import { MoreFilterButton } from "@/components/admin/shared/more-filter-button";
 import { isPostStatus } from "@/lib/utils";
 import { DEFAULT_LIMIT } from "@/services/post/api";
-import { useListPosts } from "@/services/post/queries/useGetPosts";
+import { useListPosts } from "@/services/post/queries/admin/useGetPosts";
 import { useSearchParams } from "react-router";
 
 const AdminPostsPage = () => {

@@ -2,7 +2,7 @@ import { PostForm } from "@/components/admin/post/form/post-form";
 import AdminHeaderSection from "@/components/admin/shared/admin-header-section";
 import { BackButton } from "@/components/admin/shared/back-button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useGetPost } from "@/services/post/queries/useGetPost";
+import { useGetPost } from "@/services/post/queries/admin/useGetPost";
 import { useParams } from "react-router";
 
 const AdminPostEditPage = () => {

@@ -1,4 +1,4 @@
-import { ensurePost } from "@/services/post/queries/useGetPost";
+import { ensurePost } from "@/services/post/queries/admin/useGetPost";
 import type { LoaderFunctionArgs } from "react-router";
 
 // Loader for post edit page - fetches post data by slug
@@ -10,7 +10,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   }
 
   try {
-    await ensurePost(slug);
+    await ensurePost(slug); 
 
     return null;
   } catch (error: any) {

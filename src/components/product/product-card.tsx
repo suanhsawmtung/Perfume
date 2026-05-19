@@ -1,4 +1,4 @@
-import { cn, formatPrice } from "@/lib/utils";
+import { cn, formatImagePath, formatPrice } from "@/lib/utils";
 import type { HomeProductType } from "@/types/home.type";
 import { Image as ImageIcon, Star } from "lucide-react";
 import { Link } from "react-router";
@@ -15,7 +15,7 @@ export function ProductCard({
       <div className="relative aspect-[3/4] overflow-hidden bg-secondary/50">
         {product.image ? (
           <img
-            src={product.image}
+            src={formatImagePath(product.image, "product")}
             alt={product.name}
             className="object-cover transition-transform duration-500 group-hover:scale-105 w-full h-full"
           />

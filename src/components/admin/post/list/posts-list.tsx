@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useAuthStore } from "@/stores/auth.store";
-import type { PostType } from "@/types/post.type";
+import type { AdminListPostT } from "@/types/post.type";
 import { FilterTags } from "../../shared/filter-tags";
 import { columns } from "./table/columns";
 import { DataTable } from "./table/data-table";
@@ -17,7 +17,7 @@ export function PostList({
   total,
   page,
 }: {
-  posts: PostType[];
+  posts: AdminListPostT[];
   total?: number;
   page?: number;
   size?: number;

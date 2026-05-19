@@ -1,6 +1,6 @@
-import { formatDate, formatName } from "@/lib/utils";
-import type { HomePostType } from "@/types/home.type";
-import { ArrowRight } from "lucide-react";
+import { formatDate, formatImagePath, formatName } from "@/lib/utils";
+import type { ListPostT } from "@/types/post.type";
+import { ArrowRight, ImageIcon } from "lucide-react";
 import { Link } from "react-router";
 
 interface BlogCardProps {
@@ -15,7 +15,7 @@ interface BlogCardProps {
 }
 
 interface NBlogCardProps {
-  post: HomePostType;
+  post: ListPostT;
   isHero?: boolean
 }
 
@@ -103,11 +103,17 @@ export function NBlogCard({
       <Link to={`/blogs/${post.slug}`} className="group block">
         <div className="grid gap-6 md:grid-cols-2 md:gap-8">
           <div className="relative aspect-[4/3] overflow-hidden bg-secondary/50">
-            <img
-              src={post.image}
-              alt={post.title}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
+            {post.image ? (
+              <img
+                src={formatImagePath(post.image, "post")}
+                alt={post.title}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-secondary/20">
+                <ImageIcon className="h-8 w-8 text-muted-foreground/30" />
+              </div>
+            )}
           </div>
           <div className="flex flex-col justify-center">
             <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
@@ -143,11 +149,17 @@ export function NBlogCard({
   return (
     <Link to={`/blogs/${post.slug}`} className="group block">
       <div className="relative aspect-[4/3] overflow-hidden bg-secondary/50">
-        <img
-          src={post.image}
-          alt={post.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
+        {post.image ? (
+          <img
+            src={formatImagePath(post.image, "post")}
+            alt={post.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center bg-secondary/20">
+            <ImageIcon className="h-8 w-8 text-muted-foreground/30" />
+          </div>
+        )}
       </div>
       <div className="mt-4">
         <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">

@@ -73,6 +73,7 @@ import { loader as rootLoader } from "@/pages/loader";
 import { action as productAction } from "@/pages/products/detail/action";
 import { loader as productLoader } from "@/pages/products/detail/loader";
 import { loader as productsLoader } from "@/pages/products/loader";
+import { loader as blogsLoader } from "@/pages/blogs/loader";
 
 import AdminBrandsPage from "@/pages/admin/brands";
 import AdminBrandCreateDialog from "@/pages/admin/brands/create";
@@ -176,7 +177,7 @@ export const router = createBrowserRouter([
       {
         path: "blogs",
         children: [
-          { index: true, Component: BlogPage },
+          { index: true, Component: BlogPage, loader: blogsLoader },
           { path: ":blogId", Component: BlogDetailPage },
         ],
       },

@@ -10,7 +10,7 @@ export type PostType = {
   title: string;
   excerpt: string;
   content: string;
-  image: string;
+  image: string | null;
   authorId: number;
   categoryId: number;
   status: PostStatus;
@@ -23,7 +23,7 @@ export type PostType = {
     lastName: string | null;
     phone: string | null;
     email: string;
-    username: string | null;
+    username: string;
   };
   category: {
     id: number;
@@ -34,8 +34,56 @@ export type PostType = {
   };
 };
 
+export type ListPostT = {
+  id: number;
+  title: string;
+  slug: string;
+  image: string | null;
+  excerpt: string;
+  publishedAt: string | null;
+  author: {
+    id: number;
+    firstName: string | null;
+    lastName: string | null;
+    username: string;
+  };
+  category: {
+    id: number;
+    slug: string;
+    name: string;
+  };
+};
+
+export type AdminListPostT = {
+  id: number;
+  title: string;
+  slug: string;
+  status: PostStatus;
+  publishedAt: string | null;
+  author: {
+    id: number;
+    firstName: string | null;
+    lastName: string | null;
+    username: string;
+  };
+  category: {
+    id: number;
+    slug: string;
+    name: string;
+  };
+};
+
 export interface PostListResult {
-  items: PostType[];
+  total: number;
+  items: ListPostT[];
+  currentPage: number;
+  totalPages: number;
+  pageSize: number;
+}
+
+export interface AdminPostListResult {
+  total: number;
+  items: AdminListPostT[];
   currentPage: number;
   totalPages: number;
   pageSize: number;

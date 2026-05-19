@@ -1,5 +1,5 @@
 import { queryClient } from "@/lib/query-client";
-import type { PostListResult } from "@/types/post.type";
+import type { PostListResult, PostQueryParams } from "@/types/post.type";
 import {
   useSuspenseQuery,
   type UseSuspenseQueryResult,
@@ -7,32 +7,24 @@ import {
 import { fetchPosts } from "../api";
 import { postQueryKeys } from "../key";
 
-interface UseListPostsParams {
-  offset: number;
-  search?: string;
-  limit?: number;
-  category?: string;
-  status?: string;
-}
-
 export function useListPosts(
-  params: UseListPostsParams,
+  params: PostQueryParams,
 ): UseSuspenseQueryResult<PostListResult, Error> {
-  const { offset, search, limit, category, status } = params;
+  const { offset, search, limit, category } = params;
 
   return useSuspenseQuery<PostListResult, Error>({
-    queryKey: postQueryKeys.list({ offset, search, limit, category, status }),
-    queryFn: () => fetchPosts({ offset, search, limit, category, status }),
+    queryKey: postQueryKeys.list({ offset, search, limit, category }),
+    queryFn: () => fetchPosts({ offset, search, limit, category }),
   });
 }
 
 export async function ensureListPosts(
-  params: UseListPostsParams,
+  params: PostQueryParams,
 ): Promise<void> {
-  const { offset, search, limit, category, status } = params;
+  const { offset, search, limit, category } = params;
 
   await queryClient.ensureQueryData({
-    queryKey: postQueryKeys.list({ offset, search, limit, category, status }),
-    queryFn: () => fetchPosts({ offset, search, limit, category, status }),
+    queryKey: postQueryKeys.list({ offset, search, limit, category }),
+    queryFn: () => fetchPosts({ offset, search, limit, category }),
   });
 }

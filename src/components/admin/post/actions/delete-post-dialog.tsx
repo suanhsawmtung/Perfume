@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import DialogWrapper from "@/components/wrapper/dialog-wrapper";
-import { useDeletePostMutation } from "@/services/post/queries/useDeletePost";
-import type { PostType } from "@/types/post.type";
+import { useDeletePostMutation } from "@/services/post/queries/admin/useDeletePost";
+import type { AdminListPostT } from "@/types/post.type";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 
 interface DeletePostDialogProps {
-  post: PostType;
+  post: AdminListPostT;
   children: React.ReactNode;
 }
 

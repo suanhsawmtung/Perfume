@@ -1,4 +1,4 @@
-import { ensurePost } from "@/services/post/queries/useGetPost";
+import { ensurePost } from "@/services/post/queries/admin/useGetPost";
 import type { LoaderFunctionArgs } from "react-router";
 
 // Loader for post detail page - fetches post data by slug
