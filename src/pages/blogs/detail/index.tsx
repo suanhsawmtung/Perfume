@@ -1,36 +1,37 @@
-import { BlogCard } from "@/components/blog/blog-card"
+import SecureContent from "@/components/blog/secure-content"
 import { Button } from "@/components/ui/button"
 import ContentWrapper from "@/components/wrapper/content-wrapper"
-import { blogs, getBlogById } from "@/lib/data"
-import { ArrowLeft, Facebook, Link2, Twitter } from "lucide-react"
-import { Link, useParams } from "react-router"
+import { formatDate, formatImagePath, formatName } from "@/lib/utils"
+import { useGetPost } from "@/services/post/queries/useGetPost"
+import { ArrowLeft, ImageIcon, Link2 } from "lucide-react"
+import { Link, useLoaderData } from "react-router"
+import { toast } from "sonner"
 
 export default function BlogDetailPage() {
-  const { blogId } = useParams();
+  const { slug } = useLoaderData();
 
-  if (!blogId) {
-    throw new Response("Not Found", { status: 404 });
+  const { data: blog } = useGetPost(slug);
+
+  const copyLink = async () => {
+    await navigator.clipboard.writeText(window.location.href)
+    toast.success("Blog link copied!")
   }
-
-  const blog = getBlogById(blogId)
-
-  if (!blog) {
-    throw new Response("Not Found", { status: 404 });
-  }
-
-  const relatedBlogs = blogs
-    .filter((b) => b.id !== blog.id)
-    .slice(0, 2)
 
   return (
     <div className="min-h-screen">
       <article>
         <div className="relative h-[50vh] min-h-[400px] overflow-hidden">
-          <img
-            src={blog.image}
-            alt={blog.title}
-            className="object-cover w-full h-full"
-          />
+          {blog.image ? (
+            <img
+              src={formatImagePath(blog.image, "post")}
+              alt={blog.title}
+              className="object-cover w-full h-full"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-secondary/20">
+              <ImageIcon className="h-8 w-8 text-muted-foreground/30" />
+            </div>
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
         </div>
 
@@ -46,7 +47,7 @@ export default function BlogDetailPage() {
 
             <div className="rounded-lg bg-background p-8 shadow-lg md:p-12">
               <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                {blog.category}
+                {blog.category.name}
               </span>
               <h1 className="mt-4 font-serif text-3xl font-medium leading-tight text-balance md:text-4xl lg:text-5xl">
                 {blog.title}
@@ -56,21 +57,17 @@ export default function BlogDetailPage() {
                 <div className="flex items-center gap-4">
                   <div className="h-10 w-10 rounded-full bg-secondary" />
                   <div>
-                    <p className="text-sm font-medium">{blog.author}</p>
-                    <p className="text-xs text-muted-foreground">{blog.date}</p>
+                    <p className="text-sm font-medium">{formatName({
+                      firstName: blog.author.firstName,
+                      lastName: blog.author.lastName,
+                      username: blog.author.username,
+                    })}</p>
+                    <p className="text-xs text-muted-foreground">{formatDate(blog.publishedAt as string)}</p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <Button variant="ghost" size="icon">
-                    <Facebook className="h-4 w-4" />
-                    <span className="sr-only">Share on Facebook</span>
-                  </Button>
-                  <Button variant="ghost" size="icon">
-                    <Twitter className="h-4 w-4" />
-                    <span className="sr-only">Share on Twitter</span>
-                  </Button>
-                  <Button variant="ghost" size="icon">
+                  <Button variant="ghost" size="icon" onClick={copyLink}>
                     <Link2 className="h-4 w-4" />
                     <span className="sr-only">Copy link</span>
                   </Button>
@@ -78,57 +75,13 @@ export default function BlogDetailPage() {
               </div>
 
               <div className="prose prose-neutral dark:prose-invert mt-8 max-w-none">
-                {blog.content.split("\n\n").map((paragraph, index) => {
-                  if (paragraph.startsWith("## ")) {
-                    return (
-                      <h2
-                        key={index}
-                        className="mt-8 mb-4 font-serif text-2xl font-medium"
-                      >
-                        {paragraph.replace("## ", "")}
-                      </h2>
-                    )
-                  }
-                  if (paragraph.startsWith("### ")) {
-                    return (
-                      <h3
-                        key={index}
-                        className="mt-6 mb-3 text-lg font-medium"
-                      >
-                        {paragraph.replace("### ", "")}
-                      </h3>
-                    )
-                  }
-                  if (paragraph.startsWith("- ")) {
-                    const items = paragraph.split("\n")
-                    return (
-                      <ul key={index} className="my-4 list-disc pl-6 space-y-2">
-                        {items.map((item, i) => (
-                          <li
-                            key={i}
-                            className="text-muted-foreground leading-relaxed"
-                          >
-                            {item.replace("- ", "").replace(/\*\*(.*?)\*\*/g, "$1")}
-                          </li>
-                        ))}
-                      </ul>
-                    )
-                  }
-                  return (
-                    <p
-                      key={index}
-                      className="my-4 text-muted-foreground leading-relaxed"
-                    >
-                      {paragraph}
-                    </p>
-                  )
-                })}
+                <SecureContent content={blog.content} />
               </div>
             </div>
           </div>
         </ContentWrapper>
       </article>
-
+      {/* 
       {relatedBlogs.length > 0 && (
         <ContentWrapper className="py-16">
           <h2 className="font-serif text-2xl font-medium">Continue Reading</h2>
@@ -138,7 +91,7 @@ export default function BlogDetailPage() {
             ))}
           </div>
         </ContentWrapper>
-      )}
+      )} */}
     </div>
   )
 }

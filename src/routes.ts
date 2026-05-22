@@ -74,6 +74,7 @@ import { action as productAction } from "@/pages/products/detail/action";
 import { loader as productLoader } from "@/pages/products/detail/loader";
 import { loader as productsLoader } from "@/pages/products/loader";
 import { loader as blogsLoader } from "@/pages/blogs/loader";
+import { loader as blogLoader } from "@/pages/blogs/detail/loader";
 
 import AdminBrandsPage from "@/pages/admin/brands";
 import AdminBrandCreateDialog from "@/pages/admin/brands/create";
@@ -166,9 +167,9 @@ export const router = createBrowserRouter([
           { path: "orders", Component: OrderHistoryPage },
         ],
       },
-      { 
-        path: "settings", 
-        Component: SettingsPage 
+      {
+        path: "settings",
+        Component: SettingsPage
       },
       {
         path: "logout",
@@ -177,8 +178,16 @@ export const router = createBrowserRouter([
       {
         path: "blogs",
         children: [
-          { index: true, Component: BlogPage, loader: blogsLoader },
-          { path: ":blogId", Component: BlogDetailPage },
+          {
+            index: true,
+            Component: BlogPage,
+            loader: blogsLoader
+          },
+          {
+            path: ":slug",
+            Component: BlogDetailPage,
+            loader: blogLoader
+          },
         ],
       },
       {
@@ -258,7 +267,7 @@ export const router = createBrowserRouter([
             index: true,
             Component: AdminPostsPage,
             loader: adminPostsLoader,
-            
+
           },
           {
             path: "create",

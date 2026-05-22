@@ -40,6 +40,13 @@ export async function fetchPosts(options: {
   };
 }
 
+export async function fetchPost(slug: string): Promise<PostType> {
+  const response = await api.get(`/posts/${slug}`);
+
+  // Backend returns: { success: true, data: { post }, message: null }
+  return response.data?.data;
+}
+
 export async function fetchAdminPosts(options: {
   offset?: number;
   search?: string;
