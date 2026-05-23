@@ -75,6 +75,7 @@ import { loader as productLoader } from "@/pages/products/detail/loader";
 import { loader as productsLoader } from "@/pages/products/loader";
 import { loader as blogsLoader } from "@/pages/blogs/loader";
 import { loader as blogLoader } from "@/pages/blogs/detail/loader";
+import { loader as profileLoader } from "@/pages/profile/loader";
 
 import AdminBrandsPage from "@/pages/admin/brands";
 import AdminBrandCreateDialog from "@/pages/admin/brands/create";
@@ -162,7 +163,7 @@ export const router = createBrowserRouter([
       {
         path: "profile",
         children: [
-          { index: true, Component: ProfilePage },
+          { index: true, Component: ProfilePage, loader: profileLoader },
           { path: "wishlist", Component: WishlistPage },
           { path: "orders", Component: OrderHistoryPage },
         ],
