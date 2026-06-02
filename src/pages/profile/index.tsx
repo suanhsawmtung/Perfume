@@ -4,7 +4,7 @@ import { formatDate, formatImagePath, formatName, toTitleCase } from "@/lib/util
 import { ProfileSidebar } from "@/components/profile/profile-sidebar"
 import { ProfileWishlistCard } from "@/components/profile/profile-wishlist-card"
 import { RewardsCard } from "@/components/profile/rewards-card"
-import { ProfileOrderCard } from "@/components/profile/profile-order-card"
+import { ProfileOrderCard } from "@/components/order/profile-order-card"
 
 export default function ProfilePage() {
   const { data: profile } = useGetProfile()

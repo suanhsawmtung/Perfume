@@ -1,13 +1,13 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatDateTime, formatPrice, getOrderSourceVariant, getOrderStatusVariant, getPaymentStatusVariant } from "@/lib/utils";
-import type { OrderType } from "@/types/order.type";
+import type { AdminOrderType } from "@/types/order.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowRightIcon, PencilLineIcon } from "lucide-react";
 import { Link, useLocation } from "react-router";
 
 // Actions cell component
-const ActionsCell = ({ order }: { order: OrderType }) => {
+const ActionsCell = ({ order }: { order: AdminOrderType }) => {
   const location = useLocation();
 
   return (
@@ -20,7 +20,7 @@ const ActionsCell = ({ order }: { order: OrderType }) => {
       >
         <Link
           to={`/admin/orders/${order.code}`}
-          state={{ from: location }}  
+          state={{ from: location }}
           className="flex items-center justify-center gap-1 bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
         >
           Details
@@ -28,24 +28,24 @@ const ActionsCell = ({ order }: { order: OrderType }) => {
         </Link>
       </Button>
 
-       <Button
-          variant="outline"
-          size="sm"
-          className="h-7 w-7 rounded-sm border-none bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
-          asChild
+      <Button
+        variant="outline"
+        size="sm"
+        className="h-7 w-7 rounded-sm border-none bg-blue-50 text-blue-400 hover:bg-blue-50 hover:text-blue-400"
+        asChild
+      >
+        <Link
+          to={`/admin/orders/${order.code}/edit`}
+          state={{ from: location }}
         >
-          <Link 
-            to={`/admin/orders/${order.code}/edit`}
-            state={{ from: location }}
-          >
-            <PencilLineIcon size={16} />
-          </Link>
-        </Button>
+          <PencilLineIcon size={16} />
+        </Link>
+      </Button>
     </div>
   );
 };
 
-export const columns: ColumnDef<OrderType>[] = [
+export const columns: ColumnDef<AdminOrderType>[] = [
   {
     accessorKey: "code",
     header: () => {
@@ -106,7 +106,7 @@ export const columns: ColumnDef<OrderType>[] = [
       );
     },
     cell: ({ row }) => {
-      const status = row.getValue("status") as OrderType["status"];
+      const status = row.getValue("status") as AdminOrderType["status"];
       const variant = getOrderStatusVariant(status);
 
       return (
@@ -121,20 +121,20 @@ export const columns: ColumnDef<OrderType>[] = [
     header: () => {
       return (
         <div className="text-primary flex items-center justify-center text-sm font-semibold">
-         Payment
+          Payment
         </div>
       );
     },
     cell: ({ row }) => {
-        const paymentStatus = row.getValue("paymentStatus") as OrderType["paymentStatus"];
-        const variant = getPaymentStatusVariant(paymentStatus);
+      const paymentStatus = row.getValue("paymentStatus") as AdminOrderType["paymentStatus"];
+      const variant = getPaymentStatusVariant(paymentStatus);
 
-        return (
-          <div className="flex items-center justify-center">
-            <Badge variant={variant}>{paymentStatus}</Badge>
-          </div>
-        );
-      },
+      return (
+        <div className="flex items-center justify-center">
+          <Badge variant={variant}>{paymentStatus}</Badge>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "source",
@@ -146,15 +146,15 @@ export const columns: ColumnDef<OrderType>[] = [
       );
     },
     cell: ({ row }) => {
-        const source = row.getValue("source") as OrderType["source"];
-        const variant = getOrderSourceVariant(source);
+      const source = row.getValue("source") as AdminOrderType["source"];
+      const variant = getOrderSourceVariant(source);
 
-        return (
-          <div className="flex items-center justify-center">
-            <Badge variant={variant}>{source}</Badge>
-          </div>
-        );
-      },
+      return (
+        <div className="flex items-center justify-center">
+          <Badge variant={variant}>{source}</Badge>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "createdAt",

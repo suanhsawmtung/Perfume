@@ -145,6 +145,7 @@ import { action as adminUpdateTransactionAction } from "@/pages/admin/transactio
 import { loader as adminEditTransactionLoader } from "@/pages/admin/transactions/update/loader";
 import ProfilePage from "@/pages/profile";
 import OrderHistoryPage from "@/pages/profile/orders";
+import { loader as ordersLoader } from "@/pages/profile/orders/loader";
 import WishlistPage from "@/pages/profile/wishlist";
 import SettingsPage from "@/pages/settings";
 
@@ -165,7 +166,7 @@ export const router = createBrowserRouter([
         children: [
           { index: true, Component: ProfilePage, loader: profileLoader },
           { path: "wishlist", Component: WishlistPage },
-          { path: "orders", Component: OrderHistoryPage },
+          { path: "orders", Component: OrderHistoryPage, loader: ordersLoader },
         ],
       },
       {

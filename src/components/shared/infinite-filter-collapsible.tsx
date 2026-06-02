@@ -104,7 +104,7 @@ export function InfiniteFilterCollapsible({
       onOpenChange={onOpenChange}
       className={cn("w-full", className)}
     >
-      <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium hover:bg-secondary transition-colors">
+      <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors">
         {title}
         <ChevronDown
           className={cn(

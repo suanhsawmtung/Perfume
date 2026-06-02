@@ -1,4 +1,4 @@
-import type { orderFilterFormSchema } from "@/validations/order.validation";
+import { cancelOrderSchema, type orderFilterFormSchema, type orderFormSchema } from "@/validations/order.validation";
 import type z from "zod";
 import type { BrandType } from "./brand.type";
 import type { PaymentMethod, PaymentStatus } from "./payment.type";
@@ -34,6 +34,36 @@ export interface RefundType {
 }
 
 export interface OrderType {
+  id: number;
+  code: string;
+  image: string | null;
+  status: OrderStatus;
+  paymentStatus: OrderPaymentStatus;
+  createdAt: string | Date;
+  totalPrice: number;
+  customerAddress: string | null;
+  customerName: string | null;
+  customerPhone: string | null;
+  customerNotes: string | null;
+  cancelledReason: string | null;
+  rejectedReason: string | null;
+  totalPaidAmount: number;
+  totalRefundAmount: number;
+  orderItems: {
+    quantity: number;
+    price: number | string;
+    size: number;
+    image: string | null;
+    product: {
+      id: number;
+      name: string;
+      slug: string;
+      brand: string;
+    };
+  }[];
+}
+
+export interface AdminOrderType {
   id: number;
   code: string;
   totalPrice: number;
@@ -93,7 +123,7 @@ export interface OrderItem {
   };
 }
 
-export interface OrderDetailType extends OrderType {
+export interface OrderDetailType extends AdminOrderType {
   orderItems: OrderItem[];
   payments: PaymentType[];
   refunds: RefundType[];
@@ -101,8 +131,8 @@ export interface OrderDetailType extends OrderType {
   totalRefundAmount: number;
 }
 
-export interface OrderListResult {
-  items: OrderType[];
+export interface OrderListResult<T = AdminOrderType> {
+  items: T[];
   currentPage: number;
   totalPages: number;
   pageSize: number;
@@ -115,6 +145,7 @@ export interface OrderQueryParams {
   status?: string;
   paymentStatus?: string;
   source?: string;
+  condition?: string;
 }
 
 export type OrderFilterFormValues = z.infer<typeof orderFilterFormSchema>;
@@ -135,3 +166,6 @@ export interface CreateOrderParams {
   rejectedReason?: string;
   cancelledReason?: string;
 }
+
+export type OrderFormValues = z.infer<typeof orderFormSchema>;
+export type CancelOrderValues = z.infer<typeof cancelOrderSchema>;

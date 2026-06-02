@@ -18,7 +18,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
     // Invalidate queries
     await queryClient.invalidateQueries({
-      queryKey: orderQueryKeys.detail(code),
+      queryKey: orderQueryKeys.admin.detail(code),
     });
 
     await queryClient.invalidateQueries({

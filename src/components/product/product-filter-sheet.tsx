@@ -22,6 +22,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "react-router";
 import * as z from "zod";
+import { Separator } from "@/components/ui/separator";
 
 
 const filterSchema = z.object({
@@ -37,7 +38,7 @@ type FilterValues = z.infer<typeof filterSchema>;
 export function ProductFilterSheet() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
-  
+
   const [genderOpen, setGenderOpen] = useState(true);
   const [brandOpen, setBrandOpen] = useState(true);
   const [concentrationOpen, setConcentrationOpen] = useState(true);
@@ -68,20 +69,20 @@ export function ProductFilterSheet() {
 
   const onSubmit = (values: FilterValues) => {
     const newSearchParams = new URLSearchParams(searchParams);
-    
+
     // Set or delete params based on form values
     if (values.search) newSearchParams.set("search", values.search);
     else newSearchParams.delete("search");
-    
+
     if (values.gender) newSearchParams.set("gender", values.gender);
     else newSearchParams.delete("gender");
-    
+
     if (values.brand) newSearchParams.set("brand", values.brand);
     else newSearchParams.delete("brand");
-    
+
     if (values.concentration) newSearchParams.set("concentration", values.concentration);
     else newSearchParams.delete("concentration");
-    
+
     if (values.isLimited) newSearchParams.set("isLimited", "true");
     else newSearchParams.delete("isLimited");
 
@@ -121,117 +122,127 @@ export function ProductFilterSheet() {
         <SheetHeader className="px-6 pb-2">
           <SheetTitle>Product Filters</SheetTitle>
         </SheetHeader>
-        
-        <div className="border-t border-border/50" />
+
+        <Separator />
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col flex-1 overflow-hidden">
-            <div className="flex-1 overflow-y-auto px-6 py-4">
+            <div className="flex-1 overflow-y-auto py-4">
               <div className="space-y-6">
-                
-                {/* Search Input at the top */}
-                <FormField
-                  control={form.control}
-                  name="search"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <div className="relative">
-                          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                          <Input
-                            placeholder="Search fragrances..."
-                            className="pl-9"
-                            {...field}
-                          />
-                        </div>
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
 
-                <FormField
-                  control={form.control}
-                  name="gender"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FilterCollapsible
-                        title="Gender"
-                        options={PRODUCT_GENDERS}
-                        selectedValue={field.value || null}
-                        onToggle={(val) => field.onChange(field.value === val ? null : val)}
-                        open={genderOpen}
-                        onOpenChange={setGenderOpen}
-                      />
-                    </FormItem>
-                  )}
-                />
+                <div className="px-6">
+                  {/* Search Input at the top */}
+                  <FormField
+                    control={form.control}
+                    name="search"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <div className="relative">
+                            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                            <Input
+                              placeholder="Search fragrances..."
+                              className="pl-9"
+                              {...field}
+                            />
+                          </div>
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
-                <div className="border-t border-border/50" />
-
-                <FormField
-                  control={form.control}
-                  name="brand"
-                  render={({ field }) => (
-                    <FormItem>
-                      <InfiniteFilterCollapsible
-                        title="Brands"
-                        queryKey={brandQueryKeys.selectOptions()}
-                        onFetch={fetchBrandSelectOptions}
-                        selectedValue={field.value || null}
-                        onToggle={(val) => field.onChange(field.value === val ? null : val)}
-                        open={brandOpen}
-                        onOpenChange={setBrandOpen}
-                        searchPlaceholder="Search brands..."
-                      />
-                    </FormItem>
-                  )}
-                />
-
-                <div className="border-t border-border/50" />
-
-                <FormField
-                  control={form.control}
-                  name="concentration"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FilterCollapsible
-                        title="Concentration"
-                        options={PRODUCT_CONCENTRATIONS}
-                        selectedValue={field.value || null}
-                        onToggle={(val) => field.onChange(field.value === val ? null : val)}
-                        open={concentrationOpen}
-                        onOpenChange={setConcentrationOpen}
-                      />
-                    </FormItem>
-                  )}
-                />
-
-                <div className="border-t border-border/50" />
-
-                <FormField
-                  control={form.control}
-                  name="isLimited"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center gap-3 px-3 py-2 space-y-0">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
+                <div className="px-6">
+                  <FormField
+                    control={form.control}
+                    name="gender"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FilterCollapsible
+                          title="Gender"
+                          options={PRODUCT_GENDERS}
+                          selectedValue={field.value || null}
+                          onToggle={(val) => field.onChange(field.value === val ? null : val)}
+                          open={genderOpen}
+                          onOpenChange={setGenderOpen}
                         />
-                      </FormControl>
-                      <Label
-                        className="text-sm font-medium cursor-pointer"
-                        onClick={() => field.onChange(!field.value)}
-                      >
-                        Limited Edition Only
-                      </Label>
-                    </FormItem>
-                  )}
-                />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <Separator />
+
+                <div className="px-6">
+                  <FormField
+                    control={form.control}
+                    name="brand"
+                    render={({ field }) => (
+                      <FormItem>
+                        <InfiniteFilterCollapsible
+                          title="Brands"
+                          queryKey={brandQueryKeys.selectOptions()}
+                          onFetch={fetchBrandSelectOptions}
+                          selectedValue={field.value || null}
+                          onToggle={(val) => field.onChange(field.value === val ? null : val)}
+                          open={brandOpen}
+                          onOpenChange={setBrandOpen}
+                          searchPlaceholder="Search brands..."
+                        />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <Separator />
+
+                <div className="px-6">
+                  <FormField
+                    control={form.control}
+                    name="concentration"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FilterCollapsible
+                          title="Concentration"
+                          options={PRODUCT_CONCENTRATIONS}
+                          selectedValue={field.value || null}
+                          onToggle={(val) => field.onChange(field.value === val ? null : val)}
+                          open={concentrationOpen}
+                          onOpenChange={setConcentrationOpen}
+                        />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <Separator />
+
+                <div className="px-6">
+                  <FormField
+                    control={form.control}
+                    name="isLimited"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center gap-3 px-3 py-2 space-y-0">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <Label
+                          className="text-sm font-medium cursor-pointer"
+                          onClick={() => field.onChange(!field.value)}
+                        >
+                          Limited Edition Only
+                        </Label>
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
             </div>
-            
-            <div className="border-t border-border/50" />
+
+            <Separator />
 
             <SheetFooter className="p-6 pt-4">
               <div className="flex w-full gap-3">

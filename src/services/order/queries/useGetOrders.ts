@@ -1,31 +1,56 @@
 import { queryClient } from "@/lib/query-client";
-import type { OrderListResult, OrderQueryParams } from "@/types/order.type";
 import {
-  useSuspenseQuery,
-  type UseSuspenseQueryResult,
+    useSuspenseQuery,
+    type UseSuspenseQueryResult,
 } from "@tanstack/react-query";
+import type { OrderListResult, OrderQueryParams, OrderType } from "@/types/order.type";
 import { fetchOrders } from "../api";
-import { orderQueryKeys } from "../key";
+import { orderQueryKeys } from "@/services/order/key";
 
 export function useListOrders(
-  params: OrderQueryParams,
-): UseSuspenseQueryResult<OrderListResult, Error> {
-  const { offset, search, limit, status, paymentStatus, source } = params;
+    userId: number,
+    params: OrderQueryParams,
+): UseSuspenseQueryResult<OrderListResult<OrderType>, Error> {
+    const {
+        offset,
+        search,
+        limit,
+        condition
+    } = params;
 
-  return useSuspenseQuery<OrderListResult, Error>({
-    queryKey: orderQueryKeys.list({ offset, search, limit, status, paymentStatus, source }),
-    queryFn: () => fetchOrders({ offset, search, limit, status, paymentStatus, source }),
-  });
+    const listOptions: OrderQueryParams = {
+        offset,
+        search,
+        limit,
+        condition
+    };
+
+    return useSuspenseQuery<OrderListResult<OrderType>, Error>({
+        queryKey: orderQueryKeys.list(userId, listOptions),
+        queryFn: () => fetchOrders(listOptions),
+    });
 }
 
 export async function ensureListOrders(
-  params: OrderQueryParams,
+    userId: number,
+    params: OrderQueryParams,
 ): Promise<void> {
-  const { offset, search, limit, status, paymentStatus, source } = params;
+    const {
+        offset,
+        search,
+        condition,
+        limit,
+    } = params;
 
-  await queryClient.ensureQueryData({
-    queryKey: orderQueryKeys.list({ offset, search, limit, status, paymentStatus, source }),
-    queryFn: () => fetchOrders({ offset, search, limit, status, paymentStatus, source }),
-  });
+    const listOptions: OrderQueryParams = {
+        offset,
+        search,
+        condition,
+        limit,
+    };
+
+    await queryClient.ensureQueryData({
+        queryKey: orderQueryKeys.list(userId, listOptions),
+        queryFn: () => fetchOrders(listOptions),
+    });
 }
-

@@ -11,8 +11,7 @@ import { Input } from "@/components/ui/input";
 import { TabButton } from "@/components/ui/tab-button";
 import { Textarea } from "@/components/ui/textarea";
 import { formatImagePath, formatPrice } from "@/lib/utils";
-import type { OrderDetailType, OrderStatus } from "@/types/order.type";
-import type { OrderFormValues } from "@/validations/order.validation";
+import type { OrderDetailType, OrderFormValues, OrderStatus } from "@/types/order.type";
 import { orderFormSchema } from "@/validations/order.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ImageIcon, Loader2 } from "lucide-react";
@@ -63,7 +62,7 @@ export const OrderForm = ({ order }: { order?: OrderDetailType }) => {
   const isContentLocked = useMemo(() => {
     if (!isEditMode) return false;
     if (order?.source === "CUSTOMER") return true;
-    
+
     // For ADMIN source: Lock if status is SHIPPED or further
     const lockedStatuses: OrderStatus[] = ["SHIPPED", "DELIVERED", "DONE", "CANCELLED", "REJECTED"];
     return lockedStatuses.includes(order.status);
@@ -156,7 +155,7 @@ export const OrderForm = ({ order }: { order?: OrderDetailType }) => {
             isPhoneChanged ||
             isAddressChanged ||
             isNotesChanged ||
-            isItemsLengthChanged || 
+            isItemsLengthChanged ||
             isItemsContentChanged
           ) {
             if (isCustomerOrder) {
@@ -182,7 +181,7 @@ export const OrderForm = ({ order }: { order?: OrderDetailType }) => {
           return;
         }
 
-        if(values.status !== order.status && order.source === "CUSTOMER" && values.status === "CANCELLED") {
+        if (values.status !== order.status && order.source === "CUSTOMER" && values.status === "CANCELLED") {
           toast.error(`You cannot cancel the customer sourced order.`);
           return;
         }
@@ -238,12 +237,12 @@ export const OrderForm = ({ order }: { order?: OrderDetailType }) => {
     const transitions = orderStatusTransitions[order.status as OrderStatus] || [];
     return statusOptions.filter((option) => {
       const isAllowed = option.key === order.status || transitions.includes(option.key);
-      
+
       // Hide CANCELLED status for CUSTOMER source orders in update form
       if (order?.source === "CUSTOMER" && option.key === "CANCELLED") {
         return false;
       }
-      
+
       return isAllowed;
     });
   }, [isEditMode, order?.status, order?.source]);
@@ -269,7 +268,7 @@ export const OrderForm = ({ order }: { order?: OrderDetailType }) => {
                   />
                 </div>
               </div>
-            ): (
+            ) : (
               <div className="bg-muted/10 flex h-auto w-full flex-col items-center justify-center gap-3 rounded-lg border-muted-foreground/25 border-2 border-dashed p-8">
                 <div className="flex min-h-[300px] flex-col items-center justify-center gap-3">
                   <ImageIcon className="text-muted-foreground h-6 w-6" />
@@ -315,9 +314,9 @@ export const OrderForm = ({ order }: { order?: OrderDetailType }) => {
                 <FormItem>
                   <FormLabel>Address</FormLabel>
                   <FormControl>
-                    <Textarea 
-                      placeholder="Enter delivery address" 
-                      {...field} 
+                    <Textarea
+                      placeholder="Enter delivery address"
+                      {...field}
                       className="min-h-[80px]"
                       disabled={!!isContentLocked}
                     />
@@ -333,10 +332,10 @@ export const OrderForm = ({ order }: { order?: OrderDetailType }) => {
                 <FormItem>
                   <FormLabel>Customer Notes (Optional)</FormLabel>
                   <FormControl>
-                    <Textarea 
-                      placeholder="Add any special instructions" 
-                      {...field} 
-                      disabled={isContentLocked} 
+                    <Textarea
+                      placeholder="Add any special instructions"
+                      {...field}
+                      disabled={isContentLocked}
                     />
                   </FormControl>
                   <FormMessage />
@@ -352,14 +351,14 @@ export const OrderForm = ({ order }: { order?: OrderDetailType }) => {
                   <FormLabel>Order Status</FormLabel>
                   <FormControl>
                     <div className="flex flex-wrap gap-2">
-                       {filteredStatusOptions.map((option) => (
-                         <TabButton
-                           key={option.key}
-                           text={option.text}
-                           isSelected={field.value === option.key}
-                           onClick={() => field.onChange(option.key)}
-                         />
-                       ))}
+                      {filteredStatusOptions.map((option) => (
+                        <TabButton
+                          key={option.key}
+                          text={option.text}
+                          isSelected={field.value === option.key}
+                          onClick={() => field.onChange(option.key)}
+                        />
+                      ))}
                     </div>
                   </FormControl>
                   <FormMessage />
@@ -375,12 +374,12 @@ export const OrderForm = ({ order }: { order?: OrderDetailType }) => {
                   <FormItem>
                     <FormLabel>Rejected Reason (Optional)</FormLabel>
                     <FormControl>
-                    <Textarea placeholder="Reason for rejection" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                      <Textarea placeholder="Reason for rejection" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             )}
 
             {form.watch("status") === "CANCELLED" && (
@@ -427,8 +426,8 @@ export const OrderForm = ({ order }: { order?: OrderDetailType }) => {
           </div>
 
           <OrderItemList
-            fields={fields} 
-            remove={remove} 
+            fields={fields}
+            remove={remove}
             variantMap={variantMap}
             control={form.control}
             disabled={!!isContentLocked}
@@ -439,7 +438,7 @@ export const OrderForm = ({ order }: { order?: OrderDetailType }) => {
               onAdd={(item, metadata) => {
                 setVariantMap(prev => ({ ...prev, [item.itemId]: metadata }));
                 append(item);
-              }} 
+              }}
             />
           )}
         </div>

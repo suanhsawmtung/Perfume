@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import type { OrderType } from "@/types/order.type";
+import type { AdminOrderType } from "@/types/order.type";
 import { FilterTags } from "../../shared/filter-tags"; // Adjust import path
 import { columns } from "./table/columns";
 import { DataTable } from "./table/data-table";
@@ -16,7 +16,7 @@ export function OrderList({
   total,
   page,
 }: {
-  orders: OrderType[];
+  orders: AdminOrderType[];
   total?: number;
   page?: number;
   size?: number;

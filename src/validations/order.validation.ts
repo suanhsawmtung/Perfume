@@ -23,4 +23,6 @@ export const orderFormSchema = z.object({
   })).min(1, "Add at least one item to the order"),
 });
 
-export type OrderFormValues = z.infer<typeof orderFormSchema>;
+export const cancelOrderSchema = z.object({
+  cancelledReason: z.string().min(2, "Cancelled reason is required"),
+});

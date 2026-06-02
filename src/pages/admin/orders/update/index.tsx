@@ -6,7 +6,7 @@ import AdminHeaderSection from "@/components/admin/shared/admin-header-section";
 import { BackButton } from "@/components/admin/shared/back-button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useGetOrder } from "@/services/order/queries/useGetOrder";
+import { useGetOrder } from "@/services/order/queries/admin/useGetOrder";
 import { useParams } from "react-router";
 
 const AdminOrderUpdatePage = () => {
@@ -17,11 +17,11 @@ const AdminOrderUpdatePage = () => {
   }
 
   const { data: order } = useGetOrder(code);
-  
+
   return (
     <section className="w-full">
-      <AdminHeaderSection 
-        title={order?.source === "CUSTOMER" ? "Process Customer Order" : "Update Order"} 
+      <AdminHeaderSection
+        title={order?.source === "CUSTOMER" ? "Process Customer Order" : "Update Order"}
       />
 
       <div className="space-y-5">
@@ -30,7 +30,7 @@ const AdminOrderUpdatePage = () => {
         <Card className="w-full">
           <CardContent className="flex flex-col gap-6 py-2">
             <h1 className="text-2xl font-bold lg:text-3xl">
-                Order {order.code}
+              Order {order.code}
             </h1>
 
             <Tabs defaultValue="fulfillment" className="w-full">
@@ -39,14 +39,14 @@ const AdminOrderUpdatePage = () => {
                 <TabsTrigger value="payments">Payments</TabsTrigger>
                 <TabsTrigger value="refunds">Refunds</TabsTrigger>
               </TabsList>
-              
+
               <TabsContent value="fulfillment">
                 <div className="w-full space-y-6">
                   {order && <PendingPaymentAlert payments={order.payments} />}
                   <OrderForm order={order} />
                 </div>
               </TabsContent>
-              
+
               <TabsContent value="payments">
                 <div className="w-full">
                   <OrderPaymentsList orderCode={order.code} payments={order.payments} mode="edit" />

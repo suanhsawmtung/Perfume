@@ -7,7 +7,7 @@ import AdminHeaderSection from "@/components/admin/shared/admin-header-section";
 import { BackButton } from "@/components/admin/shared/back-button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useGetOrder } from "@/services/order/queries/useGetOrder";
+import { useGetOrder } from "@/services/order/queries/admin/useGetOrder";
 import { useParams } from "react-router";
 
 const AdminOrderDetailPage = () => {
@@ -21,8 +21,8 @@ const AdminOrderDetailPage = () => {
 
   return (
     <section className="w-full">
-      <AdminHeaderSection 
-        title={order?.source === "CUSTOMER" ? "Customer Order Detail" : "Order Detail"} 
+      <AdminHeaderSection
+        title={order?.source === "CUSTOMER" ? "Customer Order Detail" : "Order Detail"}
       />
 
       <div className="space-y-5">
@@ -33,7 +33,7 @@ const AdminOrderDetailPage = () => {
         <Card className="w-full">
           <CardContent className="flex flex-col gap-6 py-2">
             <h1 className="text-2xl font-bold lg:text-3xl">
-                Order {order.code}
+              Order {order.code}
             </h1>
 
             <Tabs defaultValue="overview" className="w-full">
@@ -43,13 +43,13 @@ const AdminOrderDetailPage = () => {
                 <TabsTrigger value="payments">Payments</TabsTrigger>
                 <TabsTrigger value="refunds">Refunds</TabsTrigger>
               </TabsList>
-              
+
               <TabsContent value="overview">
                 <div className="w-full">
                   <OrderDetailCard order={order} />
                 </div>
               </TabsContent>
-              
+
               <TabsContent value="items">
                 <div className="w-full">
                   <OrderItemsList orderItems={order.orderItems} orderCode={order.code} />

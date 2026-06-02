@@ -1,15 +1,33 @@
 import api from "@/lib/api";
 import type {
+  CancelOrderValues,
   OrderDetailType,
   OrderListResult,
   OrderQueryParams,
   OrderType
 } from "@/types/order.type.ts";
 
-export const DEFAULT_LIMIT = 10;
+export const ADMIN_DEFAULT_LIMIT = 10;
+export const DEFAULT_LIMIT = 5;
 
-export async function fetchOrders(options: OrderQueryParams): Promise<OrderListResult> {
-  const { offset = 0, search, limit = 10, status, paymentStatus, source } = options;
+export async function fetchOrders(params: OrderQueryParams): Promise<OrderListResult<OrderType>> {
+  const { offset = 0, search, limit = DEFAULT_LIMIT, condition } = params;
+  const queryParams: OrderQueryParams = {
+    limit,
+    offset,
+    ...(search && { search }),
+    ...(condition && { condition }),
+  };
+
+  const response = await api.get("/orders", {
+    params: queryParams
+  });
+
+  return response.data?.data;
+}
+
+export async function fetchAdminOrders(params: OrderQueryParams): Promise<OrderListResult> {
+  const { offset = 0, search, limit = ADMIN_DEFAULT_LIMIT, status, paymentStatus, source } = params;
   const queryParams: OrderQueryParams = {
     limit,
     offset,
@@ -31,7 +49,7 @@ export async function fetchOrders(options: OrderQueryParams): Promise<OrderListR
   };
 }
 
-export async function fetchOrder(code: string): Promise<OrderDetailType> {
+export async function fetchAdminOrder(code: string): Promise<OrderDetailType> {
   const response = await api.get(`/admin/orders/${code}`);
   return response.data?.data;
 }
@@ -39,7 +57,6 @@ export async function fetchOrder(code: string): Promise<OrderDetailType> {
 export async function createOrder(params: FormData): Promise<{
   success: boolean;
   message: string;
-  data?: { order: OrderType };
 }> {
   const response = await api.post("/admin/orders", params);
   return response.data;
@@ -48,8 +65,15 @@ export async function createOrder(params: FormData): Promise<{
 export async function updateOrder(code: string, params: FormData): Promise<{
   success: boolean;
   message: string;
-  data?: { order: OrderType };
 }> {
   const response = await api.patch(`/admin/orders/${code}`, params);
+  return response.data;
+}
+
+export async function cancelOrder(code: string, params: CancelOrderValues): Promise<{
+  success: boolean;
+  message: string;
+}> {
+  const response = await api.patch(`/orders/${code}/cancel`, params);
   return response.data;
 }

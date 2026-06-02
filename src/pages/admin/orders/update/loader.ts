@@ -1,4 +1,4 @@
-import { ensureOrder } from "@/services/order/queries/useGetOrder";
+import { ensureOrder } from "@/services/order/queries/admin/useGetOrder";
 import type { LoaderFunctionArgs } from "react-router";
 
 export async function loader({ params }: LoaderFunctionArgs) {

@@ -5,15 +5,15 @@ import { CreateButton } from "@/components/admin/shared/create-button";
 import { FilterBar } from "@/components/admin/shared/filter-bar";
 import { MoreFilterButton } from "@/components/admin/shared/more-filter-button";
 import { isOrderPaymentStatus, isOrderSource, isOrderStatus } from "@/lib/utils";
-import { DEFAULT_LIMIT } from "@/services/order/api";
-import { useListOrders } from "@/services/order/queries/useGetOrders";
+import { ADMIN_DEFAULT_LIMIT } from "@/services/order/api";
+import { useListOrders } from "@/services/order/queries/admin/useGetOrders";
 import { useSearchParams } from "react-router";
 
 const AdminOrdersPage = () => {
   const [searchParams] = useSearchParams();
   const search = searchParams.get("search") || "";
   const page = Number(searchParams.get("page") ?? 1);
-  
+
   const statusParam = searchParams.get("status");
   const status = isOrderStatus(statusParam) ? statusParam : undefined;
 
@@ -23,12 +23,12 @@ const AdminOrdersPage = () => {
   const sourceParam = searchParams.get("source");
   const source = isOrderSource(sourceParam) ? sourceParam : undefined;
 
-  const offset = (page - 1) * DEFAULT_LIMIT;
+  const offset = (page - 1) * ADMIN_DEFAULT_LIMIT;
 
   const { data } = useListOrders({
     offset,
     search,
-    limit: DEFAULT_LIMIT,
+    limit: ADMIN_DEFAULT_LIMIT,
     status,
     paymentStatus,
     source,
@@ -56,7 +56,7 @@ const AdminOrdersPage = () => {
             </OrderFilterDialog>
           </FilterBar>
         </div>
-        
+
         {data && (
           <OrderList
             orders={data.items}

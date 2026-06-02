@@ -1,6 +1,6 @@
 import { isOrderPaymentStatus, isOrderSource, isOrderStatus } from "@/lib/utils";
-import { DEFAULT_LIMIT } from "@/services/order/api";
-import { ensureListOrders } from "@/services/order/queries/useGetOrders";
+import { ADMIN_DEFAULT_LIMIT } from "@/services/order/api";
+import { ensureListOrders } from "@/services/order/queries/admin/useGetOrders";
 
 import type { LoaderFunctionArgs } from "react-router";
 import { redirect } from "react-router";
@@ -20,7 +20,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       if (searchParam) {
         cleanUrl.searchParams.set("search", searchParam);
       }
-      
+
       return redirect(cleanUrl.toString());
     }
     page = parsedPage;
@@ -41,13 +41,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const sourceParam = searchParams.get("source");
   const source = sourceParam && isOrderSource(sourceParam) ? sourceParam : undefined;
 
-  const offset = (page - 1) * DEFAULT_LIMIT;
+  const offset = (page - 1) * ADMIN_DEFAULT_LIMIT;
 
   try {
     await ensureListOrders({
       offset,
       search,
-      limit: DEFAULT_LIMIT,
+      limit: ADMIN_DEFAULT_LIMIT,
       status,
       paymentStatus,
       source,
