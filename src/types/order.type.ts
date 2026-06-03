@@ -141,6 +141,7 @@ export interface OrderListResult<T = AdminOrderType> {
 export interface OrderQueryParams {
   limit?: number;
   offset?: number;
+  cursor?: number | null;
   search?: string;
   status?: string;
   paymentStatus?: string;

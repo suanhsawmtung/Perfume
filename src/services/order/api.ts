@@ -1,4 +1,5 @@
 import api from "@/lib/api";
+import type { CursorPaginationResultT } from "@/types";
 import type {
   CancelOrderValues,
   OrderDetailType,
@@ -10,11 +11,11 @@ import type {
 export const ADMIN_DEFAULT_LIMIT = 10;
 export const DEFAULT_LIMIT = 5;
 
-export async function fetchOrders(params: OrderQueryParams): Promise<OrderListResult<OrderType>> {
-  const { offset = 0, search, limit = DEFAULT_LIMIT, condition } = params;
+export async function fetchOrders(params: OrderQueryParams): Promise<CursorPaginationResultT<OrderType>> {
+  const { cursor, search, limit = DEFAULT_LIMIT, condition } = params;
   const queryParams: OrderQueryParams = {
     limit,
-    offset,
+    cursor,
     ...(search && { search }),
     ...(condition && { condition }),
   };

@@ -3,11 +3,10 @@ import { Card } from "@/components/ui/card"
 import ContentWrapper from "@/components/wrapper/content-wrapper"
 import { ArrowLeft, Receipt } from "lucide-react"
 import { useState } from "react"
-import { Link, useLoaderData, useSearchParams } from "react-router"
-import type { loader } from "./loader"
-import { useListOrders } from "@/services/order/queries/useGetOrders"
+import { Link, useSearchParams } from "react-router"
+import { useGetInfiniteOrders } from "@/services/order/queries/useGetInfiniteOrders"
+import { DEFAULT_LIMIT } from "@/services/order/api"
 import type { OrderType } from "@/types/order.type"
-import { Pagination } from "@/components/shared/pagination"
 import { SearchInput } from "@/components/shared/search-input"
 import { OrderCard } from "@/components/order/order-card"
 import { useAuthStore } from "@/stores/auth.store"
@@ -16,8 +15,7 @@ import { PaymentProofDialog } from "@/components/order/payment-proof-dialog"
 import { SearchTabGroup } from "@/components/shared/search-tab-group"
 
 export default function OrderHistoryPage() {
-  const { params } = useLoaderData<typeof loader>()
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const user = useAuthStore.getState().authUser;
 
   if (!user) {
@@ -29,11 +27,24 @@ export default function OrderHistoryPage() {
   const [paymentProofOpen, setPaymentProofOpen] = useState(false);
   const [cancellingOrderCode, setCancellingOrderCode] = useState<string | null>(null)
 
-  const { data } = useListOrders(user.id, params);
+  const search = searchParams.get("search") || undefined
+  const condition = searchParams.get("condition") || undefined
 
-  const orders = data?.items ?? []
-  const currentPage = data?.currentPage ?? 1
-  const totalPages = data?.totalPages ?? 1
+  const params = {
+    condition,
+    search,
+    limit: DEFAULT_LIMIT,
+  }
+
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+  } = useGetInfiniteOrders(user.id, params)
+
+  const orders = data?.pages.flatMap((page) => page.items) ?? []
 
   return (
     <div className="min-h-screen bg-secondary/20">
@@ -71,7 +82,11 @@ export default function OrderHistoryPage() {
         </div>
 
         <div className="space-y-6">
-          {orders.length === 0 ? (
+          {isLoading ? (
+            <div className="flex justify-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            </div>
+          ) : orders.length === 0 ? (
             <Card className="flex flex-col items-center justify-center p-12 text-center">
               <Receipt className="h-12 w-12 text-muted-foreground/50 mb-4" />
               <h3 className="text-lg font-medium">No orders found</h3>
@@ -81,32 +96,32 @@ export default function OrderHistoryPage() {
               </Button>
             </Card>
           ) : (
-            orders.map((order) => (
-              <OrderCard
-                key={order.id}
-                order={order}
-                cancellingOrderCode={cancellingOrderCode}
-                setCancellingOrderCode={setCancellingOrderCode}
-                setReceiptOpen={setReceiptOpen}
-                setPaymentProofOpen={setPaymentProofOpen}
-                setSelectedOrder={setSelectedOrder}
-              />
-            ))
-          )}
+            <>
+              {orders.map((order) => (
+                <OrderCard
+                  key={order.id}
+                  order={order}
+                  cancellingOrderCode={cancellingOrderCode}
+                  setCancellingOrderCode={setCancellingOrderCode}
+                  setReceiptOpen={setReceiptOpen}
+                  setPaymentProofOpen={setPaymentProofOpen}
+                  setSelectedOrder={setSelectedOrder}
+                />
+              ))}
 
-          {totalPages > 1 && (
-            <div className="mt-8 flex justify-center">
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={(page) => {
-                  const newSearchParams = new URLSearchParams(searchParams)
-                  newSearchParams.set("page", page.toString())
-                  setSearchParams(newSearchParams)
-                  window.scrollTo({ top: 0, behavior: "smooth" })
-                }}
-              />
-            </div>
+              {hasNextPage && (
+                <div className="mt-8 flex justify-center">
+                  <Button
+                    onClick={() => fetchNextPage()}
+                    disabled={isFetchingNextPage}
+                    variant="outline"
+                    className="w-full max-w-xs"
+                  >
+                    {isFetchingNextPage ? "Loading more..." : "Load more orders"}
+                  </Button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </ContentWrapper>
@@ -119,59 +134,6 @@ export default function OrderHistoryPage() {
       />
 
       {/* Payment Proof Dialog */}
-      {/* <Dialog open={paymentProofOpen} onOpenChange={setPaymentProofOpen}>
-        <DialogContent className="max-w-md p-0 overflow-hidden">
-          <DialogHeader className="p-4 pb-0">
-            <DialogTitle className="flex items-center justify-between">
-              Payment Proof
-              {selectedOrder && (
-                <span className="text-sm font-normal text-muted-foreground">
-                  #{selectedOrder.code}
-                </span>
-              )}
-            </DialogTitle>
-          </DialogHeader>
-
-          {selectedOrder && (
-            <div className="p-4">
-              <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-secondary/50 flex flex-col items-center justify-center border border-muted-foreground/20">
-                {selectedOrder.image ? (
-                  <img
-                    src={formatImagePath(selectedOrder.image, "order")}
-                    alt="Payment proof"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="flex flex-col items-center justify-center text-center p-6 text-muted-foreground">
-                    <Receipt className="h-10 w-10 mb-2 opacity-50" />
-                    <p className="text-sm font-medium">No Payment Slip Uploaded</p>
-                    <p className="text-xs opacity-75 mt-1">Please upload proof of bank transfer payment.</p>
-                  </div>
-                )}
-              </div>
-              <div className="mt-4 space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Order Total</span>
-                  <span className="font-medium">{formatPrice(selectedOrder.totalPrice)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Payment Method</span>
-                  <span className="font-medium">Bank Transfer</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Payment Status</span>
-                  <span className="font-medium">{selectedOrder.paymentStatus}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Date</span>
-                  <span className="font-medium">{formatDate(selectedOrder.createdAt)}</span>
-                </div>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog> */}
-
       <PaymentProofDialog
         open={paymentProofOpen}
         onOpenChange={setPaymentProofOpen}

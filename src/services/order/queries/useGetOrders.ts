@@ -6,26 +6,27 @@ import {
 import type { OrderListResult, OrderQueryParams, OrderType } from "@/types/order.type";
 import { fetchOrders } from "../api";
 import { orderQueryKeys } from "@/services/order/key";
+import type { CursorPaginationResultT } from "@/types";
 
 export function useListOrders(
     userId: number,
     params: OrderQueryParams,
-): UseSuspenseQueryResult<OrderListResult<OrderType>, Error> {
+): UseSuspenseQueryResult<CursorPaginationResultT<OrderType>, Error> {
     const {
-        offset,
+        cursor,
         search,
         limit,
         condition
     } = params;
 
     const listOptions: OrderQueryParams = {
-        offset,
+        cursor,
         search,
         limit,
         condition
     };
 
-    return useSuspenseQuery<OrderListResult<OrderType>, Error>({
+    return useSuspenseQuery<CursorPaginationResultT<OrderType>, Error>({
         queryKey: orderQueryKeys.list(userId, listOptions),
         queryFn: () => fetchOrders(listOptions),
     });
@@ -36,14 +37,14 @@ export async function ensureListOrders(
     params: OrderQueryParams,
 ): Promise<void> {
     const {
-        offset,
+        cursor,
         search,
         condition,
         limit,
     } = params;
 
     const listOptions: OrderQueryParams = {
-        offset,
+        cursor,
         search,
         condition,
         limit,

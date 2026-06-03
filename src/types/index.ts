@@ -130,5 +130,10 @@ export interface AuthActionResponse {
   message?: string;
 }
 
+export type CursorPaginationResultT<T> = {
+  items: T[];
+  nextCursor: number | null;
+}
+
 
 

@@ -76,7 +76,7 @@ export async function deleteUser(
 
 export async function fetchAllUsers(
   limit?: number,
-  cursor?: number,
+  cursor?: number | null,
 ): Promise<CommonUserResult> {
   const response = await api.get("/users", {
     params: {
