@@ -65,7 +65,9 @@ const AuthDropdown = ({ user }: Props) => {
             </Avatar>
             <div className="flex flex-col">
               <h5 className="font-bold">{formatUserDisplayName(user)}</h5>
-              <p className="text-muted-foreground">{user.email}</p>
+              <p className="text-muted-foreground truncate max-w-[20ch]" title={user.email}>
+                {user.email}
+              </p>
             </div>
           </div>
         </DropdownMenuLabel>

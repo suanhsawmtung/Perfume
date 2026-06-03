@@ -1,5 +1,5 @@
 import { DEFAULT_LIMIT } from "@/services/order/api";
-import type { LoaderFunctionArgs } from "react-router";
+import { redirect, type LoaderFunctionArgs } from "react-router";
 import { ensureListOrders } from "@/services/order/queries/useGetOrders";
 import { useAuthStore } from "@/stores/auth.store";
 
@@ -9,7 +9,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const user = useAuthStore.getState().authUser;
 
     if (!user) {
-        throw new Response("Unauthorized", { status: 401 });
+        return redirect("/sign-in")
     }
 
     const page = Number(searchParams.get("page")) || 1;

@@ -9,21 +9,23 @@ import { fetchHomeData } from "../api";
 import { homeQueryKeys } from "../key";
 
 export function useHomeData(
-  gender?: Gender | null,
+  params: {
+    gender?: Gender | null;
+    userId?: number | null;
+  },
 ): UseSuspenseQueryResult<HomeDataT, Error> {
   return useSuspenseQuery<HomeDataT, Error>({
-    queryKey: homeQueryKeys.data(gender),
-    queryFn: () => fetchHomeData(gender),
+    queryKey: homeQueryKeys.data(params),
+    queryFn: () => fetchHomeData(params.gender),
   });
 }
 
 export async function ensureHomeData(params: {
   gender?: Gender | null;
+  userId?: number | null;
 }): Promise<void> {
-  const { gender } = params;
-
   await queryClient.ensureQueryData({
-    queryKey: homeQueryKeys.data(gender),
-    queryFn: () => fetchHomeData(gender),
+    queryKey: homeQueryKeys.data(params),
+    queryFn: () => fetchHomeData(params.gender),
   });
 }

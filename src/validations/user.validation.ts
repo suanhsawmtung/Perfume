@@ -5,8 +5,9 @@ export const userSchema = z.object({
     .string()
     .trim()
     .min(1, "Email is required")
-    .email("Invalid email address")
-    .transform((val) => val.toLowerCase()),
+    .pipe(
+      z.email({ message: "Invalid email address!" }).transform((val) => val.toLowerCase()),
+    ),
   firstName: z.string().trim().optional(),
   lastName: z.string().trim().optional(),
   phone: z.string().trim().optional(),

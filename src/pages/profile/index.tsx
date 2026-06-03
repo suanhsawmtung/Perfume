@@ -5,9 +5,12 @@ import { ProfileSidebar } from "@/components/profile/profile-sidebar"
 import { ProfileWishlistCard } from "@/components/profile/profile-wishlist-card"
 import { RewardsCard } from "@/components/profile/rewards-card"
 import { ProfileOrderCard } from "@/components/order/profile-order-card"
+import { useLoaderData } from "react-router"
+import type { loader } from "./loader"
 
 export default function ProfilePage() {
-  const { data: profile } = useGetProfile()
+  const { userId } = useLoaderData<typeof loader>();
+  const { data: profile } = useGetProfile(userId)
   const wishlistProducts = profile.wishlist.slice(0, 3)
 
   const displayName = formatName({

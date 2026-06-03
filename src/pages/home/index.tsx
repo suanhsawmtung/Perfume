@@ -4,11 +4,12 @@ import { ForYouSection } from "@/components/home/sections/for-you-section";
 import { HeroSection } from "@/components/home/sections/hero-section";
 import { LatestBlogsSection } from "@/components/home/sections/latest-blogs-section";
 import { useHomeData } from "@/services/home/queries/useGetHomeData";
-import { usePreferenceStore } from "@/stores/preference.store";
+import { useLoaderData } from "react-router";
+import type { loader } from "./loader";
 
 export default function HomePage() {
-  const gender = usePreferenceStore((state) => state.gender);
-  const { data } = useHomeData(gender);
+  const params = useLoaderData<typeof loader>();
+  const { data } = useHomeData(params);
 
   return (
     <>

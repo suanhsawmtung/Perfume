@@ -7,16 +7,18 @@ import {
 import { fetchProfile } from "../api";
 import { profileQueryKeys } from "../key";
 
-export function useGetProfile(): UseSuspenseQueryResult<MyProfileT, Error> {
+export function useGetProfile(
+  userId: number
+): UseSuspenseQueryResult<MyProfileT, Error> {
   return useSuspenseQuery<MyProfileT, Error>({
-    queryKey: profileQueryKeys.detail(),
+    queryKey: profileQueryKeys.detail(userId),
     queryFn: () => fetchProfile(),
   });
 }
 
-export async function ensureProfile(): Promise<void> {
+export async function ensureProfile(userId: number): Promise<void> {
   await queryClient.ensureQueryData({
-    queryKey: profileQueryKeys.detail(),
+    queryKey: profileQueryKeys.detail(userId),
     queryFn: () => fetchProfile(),
   });
 }
