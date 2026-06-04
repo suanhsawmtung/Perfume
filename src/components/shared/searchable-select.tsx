@@ -10,12 +10,7 @@ import {
   useState,
   type KeyboardEvent,
 } from "react";
-
-import type {
-  FetchSelectPageParams,
-  FetchSelectPageResult,
-  SelectOption
-} from "@/types/select-option.type";
+import type { CursorPaginationResultT, SelectOptionPageParams, SelectOptionT } from "@/types";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -29,13 +24,13 @@ export interface SearchableSelectProps {
    * Called by TanStack Query to fetch a page of options.
    * Receives the current search string and the cursor for the page to load.
    */
-  onFetch: (params: FetchSelectPageParams) => Promise<FetchSelectPageResult>;
+  onFetch: (params: SelectOptionPageParams) => Promise<CursorPaginationResultT<SelectOptionT>>;
   /** Controlled selected value (primitive ID or slug) */
   value?: string | number | null;
   /** Initial full option object used for display before it is loaded in the infinite list */
-  initialOption?: SelectOption | null;
+  initialOption?: SelectOptionT | null;
   /** Called when the user picks an option (or clears) */
-  onChange?: (option: SelectOption | null) => void;
+  onChange?: (option: SelectOptionT | null) => void;
   placeholder?: string;
   disabled?: boolean;
   className?: string;
@@ -44,7 +39,7 @@ export interface SearchableSelectProps {
   /** Max height of the scrollable list in px (default: 260) */
   listHeight?: number;
   /** Render a fully custom option row */
-  renderOption?: (option: SelectOption, isSelected: boolean) => React.ReactNode;
+  renderOption?: (option: SelectOptionT, isSelected: boolean) => React.ReactNode;
 }
 
 // ─── Highlight helper ─────────────────────────────────────────────────────────
@@ -228,7 +223,7 @@ export function SearchableSelect({
 
   // ── Select / Clear ────────────────────────────────────────────────
 
-  const handleSelect = (option: SelectOption) => {
+  const handleSelect = (option: SelectOptionT) => {
     onChange?.(option);
     setInputValue(option.name);
     setDebouncedSearch("");

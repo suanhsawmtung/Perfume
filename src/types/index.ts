@@ -136,6 +136,11 @@ export type SelectOptionT = {
   slug: string;
 }
 
+export type SelectOptionPageParams = {
+  search: string;
+  cursor: number | null;
+};
+
 export type CursorPaginationResultT<T> = {
   items: T[];
   nextCursor: number | null;

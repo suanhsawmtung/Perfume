@@ -1,10 +1,10 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchBrandSelectOptions } from "../api";
 import { brandQueryKeys } from "../key";
-import type { FetchSelectPageResult } from "@/types/select-option.type";
+import type { CursorPaginationResultT, SelectOptionT } from "@/types";
 
 export function useGetInfiniteBrands(search: string) {
-  return useInfiniteQuery<FetchSelectPageResult>({
+  return useInfiniteQuery<CursorPaginationResultT<SelectOptionT>>({
     queryKey: brandQueryKeys.selectOptions(search),
     queryFn: ({ pageParam }) =>
       fetchBrandSelectOptions({

@@ -7,10 +7,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import type {
-  FetchSelectPageParams,
-  FetchSelectPageResult,
-} from "@/types/select-option.type";
+import type { CursorPaginationResultT, SelectOptionPageParams, SelectOptionT } from "@/types";
 import { type QueryKey, useInfiniteQuery } from "@tanstack/react-query";
 import { ChevronDown, Loader2, Search, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -18,7 +15,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 interface InfiniteFilterCollapsibleProps {
   title: string;
   queryKey: QueryKey;
-  onFetch: (params: FetchSelectPageParams) => Promise<FetchSelectPageResult>;
+  onFetch: (params: SelectOptionPageParams) => Promise<CursorPaginationResultT<SelectOptionT>>;
   selectedValue: string | null;
   onToggle: (value: string) => void;
   open?: boolean;
