@@ -1,4 +1,5 @@
 import { queryClient } from "@/lib/query-client";
+import { dashboardKeys } from "@/services/dashboard/key";
 import { createTransaction } from "@/services/transaction/api";
 import { transactionQueryKeys } from "@/services/transaction/key";
 import type { TransactionDirection, TransactionTypeEnum } from "@/types/transaction.type";
@@ -20,10 +21,15 @@ export async function action({ request }: ActionFunctionArgs) {
     });
 
     if (response.success) {
-      toast.success(response.message || "Transaction created successfully");
       await queryClient.invalidateQueries({
         queryKey: transactionQueryKeys.lists(),
       });
+
+      await queryClient.invalidateQueries({
+        queryKey: dashboardKeys.all
+      });
+
+      toast.success(response.message || "Transaction created successfully");
       return redirect("/admin/transactions");
     }
 

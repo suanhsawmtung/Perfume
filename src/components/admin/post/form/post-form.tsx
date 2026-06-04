@@ -15,6 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { POST_STATUSES } from "@/constants/post.constant";
 import { cn, formatImagePath } from "@/lib/utils";
 import { fetchCategorySelectOptions } from "@/services/category/api";
+import { categoryQueryKeys } from "@/services/category/key";
 import { useAuthStore } from "@/stores/auth.store";
 import type { PostFormValues, PostType } from "@/types/post.type";
 import { postSchema } from "@/validations/post.validation";
@@ -206,7 +207,7 @@ export function PostForm({
                   <FormItem>
                     <FormLabel>Category</FormLabel>
                     <SearchableSelect
-                      queryKey={["categories-select-options"]}
+                      queryKey={categoryQueryKeys.selectOptions()}
                       onFetch={fetchCategorySelectOptions}
                       value={field.value}
                       initialOption={post?.category ? {

@@ -59,9 +59,11 @@ export default function OrderHistoryPage() {
               Back to Profile
             </Link>
             <h1 className="mt-2 font-serif text-3xl font-medium">Order History</h1>
-            <p className="text-muted-foreground">
-              View and track all your orders
-            </p>
+            {orders.length > 0 && (
+              <p className="text-muted-foreground">
+                View and track {orders.length} of {data?.pages[0].totalCount} orders
+              </p>
+            )}
           </div>
 
           <div className="flex flex-col lg:flex-row gap-4 w-full md:w-auto">

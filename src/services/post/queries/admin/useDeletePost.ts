@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { deletePost } from "../../api";
 import { postQueryKeys } from "../../key";
+import { homeQueryKeys } from "@/services/home/key";
 
 export const useDeletePostMutation = () => {
   const navigate = useNavigate();
@@ -19,6 +20,10 @@ export const useDeletePostMutation = () => {
       // Invalidate post list queries to refetch
       queryClient.invalidateQueries({
         queryKey: postQueryKeys.all,
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: homeQueryKeys.all,
       });
 
       toast.success("Post deleted successfully!");

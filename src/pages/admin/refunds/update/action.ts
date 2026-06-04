@@ -1,4 +1,6 @@
 import { queryClient } from "@/lib/query-client";
+import { dashboardKeys } from "@/services/dashboard/key";
+import { orderQueryKeys } from "@/services/order/key";
 import { updateRefund } from "@/services/refund/api";
 import { refundQueryKeys } from "@/services/refund/key";
 import { AxiosError } from "axios";
@@ -34,11 +36,15 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
     // Invalidate queries
     await queryClient.invalidateQueries({
-      queryKey: refundQueryKeys.detail(refundId),
+      queryKey: refundQueryKeys.all,
     });
 
     await queryClient.invalidateQueries({
-      queryKey: refundQueryKeys.lists(),
+      queryKey: orderQueryKeys.all,
+    });
+
+    await queryClient.invalidateQueries({
+      queryKey: dashboardKeys.all,
     });
 
     // Show success toast

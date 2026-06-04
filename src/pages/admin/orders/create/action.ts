@@ -1,6 +1,8 @@
 import { queryClient } from "@/lib/query-client";
+import { homeQueryKeys } from "@/services/home/key";
 import { createOrder } from "@/services/order/api";
 import { orderQueryKeys } from "@/services/order/key";
+import { productQueryKeys } from "@/services/product/key";
 import { AxiosError } from "axios";
 import { redirect, type ActionFunctionArgs } from "react-router";
 import { toast } from "sonner";
@@ -13,6 +15,14 @@ export async function action({ request }: ActionFunctionArgs) {
     if (response.success) {
       await queryClient.invalidateQueries({
         queryKey: orderQueryKeys.all,
+      });
+
+      await queryClient.invalidateQueries({
+        queryKey: productQueryKeys.all,
+      });
+
+      await queryClient.invalidateQueries({
+        queryKey: homeQueryKeys.all,
       });
 
       toast.success(response.message || "Order created successfully");

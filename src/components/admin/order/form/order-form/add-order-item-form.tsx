@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { formatPrice } from "@/lib/utils";
 import { fetchAdminProductVariant, fetchProductSelectOptions, fetchProductVariantSelectOptions } from "@/services/product/api";
+import { productQueryKeys } from "@/services/product/key";
 import type { ProductVariantDetailType } from "@/types/product.type";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -58,8 +59,8 @@ export const AddOrderItemForm = ({ onAdd }: AddOrderItemFormProps) => {
     getVariantDetail();
   }, [selectedVariantSlug]);
 
-  const price = selectedVariant?.discount && Number(selectedVariant.discount) > 0 
-    ? Number(selectedVariant.discount) 
+  const price = selectedVariant?.discount && Number(selectedVariant.discount) > 0
+    ? Number(selectedVariant.discount)
     : selectedVariant?.price || 0;
   const maxQuantity = (selectedVariant?.stock || 0) - (selectedVariant?.reserved || 0);
   const itemTotal = price * quantity;
@@ -73,7 +74,7 @@ export const AddOrderItemForm = ({ onAdd }: AddOrderItemFormProps) => {
 
   const handleAdd = () => {
     if (!selectedVariantSlug || !selectedVariant) return;
-    
+
     onAdd({
       itemId: selectedVariant.id,
       quantity,
@@ -93,9 +94,9 @@ export const AddOrderItemForm = ({ onAdd }: AddOrderItemFormProps) => {
 
   if (!isAdding) {
     return (
-      <Button 
-        type="button" 
-        variant="outline" 
+      <Button
+        type="button"
+        variant="outline"
         className="w-full border-dashed py-8 text-muted-foreground hover:text-foreground"
         onClick={() => setIsAdding(true)}
       >
@@ -112,7 +113,7 @@ export const AddOrderItemForm = ({ onAdd }: AddOrderItemFormProps) => {
         <div className="lg:col-span-4 space-y-2">
           <label className="text-sm font-medium">Product</label>
           <SearchableSelect
-            queryKey={["products-select-options"]}
+            queryKey={productQueryKeys.selectOptions()}
             onFetch={fetchProductSelectOptions}
             value={selectedProductSlug}
             onChange={(option) => {
@@ -120,7 +121,7 @@ export const AddOrderItemForm = ({ onAdd }: AddOrderItemFormProps) => {
               setSelectedVariantSlug(null);
             }}
             placeholder="Select a category"
-            // disabled={isSubmitting}
+          // disabled={isSubmitting}
           />
         </div>
 
@@ -128,15 +129,12 @@ export const AddOrderItemForm = ({ onAdd }: AddOrderItemFormProps) => {
         <div className="lg:col-span-4 space-y-2">
           <label className="text-sm font-medium">Variant</label>
           <SearchableSelect
-            queryKey={[
-              "variants-select-options", 
-              ...(selectedProductSlug ? [selectedProductSlug] : [])
-            ]}
-            onFetch={({search, cursor}) => 
-              fetchProductVariantSelectOptions({ 
-                search, 
-                cursor, 
-                productSlug: selectedProductSlug 
+            queryKey={productQueryKeys.variantSelectOptions({ productSlug: selectedProductSlug })}
+            onFetch={({ search, cursor }) =>
+              fetchProductVariantSelectOptions({
+                search,
+                cursor,
+                productSlug: selectedProductSlug
               })}
             value={selectedVariantSlug}
             onChange={(option) => {
@@ -152,32 +150,32 @@ export const AddOrderItemForm = ({ onAdd }: AddOrderItemFormProps) => {
           <label className="text-sm font-medium">
             Quantity {selectedVariantSlug && `(${maxQuantity} left)`}
           </label>
-          <Input 
-            type="number" 
-            min={1} 
+          <Input
+            type="number"
+            min={1}
             max={maxQuantity}
-            value={quantity} 
-            onChange={(e) => setQuantity(Math.min(maxQuantity, Math.max(1, parseInt(e.target.value) || 1)))} 
+            value={quantity}
+            onChange={(e) => setQuantity(Math.min(maxQuantity, Math.max(1, parseInt(e.target.value) || 1)))}
             disabled={!selectedVariantSlug || !selectedProductSlug || isLoadingVariantDetail}
           />
         </div>
 
         {/* Price & Total */}
         <div className="lg:col-span-2 flex flex-col justify-end pb-3 text-right">
-            <div className="text-xs text-muted-foreground">Total: {formatPrice(itemTotal)}</div>
-            <div className="font-bold">
-              {selectedVariant?.discount && Number(selectedVariant.discount) > 0 ? (
-                <span className="space-x-1">
-                  <span className="text-muted-foreground line-through text-xs">
-                    {formatPrice(selectedVariant.price)}
-                  </span>
-                  <span>{formatPrice(Number(selectedVariant.discount))}</span>
+          <div className="text-xs text-muted-foreground">Total: {formatPrice(itemTotal)}</div>
+          <div className="font-bold">
+            {selectedVariant?.discount && Number(selectedVariant.discount) > 0 ? (
+              <span className="space-x-1">
+                <span className="text-muted-foreground line-through text-xs">
+                  {formatPrice(selectedVariant.price)}
                 </span>
-              ): (
-                formatPrice(price)
-              )}
-              / unit
-            </div>
+                <span>{formatPrice(Number(selectedVariant.discount))}</span>
+              </span>
+            ) : (
+              formatPrice(price)
+            )}
+            / unit
+          </div>
         </div>
       </div>
 
@@ -185,10 +183,10 @@ export const AddOrderItemForm = ({ onAdd }: AddOrderItemFormProps) => {
         <Button size="sm" variant="ghost" type="button" onClick={reset}>
           Cancel
         </Button>
-        <Button 
-          size="sm" 
-          type="button" 
-          onClick={handleAdd} 
+        <Button
+          size="sm"
+          type="button"
+          onClick={handleAdd}
           disabled={!selectedVariantSlug || !selectedProductSlug || isLoadingVariantDetail}
         >
           Confirm Add

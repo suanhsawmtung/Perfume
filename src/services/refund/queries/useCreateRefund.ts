@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { createRefund } from "../api";
 import { refundQueryKeys } from "../key";
+import { dashboardKeys } from "@/services/dashboard/key";
 
 export function useCreateRefund() {
   const queryClient = useQueryClient();
@@ -13,6 +14,7 @@ export function useCreateRefund() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: refundQueryKeys.all });
       queryClient.invalidateQueries({ queryKey: orderQueryKeys.all });
+      queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
       toast.success("Refund created successfully");
     },
     onError: (error: any) => {

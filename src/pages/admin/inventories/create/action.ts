@@ -1,6 +1,8 @@
 import { queryClient } from "@/lib/query-client";
+import { dashboardKeys } from "@/services/dashboard/key";
 import { createInventory } from "@/services/inventory/api";
 import { inventoryQueryKeys } from "@/services/inventory/key";
+import { productQueryKeys } from "@/services/product/key";
 import { inventorySchema } from "@/validations/inventory.validation";
 import { AxiosError } from "axios";
 import { redirect, type ActionFunctionArgs } from "react-router";
@@ -12,7 +14,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
   try {
     const validated = inventorySchema.parse(rawData);
-    
+
     const response = await createInventory({
       productVariantId: Number(validated.productVariantId),
       type: validated.type,
@@ -22,6 +24,14 @@ export async function action({ request }: ActionFunctionArgs) {
 
     await queryClient.invalidateQueries({
       queryKey: inventoryQueryKeys.all,
+    });
+
+    await queryClient.invalidateQueries({
+      queryKey: productQueryKeys.all,
+    });
+
+    await queryClient.invalidateQueries({
+      queryKey: dashboardKeys.all,
     });
 
     toast.success(response.message || "Inventory record created successfully");

@@ -1,4 +1,6 @@
 import { queryClient } from "@/lib/query-client";
+import { dashboardKeys } from "@/services/dashboard/key";
+import { orderQueryKeys } from "@/services/order/key";
 import { createPayment } from "@/services/payment/api";
 import { paymentQueryKeys } from "@/services/payment/key";
 import { AxiosError } from "axios";
@@ -38,6 +40,14 @@ export async function action({ request }: ActionFunctionArgs) {
 
     await queryClient.invalidateQueries({
       queryKey: paymentQueryKeys.all,
+    });
+
+    await queryClient.invalidateQueries({
+      queryKey: orderQueryKeys.all,
+    });
+
+    await queryClient.invalidateQueries({
+      queryKey: dashboardKeys.all,
     });
 
     toast.success(response.message || "Payment recorded successfully");

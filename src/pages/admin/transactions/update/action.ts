@@ -1,4 +1,5 @@
 import { queryClient } from "@/lib/query-client";
+import { dashboardKeys } from "@/services/dashboard/key";
 import { updateTransaction } from "@/services/transaction/api";
 import { transactionQueryKeys } from "@/services/transaction/key";
 import { redirect, type ActionFunctionArgs } from "react-router";
@@ -25,13 +26,19 @@ export async function action({ request, params }: ActionFunctionArgs) {
     });
 
     if (response.success) {
-      toast.success(response.message || "Transaction updated successfully");
       await queryClient.invalidateQueries({
         queryKey: transactionQueryKeys.detail(transactionId),
       });
+
       await queryClient.invalidateQueries({
         queryKey: transactionQueryKeys.lists(),
       });
+
+      await queryClient.invalidateQueries({
+        queryKey: dashboardKeys.all,
+      });
+
+      toast.success(response.message || "Transaction updated successfully");
       return redirect(`/admin/transactions/${transactionId}`);
     }
 

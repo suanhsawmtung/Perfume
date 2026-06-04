@@ -1,6 +1,10 @@
 import { queryClient } from "@/lib/query-client";
+import { dashboardKeys } from "@/services/dashboard/key";
+import { homeQueryKeys } from "@/services/home/key";
+import { inventoryQueryKeys } from "@/services/inventory/key";
 import { updateOrder } from "@/services/order/api";
 import { orderQueryKeys } from "@/services/order/key";
+import { productQueryKeys } from "@/services/product/key";
 import { AxiosError } from "axios";
 import { redirect, type ActionFunctionArgs } from "react-router";
 import { toast } from "sonner";
@@ -16,13 +20,24 @@ export async function action({ request, params }: ActionFunctionArgs) {
   try {
     const response = await updateOrder(code, formData);
 
-    // Invalidate queries
     await queryClient.invalidateQueries({
-      queryKey: orderQueryKeys.admin.detail(code),
+      queryKey: orderQueryKeys.all,
     });
 
     await queryClient.invalidateQueries({
-      queryKey: orderQueryKeys.all,
+      queryKey: productQueryKeys.all,
+    });
+
+    await queryClient.invalidateQueries({
+      queryKey: inventoryQueryKeys.all,
+    });
+
+    await queryClient.invalidateQueries({
+      queryKey: dashboardKeys.all,
+    });
+
+    await queryClient.invalidateQueries({
+      queryKey: homeQueryKeys.all,
     });
 
     // Show success toast

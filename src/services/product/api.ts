@@ -15,8 +15,8 @@ import type {
   UpdateProductParams,
   UpdateProductResponse
 } from "@/types/product.type";
-import type { FetchSelectPageResult } from "@/types/select-option.type";
 import type { ProductListQueryOptions } from "./key";
+import type { CursorPaginationResultT, SelectOptionT } from "@/types";
 
 export const DEFAULT_LIMIT = 8;
 export const ADMIN_DEFAULT_LIMIT = 10;
@@ -208,7 +208,7 @@ export async function deleteProductVariant({
 export async function fetchProductSelectOptions(params: {
   search: string;
   cursor: number | null;
-}): Promise<FetchSelectPageResult> {
+}): Promise<CursorPaginationResultT<SelectOptionT>> {
   const { search, cursor } = params;
 
   const response = await api.get("/products/select-options", {
@@ -227,13 +227,14 @@ export async function fetchProductVariantSelectOptions(params: {
   productSlug: string | null;
   search: string;
   cursor: number | null;
-}): Promise<FetchSelectPageResult> {
+}): Promise<CursorPaginationResultT<SelectOptionT>> {
   const { productSlug, search, cursor } = params;
 
-  if(!productSlug) {
+  if (!productSlug) {
     return {
       items: [],
       nextCursor: null,
+      totalCount: 0
     };
   }
 

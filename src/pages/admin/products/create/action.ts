@@ -1,4 +1,5 @@
 import { queryClient } from "@/lib/query-client";
+import { brandQueryKeys } from "@/services/brand/key";
 import { createProduct } from "@/services/product/api";
 import { productQueryKeys } from "@/services/product/key";
 import { AxiosError } from "axios";
@@ -59,6 +60,10 @@ export async function action({ request }: ActionFunctionArgs) {
 
     await queryClient.invalidateQueries({
       queryKey: productQueryKeys.all,
+    });
+
+    await queryClient.invalidateQueries({
+      queryKey: brandQueryKeys.all,
     });
 
     toast.success(response.message || "Product created successfully");

@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, type QueryKey } from "@tanstack/react-query";
 import { Check, ChevronsUpDown, Loader2, X } from "lucide-react";
 import {
   useCallback,
@@ -24,7 +24,7 @@ export interface SearchableSelectProps {
    * Unique key prefix used by TanStack Query to cache results.
    * Example: "users" → query key becomes ["users", { search }]
    */
-  queryKey: string[];
+  queryKey: QueryKey;
   /**
    * Called by TanStack Query to fetch a page of options.
    * Receives the current search string and the cursor for the page to load.

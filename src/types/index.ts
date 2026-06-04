@@ -130,9 +130,16 @@ export interface AuthActionResponse {
   message?: string;
 }
 
+export type SelectOptionT = {
+  id: number;
+  name: string;
+  slug: string;
+}
+
 export type CursorPaginationResultT<T> = {
   items: T[];
   nextCursor: number | null;
+  totalCount: number
 }
 
 

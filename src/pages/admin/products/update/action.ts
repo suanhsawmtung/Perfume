@@ -1,4 +1,5 @@
 import { queryClient } from "@/lib/query-client";
+import { brandQueryKeys } from "@/services/brand/key";
 import { updateProduct } from "@/services/product/api";
 import { productQueryKeys } from "@/services/product/key";
 import { AxiosError } from "axios";
@@ -64,11 +65,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
     });
 
     await queryClient.invalidateQueries({
-      queryKey: productQueryKeys.admin.detail(slug),
+      queryKey: productQueryKeys.all,
     });
 
     await queryClient.invalidateQueries({
-      queryKey: productQueryKeys.all,
+      queryKey: brandQueryKeys.all,
     });
 
     toast.success(response.message || "Product updated successfully");

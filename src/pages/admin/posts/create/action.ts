@@ -1,4 +1,6 @@
 import { queryClient } from "@/lib/query-client";
+import { categoryQueryKeys } from "@/services/category/key";
+import { homeQueryKeys } from "@/services/home/key";
 import { createPost } from "@/services/post/api";
 import { postQueryKeys } from "@/services/post/key";
 import { AxiosError } from "axios";
@@ -38,6 +40,14 @@ export async function action({ request }: ActionFunctionArgs) {
 
     await queryClient.invalidateQueries({
       queryKey: postQueryKeys.all,
+    });
+
+    await queryClient.invalidateQueries({
+      queryKey: categoryQueryKeys.all,
+    });
+
+    await queryClient.invalidateQueries({
+      queryKey: homeQueryKeys.all,
     });
 
     // Show success toast

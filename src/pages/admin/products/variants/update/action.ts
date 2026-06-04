@@ -36,15 +36,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     const response = await updateProductVariant(slug, variantSlug, formData);
 
     await queryClient.invalidateQueries({
-      queryKey: productQueryKeys.admin.variants(slug),
-    });
-
-    await queryClient.invalidateQueries({
-      queryKey: productQueryKeys.admin.detail(slug),
-    });
-
-    await queryClient.invalidateQueries({
-      queryKey: productQueryKeys.admin.variantDetail(slug, variantSlug),
+      queryKey: productQueryKeys.all,
     });
 
     toast.success(response.message || "Product variant updated successfully");

@@ -7,5 +7,5 @@ export const brandQueryKeys = {
     ["brands", "list", options] as const,
 
   detail: (slug: string) => ["brands", "detail", slug] as const,
-  selectOptions: (search?: string) => ["brands", "select-options", { search }] as const,
+  selectOptions: (search?: string) => ["brands", "list", "select-options", { search }] as const,
 };

@@ -12,4 +12,5 @@ export interface FetchSelectPageParams {
 export interface FetchSelectPageResult {
   items: SelectOption[];
   nextCursor: number | null;
+  totalCount: number;
 }

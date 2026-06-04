@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { TabButton } from "@/components/ui/tab-button";
 import { Textarea } from "@/components/ui/textarea";
 import { fetchBrandSelectOptions } from "@/services/brand/api";
+import { brandQueryKeys } from "@/services/brand/key";
 import type { AdminProductDetailType, Concentration, Gender, ProductFormValues } from "@/types/product.type";
 import {
   productSchema,
@@ -131,7 +132,7 @@ export function ProductForm({
                   <FormItem>
                     <FormLabel>Brand</FormLabel>
                     <SearchableSelect
-                      queryKey={["brands-select-options"]}
+                      queryKey={brandQueryKeys.selectOptions()}
                       onFetch={fetchBrandSelectOptions}
                       value={field.value}
                       initialOption={product?.brand ? {

@@ -18,12 +18,12 @@ export async function action({ request }: ActionFunctionArgs) {
   try {
     const response = await createBrand({ name });
 
+    await queryClient.invalidateQueries({
+      queryKey: brandQueryKeys.lists,
+    });
+
     // Show success toast
     toast.success(response.message || "Brand created successfully");
-
-    await queryClient.invalidateQueries({
-      queryKey: brandQueryKeys.all,
-    });
 
     // Redirect to brands list page
     return redirect("/admin/brands");

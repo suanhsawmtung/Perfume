@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { createPayment } from "../api";
 import { paymentQueryKeys } from "../key";
+import { dashboardKeys } from "@/services/dashboard/key";
 
 export function useCreatePayment() {
   const queryClient = useQueryClient();
@@ -13,6 +14,9 @@ export function useCreatePayment() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: paymentQueryKeys.all });
       queryClient.invalidateQueries({ queryKey: orderQueryKeys.all });
+      queryClient.invalidateQueries({
+        queryKey: dashboardKeys.all,
+      });
       toast.success("Payment created successfully");
     },
     onError: (error: any) => {

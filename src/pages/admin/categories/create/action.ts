@@ -19,7 +19,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const response = await createCategory({ name });
 
     await queryClient.invalidateQueries({
-      queryKey: categoryQueryKeys.all,
+      queryKey: categoryQueryKeys.lists,
     });
 
     // Show success toast

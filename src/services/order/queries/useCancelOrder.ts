@@ -4,6 +4,10 @@ import { toast } from "sonner";
 import { cancelOrder } from "../api";
 import type { CancelOrderValues } from "@/types/order.type";
 import { useAuthStore } from "@/stores/auth.store";
+import { productQueryKeys } from "@/services/product/key";
+import { inventoryQueryKeys } from "@/services/inventory/key";
+import { dashboardKeys } from "@/services/dashboard/key";
+import { homeQueryKeys } from "@/services/home/key";
 
 export function useCancelOrder() {
     const queryClient = useQueryClient()
@@ -16,7 +20,25 @@ export function useCancelOrder() {
         },
         onSuccess: () => {
             if (!user) return
-            queryClient.invalidateQueries({ queryKey: orderQueryKeys.lists(user.id) })
+            queryClient.invalidateQueries({
+                queryKey: orderQueryKeys.all,
+            });
+
+            queryClient.invalidateQueries({
+                queryKey: productQueryKeys.all,
+            });
+
+            queryClient.invalidateQueries({
+                queryKey: inventoryQueryKeys.all,
+            });
+
+            queryClient.invalidateQueries({
+                queryKey: dashboardKeys.all,
+            });
+
+            queryClient.invalidateQueries({
+                queryKey: homeQueryKeys.all,
+            });
             toast.success("Order cancelled successfully")
         },
         onError: (error: any) => {

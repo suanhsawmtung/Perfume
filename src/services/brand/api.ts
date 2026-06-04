@@ -1,4 +1,5 @@
 import api from "@/lib/api";
+import type { CursorPaginationResultT, SelectOptionT } from "@/types";
 import type {
   BrandListResult,
   BrandListType,
@@ -10,7 +11,6 @@ import type {
   UpdateBrandParams,
   UpdateBrandResponse
 } from "@/types/brand.type";
-import type { FetchSelectPageResult } from "@/types/select-option.type";
 
 export const DEFAULT_LIMIT = 10;
 
@@ -81,7 +81,7 @@ export async function deleteBrand(
 export async function fetchBrandSelectOptions(params: {
   search: string;
   cursor: number | null;
-}): Promise<FetchSelectPageResult> {
+}): Promise<CursorPaginationResultT<SelectOptionT>> {
   const { search, cursor } = params;
 
   const response = await api.get("/brands/select-options", {

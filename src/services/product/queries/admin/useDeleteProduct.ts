@@ -4,6 +4,9 @@ import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { deleteProduct } from "../../api";
 import { productQueryKeys } from "../../key";
+import { homeQueryKeys } from "@/services/home/key";
+import { dashboardKeys } from "@/services/dashboard/key";
+import { brandQueryKeys } from "@/services/brand/key";
 
 export const useDeleteProductMutation = () => {
   const navigate = useNavigate();
@@ -17,6 +20,18 @@ export const useDeleteProductMutation = () => {
 
       queryClient.invalidateQueries({
         queryKey: productQueryKeys.all,
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: homeQueryKeys.all,
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: dashboardKeys.all,
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: brandQueryKeys.all,
       });
 
       toast.success("Product deleted successfully!");

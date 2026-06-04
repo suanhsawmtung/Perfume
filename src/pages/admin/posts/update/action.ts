@@ -1,4 +1,5 @@
 import { queryClient } from "@/lib/query-client";
+import { homeQueryKeys } from "@/services/home/key";
 import { updatePost } from "@/services/post/api";
 import { postQueryKeys } from "@/services/post/key";
 import { AxiosError } from "axios";
@@ -42,13 +43,12 @@ export async function action({ request, params }: ActionFunctionArgs) {
   try {
     const response = await updatePost(slug, formData);
 
-    // Invalidate queries
     await queryClient.invalidateQueries({
-      queryKey: postQueryKeys.admin.detail(slug),
+      queryKey: postQueryKeys.all,
     });
 
     await queryClient.invalidateQueries({
-      queryKey: postQueryKeys.all,
+      queryKey: homeQueryKeys.all,
     });
 
     // Show success toast

@@ -1,6 +1,6 @@
 import api from "@/lib/api";
+import type { CursorPaginationResultT, SelectOptionT } from "@/types";
 import type {
-  CommonUserResult,
   CreateUserResponse,
   DeleteUserParams,
   DeleteUserResponse,
@@ -77,7 +77,7 @@ export async function deleteUser(
 export async function fetchAllUsers(
   limit?: number,
   cursor?: number | null,
-): Promise<CommonUserResult> {
+): Promise<CursorPaginationResultT<SelectOptionT>> {
   const response = await api.get("/users", {
     params: {
       ...(limit && { limit }),
@@ -88,5 +88,6 @@ export async function fetchAllUsers(
   return {
     items: response.data?.data?.items || [],
     nextCursor: response.data?.data?.nextCursor || null,
+    totalCount: response.data?.data?.totalCount || 0,
   };
 }

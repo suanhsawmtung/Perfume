@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { TabButton } from "@/components/ui/tab-button";
 import { INVENTORY_TYPES } from "@/constants/inventory.constant";
 import { fetchAdminProductVariant, fetchProductSelectOptions, fetchProductVariantSelectOptions } from "@/services/product/api";
+import { productQueryKeys } from "@/services/product/key";
 import type { ProductVariantDetailType } from "@/types/product.type";
 import { type InventoryFormValues, inventorySchema } from "@/validations/inventory.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -120,7 +121,7 @@ export function InventoryForm() {
             <FormLabel>Product</FormLabel>
             <FormControl>
               <SearchableSelect
-                queryKey={["products-select-options"]}
+                queryKey={productQueryKeys.selectOptions()}
                 onFetch={fetchProductSelectOptions}
                 value={selectedProductSlug}
                 onChange={(option) => {
@@ -143,15 +144,12 @@ export function InventoryForm() {
                 <FormLabel>Variant</FormLabel>
                 <FormControl>
                   <SearchableSelect
-                    queryKey={[
-                      "variants-select-options", 
-                      ...(selectedProductSlug ? [selectedProductSlug] : [])
-                    ]}
-                    onFetch={({search, cursor}) => 
-                      fetchProductVariantSelectOptions({ 
-                        search, 
-                        cursor, 
-                        productSlug: selectedProductSlug 
+                    queryKey={productQueryKeys.variantSelectOptions({ productSlug: selectedProductSlug })}
+                    onFetch={({ search, cursor }) =>
+                      fetchProductVariantSelectOptions({
+                        search,
+                        cursor,
+                        productSlug: selectedProductSlug
                       })}
                     value={selectedVariantSlug}
                     onChange={(option) => {

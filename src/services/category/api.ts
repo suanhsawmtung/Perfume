@@ -1,4 +1,5 @@
 import api from "@/lib/api";
+import type { CursorPaginationResultT, SelectOptionT } from "@/types";
 import type {
   CategoryListResult,
   CategoryListType,
@@ -11,7 +12,6 @@ import type {
   UpdateCategoryParams,
   UpdateCategoryResponse
 } from "@/types/category.type";
-import type { FetchSelectPageResult } from "@/types/select-option.type";
 
 export const DEFAULT_LIMIT = 10;
 
@@ -88,7 +88,7 @@ export async function fetchAllCategories(): Promise<CommonCategoryType[]> {
 export async function fetchCategorySelectOptions(params: {
   search: string;
   cursor: number | null;
-}): Promise<FetchSelectPageResult> {
+}): Promise<CursorPaginationResultT<SelectOptionT>> {
   const { search, cursor } = params;
 
   const response = await api.get("/categories/select-options", {
