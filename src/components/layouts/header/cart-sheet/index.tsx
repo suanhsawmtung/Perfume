@@ -1,10 +1,10 @@
 import {
-    Sheet,
-    SheetContent,
-    SheetHeader,
-    SheetTitle
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle
 } from "@/components/ui/sheet"
-import { useCartStore, type CheckoutStep } from "@/stores/cart.store"
+import { useCartStore, type CheckoutStep } from "@/stores/_cart.store"
 import { CartView } from "./cart-view"
 import { CheckoutView } from "./checkout-view"
 import { SuccessView } from "./success-view"

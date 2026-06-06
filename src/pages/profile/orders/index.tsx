@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
 import ContentWrapper from "@/components/wrapper/content-wrapper"
-import { ArrowLeft, Receipt } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 import { useState } from "react"
 import { Link, useSearchParams } from "react-router"
 import { useGetInfiniteOrders } from "@/services/order/queries/useGetInfiniteOrders"
@@ -13,6 +12,7 @@ import { useAuthStore } from "@/stores/auth.store"
 import { ReceiptSheet } from "@/components/order/receipt-sheet"
 import { PaymentProofDialog } from "@/components/order/payment-proof-dialog"
 import { SearchTabGroup } from "@/components/shared/search-tab-group"
+import { NoOrdersFoundCard } from "@/components/order/no-orders-found-card"
 
 export default function OrderHistoryPage() {
   const [searchParams] = useSearchParams()
@@ -89,14 +89,7 @@ export default function OrderHistoryPage() {
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
             </div>
           ) : orders.length === 0 ? (
-            <Card className="flex flex-col items-center justify-center p-12 text-center">
-              <Receipt className="h-12 w-12 text-muted-foreground/50 mb-4" />
-              <h3 className="text-lg font-medium">No orders found</h3>
-              <p className="text-muted-foreground mt-2 mb-6">You haven't placed any orders yet.</p>
-              <Button asChild>
-                <Link to="/products">Browse Products</Link>
-              </Button>
-            </Card>
+            <NoOrdersFoundCard />
           ) : (
             <>
               {orders.map((order) => (

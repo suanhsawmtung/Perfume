@@ -3,12 +3,12 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import {
-    SheetFooter
+  SheetFooter
 } from "@/components/ui/sheet"
-import { useCartStore } from "@/stores/cart.store"
+import { useCartStore } from "@/stores/_cart.store"
 import {
-    ArrowLeft,
-    CreditCard
+  ArrowLeft,
+  CreditCard
 } from "lucide-react"
 import { useState } from "react"
 

@@ -39,7 +39,7 @@ export function ProfileWishlistCard({ wishlistProducts }: { wishlistProducts: Wi
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="text-lg">Wishlist</CardTitle>
         <Button variant="ghost" size="sm" asChild>
-          <Link to="/profile/wishlist">View All</Link>
+          <Link to="/profile/wishlists">View All</Link>
         </Button>
       </CardHeader>
       <CardContent>

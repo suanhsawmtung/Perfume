@@ -13,7 +13,7 @@ interface ProfileSidebarProps {
 
 const quickLinks: { icon: LucideIcon; label: string; href: string }[] = [
   { icon: Package, label: "Order History", href: "/profile/orders" },
-  { icon: Heart, label: "Wishlist", href: "/profile/wishlist" },
+  { icon: Heart, label: "Wishlist", href: "/profile/wishlists" },
   { icon: MessageCircleIcon, label: "Reviews", href: "/profile/reviews" },
   { icon: Settings, label: "Settings", href: "/settings" },
 ]

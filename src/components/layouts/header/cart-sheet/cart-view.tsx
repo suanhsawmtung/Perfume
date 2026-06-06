@@ -1,25 +1,25 @@
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { SheetFooter } from "@/components/ui/sheet"
-import { useCartStore } from "@/stores/cart.store"
+import { useCartStore } from "@/stores/_cart.store"
 import {
-    CreditCard,
-    Minus,
-    Plus,
-    ShoppingBag,
-    Trash2
+  CreditCard,
+  Minus,
+  Plus,
+  ShoppingBag,
+  Trash2
 } from "lucide-react"
 import { Link } from "react-router"
 
 export function CartView() {
-  const { 
-    items, 
-    updateQuantity, 
-    removeItem, 
-    getTotal, 
-    setStep, 
+  const {
+    items,
+    updateQuantity,
+    removeItem,
+    getTotal,
+    setStep,
     setIsOpen
-   } = useCartStore()
+  } = useCartStore()
 
   if (items.length === 0) {
     return (

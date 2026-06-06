@@ -8,7 +8,7 @@ import {
 import ContentWrapper from "@/components/wrapper/content-wrapper"
 import { cn } from "@/lib/utils"
 import { useAuthStore } from "@/stores/auth.store"
-import { useCartStore } from "@/stores/cart.store"
+import { useCartStore } from "@/stores/_cart.store"
 import { Menu, Search, ShoppingBag } from "lucide-react"
 import { Link, useLocation } from "react-router"
 import AuthDropdown from "./auth-dropdown"

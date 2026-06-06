@@ -76,6 +76,7 @@ import { loader as productsLoader } from "@/pages/products/loader";
 import { loader as blogsLoader } from "@/pages/blogs/loader";
 import { loader as blogLoader } from "@/pages/blogs/detail/loader";
 import { loader as profileLoader } from "@/pages/profile/loader";
+import { loader as profileLayoutLoader } from "@/pages/profile/layout-loader";
 
 import AdminBrandsPage from "@/pages/admin/brands";
 import AdminBrandCreateDialog from "@/pages/admin/brands/create";
@@ -145,7 +146,6 @@ import { action as adminUpdateTransactionAction } from "@/pages/admin/transactio
 import { loader as adminEditTransactionLoader } from "@/pages/admin/transactions/update/loader";
 import ProfilePage from "@/pages/profile";
 import OrderHistoryPage from "@/pages/profile/orders";
-import { loader as ordersLoader } from "@/pages/profile/orders/loader";
 import WishlistPage from "@/pages/profile/wishlist";
 import SettingsPage from "@/pages/settings";
 
@@ -163,10 +163,21 @@ export const router = createBrowserRouter([
       },
       {
         path: "profile",
+        loader: profileLayoutLoader,
         children: [
-          { index: true, Component: ProfilePage, loader: profileLoader },
-          { path: "wishlist", Component: WishlistPage },
-          { path: "orders", Component: OrderHistoryPage, loader: ordersLoader },
+          {
+            index: true,
+            Component: ProfilePage,
+            loader: profileLoader
+          },
+          {
+            path: "wishlists",
+            Component: WishlistPage
+          },
+          {
+            path: "orders",
+            Component: OrderHistoryPage,
+          },
         ],
       },
       {

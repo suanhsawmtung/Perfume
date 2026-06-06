@@ -13,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea"
 import ContentWrapper from "@/components/wrapper/content-wrapper"
 import { getProductById, reviews } from "@/lib/data"
 import { cn } from "@/lib/utils"
-import { useCartStore } from "@/stores/cart.store"
+import { useCartStore } from "@/stores/_cart.store"
 import { useWishlistStore } from "@/stores/wishlist.store"
 import {
   Check,

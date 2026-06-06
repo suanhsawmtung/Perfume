@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button"
-import { useCartStore } from "@/stores/cart.store"
+import { useCartStore } from "@/stores/_cart.store"
 import {
-    Check,
-    Package
+  Check,
+  Package
 } from "lucide-react"
 
 export function SuccessView() {
