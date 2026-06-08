@@ -1,22 +1,10 @@
-import type { CancelOrderValues, OrderStatus, OrderType } from "@/types/order.type";
+import type { OrderStatus, OrderType } from "@/types/order.type";
 import { cn, formatDate, formatImagePath, formatPrice, getOrderStatusColor } from "@/lib/utils";
 import { Card, CardContent } from "../ui/card";
-import { AlertTriangle, ChevronRight, FileText, ImageIcon, MessageSquare, Receipt, X, XCircle } from "lucide-react";
+import { AlertTriangle, ChevronRight, FileText, ImageIcon, MessageSquare, Receipt, XCircle } from "lucide-react";
 import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { cancelOrderSchema } from "@/validations/order.validation";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
-import { useCancelOrder } from "@/services/order/queries/useCancelOrder";
+import { CancelOrderForm } from "./cancel-order-form";
 
 interface OrderNoteAlertProps {
     title: string;
@@ -39,163 +27,6 @@ const canCancel = (status: string) => {
         "CANCELLED",
     ]
     return !nonCancellableStatuses.includes(status as OrderStatus)
-}
-
-export function CancelOrderForm({
-    cancellingOrderCode,
-    setCancellingOrderCode,
-}: {
-    cancellingOrderCode: string,
-    setCancellingOrderCode: (code: string | null) => void,
-}) {
-    const cancelOrderMutation = useCancelOrder();
-    const isSubmitting = cancelOrderMutation.isPending;
-
-    const form = useForm<CancelOrderValues>({
-        resolver: zodResolver(cancelOrderSchema),
-        defaultValues: {
-            cancelledReason: "",
-        },
-    });
-
-    const onSubmit = (values: CancelOrderValues) => {
-        cancelOrderMutation.mutate({ code: cancellingOrderCode, data: values }, {
-            onSuccess: () => {
-                setCancellingOrderCode(null)
-            },
-        });
-    };
-
-    return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-900 dark:bg-red-950/30">
-                <div className="mb-3 flex items-center justify-between">
-                    <h3 className="font-medium text-red-800 dark:text-red-200">Cancel Order</h3>
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-6 w-6 p-0 text-red-600 hover:bg-red-100 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900/50"
-                        onClick={() => {
-                            setCancellingOrderCode(null)
-                            // setCancelReason("")
-                        }}
-                    >
-                        <X className="h-4 w-4" />
-                    </Button>
-                </div>
-                <FormField
-                    control={form.control}
-                    name="cancelledReason"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Reason for Cancellation</FormLabel>
-                            <FormControl>
-                                <Textarea
-                                    placeholder="Please tell us why you want to cancel this order..."
-                                    className="min-h-[100px] border-red-200 bg-white focus-visible:ring-red-500 dark:border-red-800 dark:bg-red-950/50"
-                                    {...field}
-                                    value={field.value || ""}
-                                    disabled={isSubmitting}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <div className="mt-3 flex justify-end gap-2">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                            setCancellingOrderCode(null)
-                            // setCancelReason("")
-                        }}
-                    >
-                        Keep Order
-                    </Button>
-                    <Button
-                        variant="destructive"
-                        size="sm"
-                        type="submit"
-                        disabled={!form.formState.isValid || isSubmitting}
-                    >
-                        {isSubmitting ? "Cancelling..." : "Confirm Cancellation"}
-                    </Button>
-                </div>
-            </form>
-        </Form>
-    )
-}
-
-function OrderPaymentSummary({ totalPaidAmount, totalRefundAmount }: OrderPaymentSummaryProps) {
-    if (totalPaidAmount <= 0) return null;
-
-    return (
-        <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 rounded-lg py-3 text-sm">
-            {/* Always show paid if section is visible */}
-            <div className="flex items-center gap-2">
-                <span className="text-muted-foreground">Total Paid:</span>
-                <span className="font-semibold text-green-600 dark:text-green-400">
-                    {formatPrice(totalPaidAmount)}
-                </span>
-            </div>
-
-            {/* Only show if refund exists */}
-            {totalRefundAmount > 0 && (
-                <>
-                    <div className="flex items-center gap-2">
-                        <span className="text-muted-foreground">Refunded:</span>
-                        <span className="font-semibold text-red-600 dark:text-red-400">
-                            {formatPrice(totalRefundAmount)}
-                        </span>
-                    </div>
-
-                    {/* Only show if refund exists — paid minus refund */}
-                    <div className="flex items-center gap-2">
-                        <span className="text-muted-foreground">Net Amount:</span>
-                        <span className="font-semibold">
-                            {formatPrice((totalPaidAmount ?? 0) - (totalRefundAmount ?? 0))}
-                        </span>
-                    </div>
-                </>
-            )}
-        </div>
-    );
-}
-
-function OrderNoteAlert({ title, content, icon: Icon, variant = "zinc" }: OrderNoteAlertProps) {
-    const variantStyles = {
-        blue: {
-            container: "border-blue-200 bg-blue-50 dark:border-blue-900 dark:bg-blue-950/50",
-            icon: "text-blue-600 dark:text-blue-400",
-            title: "text-blue-700 dark:text-blue-300",
-            content: "text-blue-800 dark:text-blue-200",
-        },
-        red: {
-            container: "border-red-200 bg-red-50 dark:border-red-900 dark:bg-red-950/50",
-            icon: "text-red-600 dark:text-red-400",
-            title: "text-red-700 dark:text-red-300",
-            content: "text-red-800 dark:text-red-200",
-        },
-        zinc: {
-            container: "border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800/50",
-            icon: "text-zinc-600 dark:text-zinc-400",
-            title: "text-zinc-700 dark:text-zinc-300",
-            content: "text-zinc-800 dark:text-zinc-200",
-        },
-    }[variant];
-
-    return (
-        <div className={cn("mt-4 rounded-lg border p-3", variantStyles.container)}>
-            <div className="flex items-start gap-2">
-                <Icon className={cn("mt-0.5 h-4 w-4 shrink-0", variantStyles.icon)} />
-                <div className="min-w-0 flex-1">
-                    <p className={cn("text-xs font-medium", variantStyles.title)}>{title}</p>
-                    <p className={cn("mt-1 text-sm", variantStyles.content)}>{content}</p>
-                </div>
-            </div>
-        </div>
-    );
 }
 
 export function OrderCard({
@@ -245,39 +76,47 @@ export function OrderCard({
 
 
                 {/* Payment Summary */}
-                <OrderPaymentSummary
-                    totalPaidAmount={order.totalPaidAmount}
-                    totalRefundAmount={order.totalRefundAmount}
-                />
+                <div className="mt-4">
+                    <OrderPaymentSummary
+                        totalPaidAmount={order.totalPaidAmount}
+                        totalRefundAmount={order.totalRefundAmount}
+                    />
+                </div>
 
                 {/* Customer Note */}
                 {order.customerNotes && (
-                    <OrderNoteAlert
-                        title="Customer Note"
-                        content={order.customerNotes}
-                        icon={MessageSquare}
-                        variant="blue"
-                    />
+                    <div className="mt-4">
+                        <OrderNoteAlert
+                            title="Customer Note"
+                            content={order.customerNotes}
+                            icon={MessageSquare}
+                            variant="blue"
+                        />
+                    </div>
                 )}
 
                 {/* Rejected Reason */}
                 {order.rejectedReason && (
-                    <OrderNoteAlert
-                        title="Rejected Reason"
-                        content={order.rejectedReason}
-                        icon={AlertTriangle}
-                        variant="red"
-                    />
+                    <div className="mt-4">
+                        <OrderNoteAlert
+                            title="Rejected Reason"
+                            content={order.rejectedReason}
+                            icon={AlertTriangle}
+                            variant="red"
+                        />
+                    </div>
                 )}
 
                 {/* Cancelled Reason */}
                 {order.cancelledReason && (
-                    <OrderNoteAlert
-                        title="Cancellation Reason"
-                        content={order.cancelledReason}
-                        icon={XCircle}
-                        variant="zinc"
-                    />
+                    <div className="mt-4">
+                        <OrderNoteAlert
+                            title="Cancellation Reason"
+                            content={order.cancelledReason}
+                            icon={XCircle}
+                            variant="zinc"
+                        />
+                    </div>
                 )}
 
                 {/* Order Items */}
@@ -345,10 +184,13 @@ export function OrderCard({
 
                 {/* Cancel Order Form */}
                 {cancellingOrderCode && cancellingOrderCode === order.code && (
-                    <CancelOrderForm
-                        cancellingOrderCode={cancellingOrderCode}
-                        setCancellingOrderCode={setCancellingOrderCode}
-                    />
+                    <div className="mt-6">
+                        <CancelOrderForm
+                            cancellingOrderCode={cancellingOrderCode}
+                            setCancellingOrderCode={setCancellingOrderCode}
+                            canCancel={canCancel(order.status)}
+                        />
+                    </div>
                 )}
 
                 {/* Action Buttons */}
@@ -392,4 +234,75 @@ export function OrderCard({
             </CardContent>
         </Card>
     )
+}
+
+function OrderPaymentSummary({ totalPaidAmount, totalRefundAmount }: OrderPaymentSummaryProps) {
+    if (totalPaidAmount <= 0) return null;
+
+    return (
+        <div className="flex flex-wrap gap-x-6 gap-y-2 rounded-lg py-3 text-sm">
+            {/* Always show paid if section is visible */}
+            <div className="flex items-center gap-2">
+                <span className="text-muted-foreground">Total Paid:</span>
+                <span className="font-semibold text-green-600 dark:text-green-400">
+                    {formatPrice(totalPaidAmount)}
+                </span>
+            </div>
+
+            {/* Only show if refund exists */}
+            {totalRefundAmount > 0 && (
+                <>
+                    <div className="flex items-center gap-2">
+                        <span className="text-muted-foreground">Refunded:</span>
+                        <span className="font-semibold text-red-600 dark:text-red-400">
+                            {formatPrice(totalRefundAmount)}
+                        </span>
+                    </div>
+
+                    {/* Only show if refund exists — paid minus refund */}
+                    <div className="flex items-center gap-2">
+                        <span className="text-muted-foreground">Net Amount:</span>
+                        <span className="font-semibold">
+                            {formatPrice((totalPaidAmount ?? 0) - (totalRefundAmount ?? 0))}
+                        </span>
+                    </div>
+                </>
+            )}
+        </div>
+    );
+}
+
+function OrderNoteAlert({ title, content, icon: Icon, variant = "zinc" }: OrderNoteAlertProps) {
+    const variantStyles = {
+        blue: {
+            container: "border-blue-200 bg-blue-50 dark:border-blue-900 dark:bg-blue-950/50",
+            icon: "text-blue-600 dark:text-blue-400",
+            title: "text-blue-700 dark:text-blue-300",
+            content: "text-blue-800 dark:text-blue-200",
+        },
+        red: {
+            container: "border-red-200 bg-red-50 dark:border-red-900 dark:bg-red-950/50",
+            icon: "text-red-600 dark:text-red-400",
+            title: "text-red-700 dark:text-red-300",
+            content: "text-red-800 dark:text-red-200",
+        },
+        zinc: {
+            container: "border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800/50",
+            icon: "text-zinc-600 dark:text-zinc-400",
+            title: "text-zinc-700 dark:text-zinc-300",
+            content: "text-zinc-800 dark:text-zinc-200",
+        },
+    }[variant];
+
+    return (
+        <div className={cn("rounded-lg border p-3", variantStyles.container)}>
+            <div className="flex items-start gap-2">
+                <Icon className={cn("mt-0.5 h-4 w-4 shrink-0", variantStyles.icon)} />
+                <div className="min-w-0 flex-1">
+                    <p className={cn("text-xs font-medium", variantStyles.title)}>{title}</p>
+                    <p className={cn("mt-1 text-sm", variantStyles.content)}>{content}</p>
+                </div>
+            </div>
+        </div>
+    );
 }

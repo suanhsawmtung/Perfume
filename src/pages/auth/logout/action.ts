@@ -1,4 +1,5 @@
 import api from "@/lib/api";
+import { queryClient } from "@/lib/query-client";
 import { useAuthStore } from "@/stores/auth.store";
 import { AxiosError } from "axios";
 import { redirect } from "react-router";
@@ -22,6 +23,8 @@ export async function action() {
     // Always clear auth store data
     const { clearAuth } = useAuthStore.getState();
     clearAuth();
+
+    queryClient.removeQueries();
   }
 
   // Redirect to sign-in page

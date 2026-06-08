@@ -1,3 +1,4 @@
+import { queryClient } from "@/lib/query-client";
 import { checkAuth } from "@/services/auth/api";
 import { useAuthStore } from "@/stores/auth.store";
 import { redirect } from "react-router";
@@ -38,5 +39,6 @@ export async function loader() {
 
   // If not authenticated, redirect to sign-in
   clearAuthUser();
+  queryClient.removeQueries() // no args = remove ALL cached queries
   return redirect("/sign-in");
 }
