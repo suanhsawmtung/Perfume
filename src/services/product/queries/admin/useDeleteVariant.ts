@@ -14,7 +14,7 @@ export const useDeleteVariantMutation = () => {
     mutationFn: (params: { productSlug: string; variantSlug: string }) =>
       deleteProductVariant(params),
     onSuccess: (_, variables) => {
-      queryClient.removeQueries({
+      queryClient.invalidateQueries({
         queryKey: productQueryKeys.admin.detail(variables.productSlug),
       });
 

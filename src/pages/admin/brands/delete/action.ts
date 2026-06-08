@@ -16,7 +16,7 @@ export async function action({ params }: ActionFunctionArgs) {
   try {
     const response = await deleteBrand({ slug });
 
-    queryClient.removeQueries({
+    queryClient.invalidateQueries({
       queryKey: brandQueryKeys.detail(slug),
     });
 

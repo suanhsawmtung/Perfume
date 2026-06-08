@@ -1,8 +1,8 @@
 import { ReviewFilterBar } from "@/components/admin/review/list/review-filter-bar";
 import { ReviewList } from "@/components/admin/review/list/reviews-list";
 import AdminHeaderSection from "@/components/admin/shared/admin-header-section";
-import { DEFAULT_LIMIT } from "@/services/review/api";
-import { useListReviews } from "@/services/review/queries/useGetReviews";
+import { ADMIN_DEFAULT_LIMIT } from "@/services/review/api";
+import { useListReviews } from "@/services/review/queries/admin/useGetReviews";
 import { useSearchParams } from "react-router";
 
 const AdminReviewsPage = () => {
@@ -14,12 +14,12 @@ const AdminReviewsPage = () => {
   const user = searchParams.get("user") || "";
   const product = searchParams.get("product") || "";
 
-  const offset = (page - 1) * DEFAULT_LIMIT;
+  const offset = (page - 1) * ADMIN_DEFAULT_LIMIT;
 
   const { data } = useListReviews({
     offset,
     search,
-    limit: DEFAULT_LIMIT,
+    limit: ADMIN_DEFAULT_LIMIT,
     status,
     user,
     product,

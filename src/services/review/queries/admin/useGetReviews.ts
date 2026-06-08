@@ -1,11 +1,11 @@
 import { queryClient } from "@/lib/query-client";
 import type { ReviewListResult } from "@/types/review.type";
 import {
-    useSuspenseQuery,
-    type UseSuspenseQueryResult,
+  useSuspenseQuery,
+  type UseSuspenseQueryResult,
 } from "@tanstack/react-query";
-import { fetchReviews } from "../api";
-import { reviewQueryKeys } from "../key";
+import { fetchAdminReviews } from "../../api";
+import { reviewQueryKeys } from "../../key";
 
 interface UseListReviewsParams {
   offset: number;
@@ -22,8 +22,8 @@ export function useListReviews(
   const { offset, search, limit, status, user, product } = params;
 
   return useSuspenseQuery<ReviewListResult, Error>({
-    queryKey: reviewQueryKeys.list({ offset, search, limit, status, user, product }),
-    queryFn: () => fetchReviews({ offset, search, limit, status, user, product }),
+    queryKey: reviewQueryKeys.admin.list({ offset, search, limit, status, user, product }),
+    queryFn: () => fetchAdminReviews({ offset, search, limit, status, user, product }),
   });
 }
 
@@ -33,7 +33,7 @@ export async function ensureListReviews(
   const { offset, search, limit, status, user, product } = params;
 
   await queryClient.ensureQueryData({
-    queryKey: reviewQueryKeys.list({ offset, search, limit, status, user, product }),
-    queryFn: () => fetchReviews({ offset, search, limit, status, user, product }),
+    queryKey: reviewQueryKeys.admin.list({ offset, search, limit, status, user, product }),
+    queryFn: () => fetchAdminReviews({ offset, search, limit, status, user, product }),
   });
 }

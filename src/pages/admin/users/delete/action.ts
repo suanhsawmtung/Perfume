@@ -16,7 +16,7 @@ export async function action({ params }: ActionFunctionArgs) {
   try {
     const response = await deleteUser({ username });
 
-    queryClient.removeQueries({
+    queryClient.invalidateQueries({
       queryKey: userQueryKeys.detail(username),
     });
 

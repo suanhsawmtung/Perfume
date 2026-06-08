@@ -1,4 +1,4 @@
-import { ensureGetReview } from "@/services/review/queries/useGetReview";
+import { ensureGetReview } from "@/services/review/queries/admin/useGetReview";
 import type { LoaderFunctionArgs } from "react-router";
 
 export async function loader({ params }: LoaderFunctionArgs) {

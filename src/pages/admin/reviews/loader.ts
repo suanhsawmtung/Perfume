@@ -1,5 +1,5 @@
-import { DEFAULT_LIMIT } from "@/services/review/api";
-import { ensureListReviews } from "@/services/review/queries/useGetReviews";
+import { ADMIN_DEFAULT_LIMIT } from "@/services/review/api";
+import { ensureListReviews } from "@/services/review/queries/admin/useGetReviews";
 
 import type { LoaderFunctionArgs } from "react-router";
 import { redirect } from "react-router";
@@ -30,13 +30,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const user = searchParams.get("user") || undefined;
   const product = searchParams.get("product") || undefined;
 
-  const offset = (page - 1) * DEFAULT_LIMIT;
+  const offset = (page - 1) * ADMIN_DEFAULT_LIMIT;
 
   try {
     await ensureListReviews({
       offset,
       search,
-      limit: DEFAULT_LIMIT,
+      limit: ADMIN_DEFAULT_LIMIT,
       status,
       user,
       product,

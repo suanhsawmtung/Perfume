@@ -148,6 +148,7 @@ import ProfilePage from "@/pages/profile";
 import OrderHistoryPage from "@/pages/profile/orders";
 import WishlistPage from "@/pages/profile/wishlist";
 import SettingsPage from "@/pages/settings";
+import ReviewPage from "@/pages/profile/reviews";
 
 export const router = createBrowserRouter([
   {
@@ -169,6 +170,10 @@ export const router = createBrowserRouter([
             index: true,
             Component: ProfilePage,
             loader: profileLoader
+          },
+          {
+            path: "reviews",
+            Component: ReviewPage
           },
           {
             path: "wishlists",

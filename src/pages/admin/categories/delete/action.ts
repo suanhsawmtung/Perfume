@@ -16,7 +16,7 @@ export async function action({ params }: ActionFunctionArgs) {
   try {
     const response = await deleteCategory({ slug });
 
-    queryClient.removeQueries({
+    queryClient.invalidateQueries({
       queryKey: categoryQueryKeys.detail(slug),
     });
 

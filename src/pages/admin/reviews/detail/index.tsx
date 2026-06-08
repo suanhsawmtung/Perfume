@@ -2,7 +2,7 @@ import { ReviewDetailContent } from "@/components/admin/review/detail/review-det
 import AdminHeaderSection from "@/components/admin/shared/admin-header-section";
 import { BackButton } from "@/components/admin/shared/back-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useGetReview } from "@/services/review/queries/useGetReview";
+import { useGetReview } from "@/services/review/queries/admin/useGetReview";
 import { useLoaderData } from "react-router";
 import type { loader } from "./loader";
 

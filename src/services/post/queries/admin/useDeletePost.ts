@@ -13,7 +13,7 @@ export const useDeletePostMutation = () => {
     mutationFn: (params: { slug: string }) => deletePost(params),
     onSuccess: (_, variables) => {
       // Remove the deleted post from cache
-      queryClient.removeQueries({
+      queryClient.invalidateQueries({
         queryKey: postQueryKeys.admin.detail(variables.slug),
       });
 

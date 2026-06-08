@@ -2,7 +2,7 @@ import { RatingDisplay } from "@/components/shared/rating";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { formatDate, formatName } from "@/lib/utils";
-import { useToggleReviewPublish } from "@/services/review/queries/useTogglePublish";
+import { useToggleReviewPublish } from "@/services/review/queries/admin/useTogglePublish";
 import type { ReviewListType } from "@/types/review.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowRightIcon } from "lucide-react";
