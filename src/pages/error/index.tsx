@@ -1,5 +1,5 @@
 import { Footer } from "@/components/layouts/footer";
-import { Header } from "@/components/layouts/header";
+import { Navbar } from "@/components/layouts/header/_index";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -26,9 +26,9 @@ const ErrorPage = () => {
   }, [error, clearAuthUser, navigate]);
 
   return (
-    <div className="min-h-screen">
-      <Header />
-      <main className="mt-16 flex h-[calc(80vh-4.2rem)] items-center justify-center lg:h-[calc(100vh-4.2rem)]">
+    <div>
+      <Navbar />
+      <main className="flex h-[calc(80vh-4.2rem)] items-center justify-center lg:h-[calc(100vh-4.2rem)]">
         <Card className="w-full max-w-sm">
           <CardHeader className="flex flex-col items-center gap-2">
             <div className="border-muted-foreground/70 mt-2 mb-4 grid size-24 place-items-center rounded-full border border-dashed">

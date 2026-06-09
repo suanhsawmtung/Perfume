@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button"
 import ContentWrapper from "@/components/wrapper/content-wrapper"
+import { getProductListPageHref } from "@/lib/utils"
+import { usePreferenceStore } from "@/stores/preference.store"
 import { ArrowRight, RefreshCcw, ShieldCheck, Truck } from "lucide-react"
 import { Link } from "react-router"
 
@@ -22,6 +24,8 @@ const HERO_FEATURES = [
 ]
 
 export function HeroSection() {
+  const gender = usePreferenceStore((state) => state.gender)
+
   return (
     <section className="relative min-h-[94vh] lg:min-h-[91vh] overflow-hidden">
       <div className="absolute inset-0">
@@ -48,7 +52,7 @@ export function HeroSection() {
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Button size="lg" asChild>
-              <Link to="/products">
+              <Link to={getProductListPageHref(gender)}>
                 Explore Collection
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>

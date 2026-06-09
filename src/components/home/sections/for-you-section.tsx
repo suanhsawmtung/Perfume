@@ -4,6 +4,8 @@ import type { HomeProductType } from "@/types/home.type"
 import { ArrowRight } from "lucide-react"
 import { Link } from "react-router"
 import { HomeSectionHeader } from "../home-section-header"
+import { getProductListPageHref } from "@/lib/utils"
+import { usePreferenceStore } from "@/stores/preference.store"
 
 export function ForYouSection({
   products
@@ -14,13 +16,15 @@ export function ForYouSection({
     return null
   }
 
+  const gender = usePreferenceStore((state) => state.gender);
+
   return (
     <section className="py-20">
       <ContentWrapper>
         <HomeSectionHeader
           title="For You"
           subtitle="Curated Selection"
-          linkHref="/products"
+          linkHref={getProductListPageHref(gender)}
           linkLabel="View All"
         />
 
@@ -31,7 +35,7 @@ export function ForYouSection({
         </div>
 
         <Link
-          to="/products"
+          to={getProductListPageHref(gender)}
           className="mt-8 flex items-center justify-center gap-2 text-sm font-medium hover:underline md:hidden"
         >
           View All Products

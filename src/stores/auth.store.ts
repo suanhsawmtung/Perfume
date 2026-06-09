@@ -1,3 +1,4 @@
+import { queryClient } from "@/lib/query-client";
 import type { UserType } from "@/types/user.type";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
@@ -14,7 +15,7 @@ export type AuthStatus =
 export type AuthFlow = "sign-up" | "forgot-password";
 
 // Auth user type - matches backend response
-export interface AuthUser extends UserType {}
+export interface AuthUser extends UserType { }
 
 // Auth flow state - tracks the current flow and step
 export interface AuthFlowState {
@@ -69,17 +70,21 @@ export const useAuthStore = create<AuthState>()(
         }),
 
       // Clear authenticated user only
-      clearAuthUser: () =>
+      clearAuthUser: () => {
         set((state) => {
           state.authUser = null;
         }),
+          queryClient.removeQueries() // no args = remove ALL cached queries
+      },
 
       // Clear all auth data
-      clearAuth: () =>
+      clearAuth: () => {
         set((state) => {
           state.authUser = null;
           state.authFlow = null;
-        }),
+        })
+        queryClient.removeQueries() // no args = remove ALL cached queries
+      }
     })),
     {
       name: "auth-storage", // unique name for sessionStorage key

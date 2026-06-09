@@ -19,11 +19,19 @@ export const usePreferenceStore = create<PreferenceState>()(
       gender: null,
       setTheme: (theme) =>
         set((state) => {
-          state.theme = theme;
+          if (theme === "dark" || theme === "light" || theme === "system") {
+            state.theme = theme;
+          } else {
+            state.theme = "system";
+          }
         }),
       setGender: (gender) =>
         set((state) => {
-          state.gender = gender;
+          if (gender === "MALE" || gender === "FEMALE") {
+            state.gender = gender;
+          } else {
+            state.gender = null;
+          }
         }),
     })),
     {

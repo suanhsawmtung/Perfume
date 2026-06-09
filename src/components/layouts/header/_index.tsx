@@ -6,13 +6,14 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import ContentWrapper from "@/components/wrapper/content-wrapper"
-import { cn } from "@/lib/utils"
+import { cn, getProductListPageHref } from "@/lib/utils"
 import { useAuthStore } from "@/stores/auth.store"
 import { useCartStore } from "@/stores/_cart.store"
-import { Menu, Search, ShoppingBag } from "lucide-react"
+import { Menu, ShoppingBag } from "lucide-react"
 import { Link, useLocation } from "react-router"
 import AuthDropdown from "./auth-dropdown"
 import { ThemeToggle } from "./theme-toggle"
+import { usePreferenceStore } from "@/stores/preference.store"
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -23,8 +24,9 @@ const navLinks = [
 export function Navbar() {
   const { pathname } = useLocation();
   const authUser = useAuthStore((state) => state.authUser);
+  const gender = usePreferenceStore((state) => state.gender);
   const { setIsOpen, getItemCount } = useCartStore()
-  const itemCount = getItemCount()
+  const itemCount = getItemCount();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -42,7 +44,7 @@ export function Navbar() {
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
-                  to={link.href}
+                  to={link.href === "/products" ? getProductListPageHref(gender) : link.href}
                   className={cn(
                     "text-lg font-medium transition-colors hover:text-foreground/80",
                     pathname === link.href
@@ -65,7 +67,7 @@ export function Navbar() {
           {navLinks.map((link) => (
             <Link
               key={link.href}
-              to={link.href}
+              to={link.href === "/products" ? getProductListPageHref(gender) : link.href}
               className={cn(
                 "text-sm font-medium tracking-wide transition-colors hover:text-foreground/80",
                 pathname === link.href
@@ -79,10 +81,10 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-1">
-          <Button variant="ghost" size="icon">
+          {/* <Button variant="ghost" size="icon">
             <Search className="h-5 w-5" />
             <span className="sr-only">Search</span>
-          </Button>
+          </Button> */}
           <ThemeToggle />
           <AuthDropdown user={authUser} />
           <Button

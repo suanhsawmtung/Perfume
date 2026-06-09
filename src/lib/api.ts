@@ -2,7 +2,6 @@ import { baseApiUrl } from "@/config/env";
 import { useAuthStore } from "@/stores/auth.store";
 import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { sleep } from "./utils";
-import { queryClient } from "./query-client";
 
 interface RetryConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
@@ -57,7 +56,6 @@ api.interceptors.response.use(
 
     if (errorCode === "Error_AuthNotFound") {
       useAuthStore.getState().clearAuth();
-      queryClient.removeQueries() // no args = remove ALL cached queries
     }
 
     return Promise.reject(error);

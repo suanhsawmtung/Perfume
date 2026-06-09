@@ -4,6 +4,8 @@ import type { HomeProductType } from "@/types/home.type"
 import { ArrowRight } from "lucide-react"
 import { Link } from "react-router"
 import { HomeSectionHeader } from "../home-section-header"
+import { usePreferenceStore } from "@/stores/preference.store"
+import { getProductListPageHref } from "@/lib/utils"
 
 export function BestSellersSection({
   products
@@ -14,13 +16,15 @@ export function BestSellersSection({
     return null
   }
 
+  const gender = usePreferenceStore((state) => state.gender);
+
   return (
     <section className="bg-secondary/30 py-20">
       <ContentWrapper>
         <HomeSectionHeader
           title="Best Sellers"
           subtitle="Most Popular"
-          linkHref="/products"
+          linkHref={getProductListPageHref(gender)}
           linkLabel="View All"
         />
 
@@ -31,7 +35,7 @@ export function BestSellersSection({
         </div>
 
         <Link
-          to="/products?sort=bestseller"
+          to={getProductListPageHref(gender)}
           className="mt-8 flex items-center justify-center gap-2 text-sm font-medium hover:underline md:hidden"
         >
           Shop All Best Sellers

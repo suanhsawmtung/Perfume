@@ -59,9 +59,9 @@ import NewsLetterForm from "./news-letter-form"
 const footerLinks = {
   shop: [
     { href: "/products", label: "All Products" },
-    { href: "/products?category=men", label: "For Men" },
-    { href: "/products?category=women", label: "For Women" },
-    { href: "/products?category=unisex", label: "Unisex" },
+    { href: "/products?gender=MALE", label: "For Men" },
+    { href: "/products?gender=FEMALE", label: "For Women" },
+    { href: "/products?gender=UNISEX", label: "Unisex" },
   ],
   company: [
     { href: "/about", label: "About Us" },

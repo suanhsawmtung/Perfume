@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { Card, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
-import { ImageOff, ShoppingBag, Trash2 } from "lucide-react";
+import { ImageOff, Loader2, ShoppingBag, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { WishlistType } from "@/types/wishlist.type";
 import { useCartStore } from "@/stores/cart.store";
@@ -13,7 +13,7 @@ export function WishlistCard({
     wishlist: WishlistType
 }) {
     const { addItem, setIsOpen } = useCartStore();
-    const { mutate: toggleWishlist } = useToggleWishlist();
+    const { mutate: toggleWishlist, isPending } = useToggleWishlist();
 
     const handleAddToCart = () => {
         if (wishlist.product.primaryVariantId) {
@@ -50,8 +50,13 @@ export function WishlistCard({
                     size="icon"
                     className="absolute right-3 top-3 h-8 w-8 opacity-0 transition-opacity group-hover:opacity-100"
                     onClick={handleRemoveFromWishlist}
+                    disabled={isPending}
                 >
-                    <Trash2 className="h-4 w-4" />
+                    {isPending ? (
+                        <Loader2 className="size-4 animate-spin" />
+                    ) : (
+                        <Trash2 className="size-4" />
+                    )}
                 </Button>
             </div>
             <CardContent className="px-4">

@@ -19,7 +19,7 @@ export default function BlogDetailPage() {
 
   return (
     <div className="min-h-screen">
-      <article>
+      <article className="mb-12">
         <div className="relative h-[50vh] min-h-[400px] overflow-hidden">
           {blog.image ? (
             <img

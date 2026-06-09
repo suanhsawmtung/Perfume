@@ -421,5 +421,11 @@ export const toTitleCase = (str: string) =>
     })
     .join(" ");
 
+export const getProductListPageHref = (gender: string | null) => {
+  return (gender === "MALE" || gender === "FEMALE")
+    ? `/products?gender=${gender}`
+    : `/products`;
+};
+
 export const sleep = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
