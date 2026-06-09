@@ -35,7 +35,12 @@ const signUpSchema = z.object({
         .email({ message: "Invalid email address!" })
         .transform((val) => val.toLowerCase()),
     ),
-  password: z.string().min(1, "Password is required"),
+  password: z
+    .string()
+    .trim()
+    .min(1, "Password is required!")
+    .min(8, "Password must be between 8 and 12 characters")
+    .max(12, "Password must be between 8 and 12 characters"),
   confirmPassword: z.string().min(1, "Confirm password is required"),
 })
   .refine((data) => data.password === data.confirmPassword, {
@@ -151,11 +156,11 @@ const SignUpPage = () => {
                       <FormItem>
                         <FormLabel>Password</FormLabel>
                         <FormControl>
-                          <PasswordInput 
-                            field={field} 
-                            placeholder="Enter your password" 
+                          <PasswordInput
+                            field={field}
+                            placeholder="Enter your password"
                             disabled={isSubmitting}
-                          />  
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -169,11 +174,11 @@ const SignUpPage = () => {
                       <FormItem>
                         <FormLabel>Confirm Password</FormLabel>
                         <FormControl>
-                          <PasswordInput 
-                            field={field} 
-                            placeholder="Confirm your password" 
+                          <PasswordInput
+                            field={field}
+                            placeholder="Confirm your password"
                             disabled={isSubmitting}
-                          />  
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

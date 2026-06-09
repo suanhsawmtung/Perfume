@@ -7,38 +7,20 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useChangePassword } from "@/services/setting/queries/useChangePassword";
-import type { ChangePasswordFormValues } from "@/types/setting.type";
-import { changePasswordSchema } from "@/validations/setting.validation";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { PasswordInput } from "../password-input";
+import { PasswordInput } from "../../shared/password-input";
+import { useChangePasswordForm } from "@/hooks/settings/useChangePasswordForm";
 
 export function ChangePasswordForm() {
-  const changePasswordMutation = useChangePassword();
-  const isSubmitting = changePasswordMutation.isPending;
-
-  const form = useForm<ChangePasswordFormValues>({
-    resolver: zodResolver(changePasswordSchema),
-    defaultValues: {
-      oldPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    },
-  });
-
-  const onSubmit = (values: ChangePasswordFormValues) => {
-    changePasswordMutation.mutate(values, {
-      onSuccess: () => {
-        form.reset();
-      },
-    });
-  };
+  const {
+    form,
+    isSubmitting,
+    onSubmit
+  } = useChangePasswordForm();
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={onSubmit} className="space-y-6">
         <FormField
           control={form.control}
           name="oldPassword"

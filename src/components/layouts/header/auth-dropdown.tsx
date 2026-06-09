@@ -64,7 +64,7 @@ const AuthDropdown = ({ user }: Props) => {
               <AvatarFallback>{getUserInitials(user)}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
-              <h5 className="font-bold">{formatUserDisplayName(user)}</h5>
+              <h5 className="font-bold truncate max-w-[18ch]">{formatUserDisplayName(user)}</h5>
               <p className="text-muted-foreground truncate max-w-[20ch]" title={user.email}>
                 {user.email}
               </p>

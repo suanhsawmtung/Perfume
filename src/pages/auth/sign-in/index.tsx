@@ -36,7 +36,7 @@ const signInSchema = z.object({
   password: z
     .string()
     .trim()
-    .min(1, "Invalid password!")
+    .min(1, "Password is required!")
     .min(8, "Password must be between 8 and 12 characters")
     .max(12, "Password must be between 8 and 12 characters"),
 });
@@ -112,9 +112,9 @@ const SignInPage = () => {
                           </Link>
                         </div>
                         <FormControl>
-                          <PasswordInput 
-                            field={field} 
-                            placeholder="Enter your password" 
+                          <PasswordInput
+                            field={field}
+                            placeholder="Enter your password"
                             disabled={isSubmitting}
                           />
                         </FormControl>

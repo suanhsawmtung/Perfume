@@ -10,7 +10,12 @@ export const updateProfileSchema = z.object({
 export const changePasswordSchema = z
   .object({
     oldPassword: z.string().min(1, "Current password is required"),
-    newPassword: z.string().min(8, "New password must be at least 8 characters"),
+    newPassword: z
+      .string()
+      .trim()
+      .min(1, "Password is required!")
+      .min(8, "Password must be between 8 and 12 characters")
+      .max(12, "Password must be between 8 and 12 characters"),
     confirmPassword: z.string().min(1, "Please confirm your new password"),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
@@ -20,7 +25,12 @@ export const changePasswordSchema = z
 
 export const setPasswordSchema = z
   .object({
-    newPassword: z.string().min(8, "New password must be at least 8 characters"),
+    newPassword: z
+      .string()
+      .trim()
+      .min(1, "Password is required!")
+      .min(8, "Password must be between 8 and 12 characters")
+      .max(12, "Password must be between 8 and 12 characters"),
     confirmPassword: z.string().min(1, "Please confirm your new password"),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {

@@ -87,10 +87,10 @@ const ResetPasswordPage = () => {
                       <FormItem>
                         <FormLabel>New Password</FormLabel>
                         <FormControl>
-                          <PasswordInput 
-                            field={field} 
+                          <PasswordInput
+                            field={field}
                             disabled={isSubmitting}
-                            placeholder="Enter your new password" 
+                            placeholder="Enter your new password"
                           />
                         </FormControl>
                         <FormMessage />
@@ -104,10 +104,10 @@ const ResetPasswordPage = () => {
                       <FormItem>
                         <FormLabel>Confirm New Password</FormLabel>
                         <FormControl>
-                          <PasswordInput 
-                              field={field} 
-                              disabled={isSubmitting}
-                              placeholder="Confirm your new password" 
+                          <PasswordInput
+                            field={field}
+                            disabled={isSubmitting}
+                            placeholder="Confirm your new password"
                           />
                         </FormControl>
                         <FormMessage />

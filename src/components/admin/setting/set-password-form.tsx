@@ -7,37 +7,20 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useSetPassword } from "@/services/setting/queries/useSetPassword";
-import type { SetPasswordFormValues } from "@/types/setting.type";
-import { setPasswordSchema } from "@/validations/setting.validation";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { PasswordInput } from "../password-input";
+import { PasswordInput } from "../../shared/password-input";
+import { useSetPasswordForm } from "@/hooks/settings/useSetPasswordForm";
 
 export function SetPasswordForm() {
-  const setPasswordMutation = useSetPassword();
-  const isSubmitting = setPasswordMutation.isPending;
-
-  const form = useForm<SetPasswordFormValues>({
-    resolver: zodResolver(setPasswordSchema),
-    defaultValues: {
-      newPassword: "",
-      confirmPassword: "",
-    },
-  });
-
-  const onSubmit = (values: SetPasswordFormValues) => {
-    setPasswordMutation.mutate(values, {
-      onSuccess: () => {
-        form.reset();
-      },
-    });
-  };
+  const {
+    form,
+    isSubmitting,
+    onSubmit
+  } = useSetPasswordForm();
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={onSubmit} className="space-y-6">
         <div className="grid gap-4 sm:grid-cols-2">
           <FormField
             control={form.control}

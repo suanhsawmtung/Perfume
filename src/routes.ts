@@ -47,6 +47,7 @@ import { action as adminUpdateProductVariantAction } from "@/pages/admin/product
 import { loader as adminEditProductVariantLoader } from "@/pages/admin/products/variants/update/loader";
 import AdminSettingsPage from "@/pages/admin/settings";
 import { loader as adminSettingsLoader } from "@/pages/admin/settings/loader";
+import { loader as settingsLoader } from "@/pages/settings/loader";
 import AdminUsersPage from "@/pages/admin/users";
 import AdminUserCreateDialog from "@/pages/admin/users/create";
 import { action as adminCreateUserAction } from "@/pages/admin/users/create/action";
@@ -187,7 +188,8 @@ export const router = createBrowserRouter([
       },
       {
         path: "settings",
-        Component: SettingsPage
+        Component: SettingsPage,
+        loader: settingsLoader,
       },
       {
         path: "logout",

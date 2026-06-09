@@ -1,7 +1,7 @@
 import AdminHeaderSection from "@/components/admin/shared/admin-header-section";
-import { ChangePasswordForm } from "@/components/shared/setting/change-password-form";
-import { ProfileForm } from "@/components/shared/setting/profile-form";
-import { SetPasswordForm } from "@/components/shared/setting/set-password-form";
+import { ChangePasswordForm } from "@/components/admin/setting/change-password-form";
+import { ProfileForm } from "@/components/admin/setting/profile-form";
+import { SetPasswordForm } from "@/components/admin/setting/set-password-form";
 import {
   Card,
   CardContent,
@@ -38,10 +38,10 @@ const AdminSettingsPage = () => {
         <Card>
           <CardHeader>
             <CardTitle>
-              { 
-                user?.hasPassword 
-                  ? "Change Password" 
-                  : "Set Password" 
+              {
+                user?.hasPassword
+                  ? "Change Password"
+                  : "Set Password"
               }
             </CardTitle>
             <CardDescription>
@@ -50,10 +50,10 @@ const AdminSettingsPage = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            { 
-              user?.hasPassword 
+            {
+              user?.hasPassword
                 ? <ChangePasswordForm />
-                : <SetPasswordForm /> 
+                : <SetPasswordForm />
             }
           </CardContent>
         </Card>
