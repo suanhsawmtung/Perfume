@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import type { WishlistType } from "@/types/wishlist.type";
 import { useCartStore } from "@/stores/cart.store";
 import { useToggleWishlist } from "@/services/wishlist/queries/useToggleWishlist";
+import { productQueryKeys } from "@/services/product/key";
 
 export function WishlistCard({
     wishlist
@@ -26,7 +27,13 @@ export function WishlistCard({
     };
 
     const handleRemoveFromWishlist = () => {
-        toggleWishlist({ id: wishlist.product.id, action: "remove" });
+        toggleWishlist({
+            id: wishlist.product.id,
+            action: "remove",
+            queryKey: productQueryKeys.detail(wishlist.product.slug, {
+                variant: wishlist.product.primaryVariantSlug
+            })
+        });
     };
 
     return (

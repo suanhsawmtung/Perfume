@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { useDeleteReviewMutation } from "@/services/review/queries/useDeleteReview"
 import { type ReviewType } from "@/types/review.type"
-import { toast } from "sonner"
 
 type DeleteReviewConfirmDialogProps = {
     review: ReviewType
@@ -22,7 +21,7 @@ type DeleteReviewConfirmDialogProps = {
     confirmLabel?: string
     cancelLabel?: string
     variant?: "default" | "destructive"
-    triggerContent?: React.ReactNode
+    children: React.ReactNode
 }
 
 export function DeleteReviewConfirmDialog({
@@ -32,21 +31,17 @@ export function DeleteReviewConfirmDialog({
     confirmLabel = "Confirm",
     cancelLabel = "Cancel",
     variant = "destructive",
-    triggerContent,
+    children,
 }: DeleteReviewConfirmDialogProps) {
     const [isConfirmOpen, setIsConfirmOpen] = React.useState(false);
     const deleteReviewMutation = useDeleteReviewMutation();
     const isDeleting = deleteReviewMutation.isPending;
 
     const handleDelete = () => {
-        if (review.isPublish) {
-            toast.error("You can't delete published review", {
-                position: "top-right",
-            })
-            return;
-        }
-
-        deleteReviewMutation.mutate(review.id, {
+        deleteReviewMutation.mutate({
+            id: review.id,
+            productId: review.product.id
+        }, {
             onSuccess: () => {
                 setIsConfirmOpen(false);
             },
@@ -55,9 +50,7 @@ export function DeleteReviewConfirmDialog({
 
     return (
         <Dialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
-            {triggerContent && (
-                <DialogTrigger asChild>{triggerContent}</DialogTrigger>
-            )}
+            <DialogTrigger asChild>{children}</DialogTrigger>
             <DialogContent showCloseButton={false} className="sm:max-w-md">
                 <DialogHeader>
                     <div

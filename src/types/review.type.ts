@@ -63,9 +63,27 @@ export type ReviewType = {
   }
 }
 
-export type CreateReviewParams = {
+export type ProductReviewType = {
+  id: number;
+  rating: number;
+  content: string | null;
+  isPublish: boolean;
   userId: number;
   productId: number;
+  createdAt: string;
+  updatedAt: string;
+  user: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    username: string;
+    email: string;
+    image: string | null;
+    emailVerifiedAt: string | null;
+  }
+}
+
+export type CreateReviewParams = {
   rating: number;
   content?: string;
 };

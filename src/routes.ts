@@ -219,7 +219,7 @@ export const router = createBrowserRouter([
             loader: productsLoader,
           },
           {
-            path: ":productId",
+            path: ":slug",
             Component: ProductDetailPage,
             loader: productLoader,
             action: productAction,

@@ -2,6 +2,7 @@ import api from "@/lib/api";
 import type { CursorPaginationResultT } from "@/types";
 import type {
   CreateReviewParams,
+  ProductReviewType,
   ReviewListResult,
   ReviewListType,
   ReviewQueryParams,
@@ -23,6 +24,20 @@ export async function fetchReviews(params: ReviewQueryParams): Promise<CursorPag
   };
 
   const response = await api.get("/reviews", {
+    params: queryParams
+  });
+
+  return response.data?.data;
+}
+
+export async function fetchProductReviews(productId: number, params: ReviewQueryParams): Promise<CursorPaginationResultT<ProductReviewType>> {
+  const { cursor, limit = DEFAULT_LIMIT } = params;
+  const queryParams: ReviewQueryParams = {
+    limit,
+    cursor,
+  };
+
+  const response = await api.get(`/products/${productId}/reviews`, {
     params: queryParams
   });
 
@@ -69,18 +84,18 @@ export async function toggleReviewPublish(id: number): Promise<ToggleReviewPubli
   return response.data;
 }
 
-export async function createReview(params: CreateReviewParams): Promise<ReviewType> {
-  const response = await api.post("/reviews", params);
+export async function createReview(productId: number, params: CreateReviewParams): Promise<ReviewType> {
+  const response = await api.post(`/products/${productId}/reviews`, params);
   return response.data?.data;
 }
 
-export async function updateReview(id: number, params: UpdateReviewParams): Promise<ReviewType> {
-  const response = await api.patch(`/reviews/${id}`, params);
+export async function updateReview(id: number, productId: number, params: UpdateReviewParams): Promise<ReviewType> {
+  const response = await api.patch(`/products/${productId}/reviews/${id}`, params);
   return response.data?.data;
 }
 
-export async function deleteReview(id: number): Promise<ReviewType> {
-  const response = await api.delete(`/reviews/${id}`);
+export async function deleteReview({ id, productId }: { id: number, productId: number }): Promise<ReviewType> {
+  const response = await api.delete(`/products/${productId}/reviews/${id}`);
   return response.data?.data;
 }
 

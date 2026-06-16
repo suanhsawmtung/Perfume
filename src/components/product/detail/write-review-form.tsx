@@ -1,8 +1,5 @@
-import type { ReviewType } from "@/types/review.type";
-import { useUpdateReview } from "@/services/review/queries/useUpdateReview";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ReviewFormSchema, type ReviewFormValues } from "@/validations/review.validation";
+import { StarRatingInput } from "@/components/shared/star-rating";
+import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
@@ -12,46 +9,43 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { StarRatingInput } from "@/components/shared/star-rating";
-import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
-import { toast } from "sonner";
+import { useCreateReview } from "@/services/review/queries/useCreateReview";
+import { ReviewFormSchema, type ReviewFormValues } from "@/validations/review.validation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
-interface EditReviewFormProps {
-    review: ReviewType;
-    setEditingId: (id: number | null) => void;
+interface WriteReviewFormProps {
+    productId: number;
+    setReviewDialogOpen: (value: boolean) => void;
 }
 
-export function EditReviewForm({
-    review,
-    setEditingId,
-}: EditReviewFormProps) {
-    const updateReviewMutation = useUpdateReview();
-    const isSubmitting = updateReviewMutation.isPending;
+export function WriteReviewForm({
+    productId,
+    setReviewDialogOpen
+}: WriteReviewFormProps) {
+    const createReviewMutation = useCreateReview();
+    const isSubmitting = createReviewMutation.isPending;
 
     const form = useForm<ReviewFormValues>({
         resolver: zodResolver(ReviewFormSchema),
         defaultValues: {
-            rating: review.rating,
-            content: review.content ?? "",
+            rating: 5,
+            content: "",
         },
     });
 
     const onSubmit = (values: ReviewFormValues) => {
-        if (review.isPublish) {
-            toast.error("You cannot edit published reviews.");
-            return;
-        }
-        updateReviewMutation.mutate({ id: review.id, productId: review.productId, data: values }, {
+        createReviewMutation.mutate({ productId, data: values }, {
             onSuccess: () => {
-                setEditingId(null)
+                form.reset()
+                setReviewDialogOpen(false)
             },
         });
     };
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <FormField
                     control={form.control}
                     name="rating"
@@ -69,7 +63,6 @@ export function EditReviewForm({
                         </FormItem>
                     )}
                 />
-
                 <FormField
                     control={form.control}
                     name="content"
@@ -89,27 +82,16 @@ export function EditReviewForm({
                         </FormItem>
                     )}
                 />
-                <div className="flex gap-2">
+                <div className="flex justify-end gap-2 pt-2">
                     <Button
-                        size="sm"
-                        type="submit"
-                        disabled={isSubmitting}
+                        type="button"
+                        variant="outline"
+                        onClick={() => setReviewDialogOpen(false)}
                     >
-                        Save Changes
-                    </Button>
-                    <Button
-                        size="sm"
-                        variant="ghost"
-                        disabled={isSubmitting}
-                        onClick={() => setEditingId(null)}
-                    >
-                        <X className="mr-1 h-4 w-4" />
                         Cancel
                     </Button>
+                    <Button type="submit">Submit Review</Button>
                 </div>
-                <p className="text-xs text-muted-foreground">
-                    Edited reviews are re-submitted for approval.
-                </p>
             </form>
         </Form>
     )

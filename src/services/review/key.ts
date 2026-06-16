@@ -23,4 +23,9 @@ export const reviewQueryKeys = {
 
   list: (userId: number, options: ReviewQueryParams) =>
     ["reviews", "list", userId, options] as const,
+
+  productLists: (productId: number) => ["reviews", "list", productId] as const,
+
+  productList: (productId: number, options: ReviewQueryParams) =>
+    ["reviews", "list", productId, options] as const,
 };

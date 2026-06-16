@@ -1,19 +1,19 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { updateReview } from "../api";
+import { createReview } from "../api";
 import { useAuthStore } from "@/stores/auth.store";
 import { productQueryKeys } from "@/services/product/key";
-import type { UpdateReviewParams } from "@/types/review.type";
+import type { CreateReviewParams } from "@/types/review.type";
 import { reviewQueryKeys } from "../key";
 
-export function useUpdateReview() {
+export function useCreateReview() {
     const queryClient = useQueryClient()
     const user = useAuthStore((state) => state.authUser)
 
     return useMutation({
-        mutationFn: ({ id, productId, data }: { id: number; productId: number; data: UpdateReviewParams }) => {
+        mutationFn: ({ productId, data }: { productId: number; data: CreateReviewParams }) => {
             if (!user) throw new Error("Unauthorized")
-            return updateReview(id, productId, data)
+            return createReview(productId, data)
         },
         onSuccess: () => {
             if (!user) return
@@ -25,10 +25,10 @@ export function useUpdateReview() {
                 queryKey: productQueryKeys.all,
             });
 
-            toast.success("Review updated successfully")
+            toast.success("Review created successfully")
         },
         onError: (error: any) => {
-            toast.error(error.response?.data?.message || "Failed to update review")
+            toast.error(error.response?.data?.message || "Failed to create review")
         },
     })
 }

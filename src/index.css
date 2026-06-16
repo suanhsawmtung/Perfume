@@ -120,18 +120,23 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   h1 {
     @apply text-2xl font-bold;
   }
+
   h2 {
     @apply text-xl font-bold;
   }
+
   h3 {
     @apply text-lg font-bold;
   }
+
   .prose p:empty {
     @apply my-4 block;
   }
@@ -164,4 +169,26 @@
       padding-right: 4rem;
     }
   }
+}
+
+@keyframes bounce-once {
+  0% {
+    transform: scale(1);
+  }
+
+  40% {
+    transform: scale(1.4);
+  }
+
+  70% {
+    transform: scale(0.9);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-bounce-once {
+  animation: bounce-once 0.4s ease-out forwards;
 }

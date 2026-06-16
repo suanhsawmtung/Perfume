@@ -1,6 +1,7 @@
-import { cn, formatDate, formatName } from "@/lib/utils"
+import { formatDate, formatName } from "@/lib/utils"
 import type { HomeReviewType } from "@/types/home.type"
-import { Quote, Star } from "lucide-react"
+import { Quote } from "lucide-react"
+import { RatingDisplay } from "@/components/shared/rating"
 
 interface ReviewCardProps {
   name: string
@@ -20,17 +21,7 @@ export function NReviewCard({
     <div className="flex h-full flex-col rounded-lg border border-border/50 bg-card p-6">
       <Quote className="h-8 w-8 text-muted-foreground/30" />
       <div className="mt-4 flex items-center gap-1">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Star
-            key={i}
-            className={cn(
-              "h-4 w-4",
-              i < review.rating
-                ? "fill-foreground text-foreground"
-                : "fill-muted text-muted"
-            )}
-          />
-        ))}
+        <RatingDisplay rating={review.rating} size={16} />
       </div>
       <p className="mt-4 line-clamp-3 flex-1 text-sm leading-relaxed text-muted-foreground">
         {review.content}
@@ -71,17 +62,7 @@ export function ReviewCard({
     <div className="flex h-full flex-col rounded-lg border border-border/50 bg-card p-6">
       <Quote className="h-8 w-8 text-muted-foreground/30" />
       <div className="mt-4 flex items-center gap-1">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Star
-            key={i}
-            className={cn(
-              "h-4 w-4",
-              i < rating
-                ? "fill-foreground text-foreground"
-                : "fill-muted text-muted"
-            )}
-          />
-        ))}
+        <RatingDisplay rating={rating} size={16} />
       </div>
       <p className="mt-4 line-clamp-3 flex-1 text-sm leading-relaxed text-muted-foreground">
         {comment}

@@ -154,28 +154,39 @@ export interface ProductDetailType {
   id: number;
   name: string;
   slug: string;
-  concentration: Concentration;
-  gender: Gender;
   description: string;
-  rating: number;
-  ratingCount: number;
-  isActive: boolean;
+  gender: Gender;
+  concentration: Concentration;
   isLimited: boolean;
+  rating: number | null;
+  ratingCount: number;
+  brand: string;
   releasedYear: number | null;
-  createdAt: string;
-  updatedAt: string;
-  brand: {
+  variants: {
     id: number;
-    name: string;
+    size: number;
     slug: string;
-    createdAt: string;
-    updatedAt: string;
-  };
-  variants: ProductVariantType[];
-  wishlists?: {
-    id: number;
-    userId: number;
+    stock: number;
+    reserved: number;
   }[];
+  isWishlist: boolean;
+  canReview: boolean;
+  hasReviewed: boolean;
+  selectedVariant: {
+    id: number;
+    slug: string;
+    size: number;
+    price: number;
+    discount: number;
+    stock: number;
+    reserved: number;
+    isPrimary: boolean;
+    images: {
+      path: string;
+      isPrimary: boolean;
+      order: number;
+    }[];
+  };
 }
 
 export interface CreateProductParams {

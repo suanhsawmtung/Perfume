@@ -9,6 +9,7 @@ import type {
   DeleteProductVariantResponse,
   Gender,
   ProductCardType,
+  ProductDetailType,
   ProductListResult,
   ProductQueryParams,
   ProductVariantDetailType,
@@ -47,6 +48,13 @@ export async function fetchProducts(options: ProductListQueryOptions): Promise<P
     params: queryParams,
   });
 
+  return response.data?.data;
+}
+
+export async function fetchProduct(slug: string, params: { variant: string | null }): Promise<ProductDetailType> {
+  const response = await api.get(`/products/${slug}`, {
+    params
+  });
   return response.data?.data;
 }
 

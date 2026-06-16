@@ -7,7 +7,7 @@ import { productQueryKeys } from "@/services/product/key";
 
 export const useDeleteReviewMutation = () => {
     return useMutation({
-        mutationFn: (id: number) => deleteReview(id),
+        mutationFn: ({ id, productId }: { id: number, productId: number }) => deleteReview({ id, productId }),
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: reviewQueryKeys.all,

@@ -1,7 +1,8 @@
-import { cn, formatImagePath, formatPrice } from "@/lib/utils";
+import { formatImagePath, formatPrice } from "@/lib/utils";
 import type { HomeProductType } from "@/types/home.type";
-import { Image as ImageIcon, Star } from "lucide-react";
+import { Image as ImageIcon } from "lucide-react";
 import { Link } from "react-router";
+import { RatingDisplay } from "../shared/rating";
 
 export function ProductCard({
   product,
@@ -40,17 +41,7 @@ export function ProductCard({
           {product.name}
         </h3>
         <div className="mt-2 flex items-center gap-1">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Star
-              key={i}
-              className={cn(
-                "h-3 w-3",
-                i < Math.floor(rating)
-                  ? "fill-foreground text-foreground"
-                  : "fill-muted text-muted"
-              )}
-            />
-          ))}
+          <RatingDisplay rating={rating} />
           <span className="ml-1 text-xs text-muted-foreground">
             ({product.ratingCount} ratings)
           </span>
@@ -60,7 +51,7 @@ export function ProductCard({
             product.primaryVariant.discount > 0
               ? formatPrice(product.primaryVariant.discount)
               : formatPrice(product.primaryVariant.price)
-            } 
+          }
           </span>
           {product.primaryVariant.discount > 0 && (
             <span className="text-sm text-muted-foreground line-through">

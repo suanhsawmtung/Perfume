@@ -4,9 +4,9 @@ import { CheckCircle2, Clock, ImageIcon, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn, formatDate } from "@/lib/utils";
 import type { ReviewType } from "@/types/review.type";
-import { StarRating } from "@/components/shared/star-rating";
 import { EditReviewForm } from "./edit-review-form";
 import { DeleteReviewConfirmDialog } from "./delete-review-confirm-dialog";
+import { RatingDisplay } from "@/components/shared/rating";
 
 interface MyReviewCardProps {
     review: ReviewType;
@@ -91,7 +91,7 @@ export function MyReviewCard({
                             /* Review Display */
                             <>
                                 <div className="mt-2 flex items-center gap-2">
-                                    <StarRating rating={review.rating} />
+                                    <RatingDisplay rating={review.rating} />
                                     <span className="text-xs text-muted-foreground">
                                         {formatDate(review.createdAt)}
                                     </span>
@@ -99,8 +99,8 @@ export function MyReviewCard({
                                 <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
                                     {review.content}
                                 </p>
-                                {!review.isPublish && (
-                                    <div className="mt-4 flex gap-2">
+                                <div className="mt-4 flex gap-2">
+                                    {!review.isPublish && (
                                         <Button
                                             size="sm"
                                             variant="outline"
@@ -109,26 +109,25 @@ export function MyReviewCard({
                                             <Pencil className="mr-1.5 h-3.5 w-3.5" />
                                             Edit
                                         </Button>
-                                        <DeleteReviewConfirmDialog
-                                            review={review}
-                                            title="Delete Review"
-                                            description="Are you sure you want to delete this review? This action cannot be undone."
-                                            confirmLabel="Delete"
-                                            cancelLabel="Cancel"
-                                            variant="destructive"
-                                            triggerContent={
-                                                <Button
-                                                    size="sm"
-                                                    variant="outline"
-                                                    className="text-destructive hover:bg-destructive hover:text-destructive-foreground"
-                                                >
-                                                    <Trash2 className="mr-1.5 h-3.5 w-3.5" />
-                                                    Delete
-                                                </Button>
-                                            }
-                                        />
-                                    </div>
-                                )}
+                                    )}
+                                    <DeleteReviewConfirmDialog
+                                        review={review}
+                                        title="Delete Review"
+                                        description="Are you sure you want to delete this review? This action cannot be undone."
+                                        confirmLabel="Delete"
+                                        cancelLabel="Cancel"
+                                        variant="destructive"
+                                    >
+                                        <Button
+                                            size="sm"
+                                            variant="outline"
+                                            className="text-destructive hover:bg-destructive hover:text-primary"
+                                        >
+                                            <Trash2 className="mr-1.5 h-3.5 w-3.5" />
+                                            Delete
+                                        </Button>
+                                    </DeleteReviewConfirmDialog>
+                                </div>
                             </>
                         )}
                     </div>

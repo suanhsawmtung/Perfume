@@ -35,8 +35,11 @@ export const productQueryKeys = {
   list: (options: ProductListQueryOptions) =>
     ["products", "list", options] as const,
 
-  detail: (slug: string) =>
+  details: (slug: string) =>
     ["products", "detail", slug] as const,
+
+  detail: (slug: string, params: { variant: string | null }) =>
+    ["products", "detail", slug, params] as const,
 
   selectOptions: (search?: string) => ["products", "list", "select-options", { search }] as const,
 
