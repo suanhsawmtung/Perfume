@@ -35,9 +35,10 @@ export function ProductReviews({ productId, canReview, hasReviewed }: { productI
                     </div>
 
                 ) : (
-                    <WriteReviewDialog productId={productId} canReview={canReview}>
-                        <Button variant="outline">Write a Review</Button>
-                    </WriteReviewDialog>
+                    <WriteReviewDialog
+                        productId={productId}
+                        canReview={canReview}
+                    />
                 )
                 }
             </div >

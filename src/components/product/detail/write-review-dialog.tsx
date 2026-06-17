@@ -4,9 +4,10 @@ import { useState } from "react";
 import { useAuthStore } from "@/stores/auth.store";
 import { Link } from "react-router";
 import { WriteReviewForm } from "./write-review-form";
+import { useAuthRequired } from "@/providers/auth-required-provider";
 
 interface WriteReviewDialogProps {
-    children: React.ReactNode;
+    children?: React.ReactNode;
     canReview: boolean;
     productId: number
 }
@@ -16,10 +17,23 @@ export function WriteReviewDialog({ children, canReview, productId }: WriteRevie
 
     const authUser = useAuthStore((state) => state.authUser);
 
+    if (!authUser) {
+        <Button
+            variant="outline"
+            onClick={() => useAuthRequired().openAuthRequiredDialog({
+                title: "Sign in to write a review",
+                description: "You need to be logged in to share your experience.",
+
+            })}
+        >
+            Write a Review
+        </Button>
+    }
+
     return (
         <Dialog open={reviewDialogOpen} onOpenChange={setReviewDialogOpen}>
             <DialogTrigger asChild>
-                {children}
+                {children ? children : <Button variant="outline">Write a Review</Button>}
             </DialogTrigger>
             {!authUser ? (
                 <DialogContent className="sm:max-w-md">

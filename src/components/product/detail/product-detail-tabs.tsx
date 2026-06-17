@@ -42,59 +42,58 @@ export function ProductDetailTabs({ product }: ProductDetailTabsProps) {
           </div>
         )}
 
-        {/* 
-                    {activeTab === "notes" && product &&. (
-                      <div className="grid gap-8 md:grid-cols-3">
-                        <div>
-                          <h3 className="font-medium">Top Notes</h3>
-                          <p className="mt-2 text-sm text-muted-foreground">
-                            The initial impression of the fragrance
-                          </p>
-                          <ul className="mt-4 space-y-2">
-                            {product.notes.top.map((note) => (
-                              <li
-                                key={note}
-                                className="text-sm text-muted-foreground"
-                              >
-                                {note}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div>
-                          <h3 className="font-medium">Middle Notes</h3>
-                          <p className="mt-2 text-sm text-muted-foreground">
-                            The heart of the fragrance
-                          </p>
-                          <ul className="mt-4 space-y-2">
-                            {product.notes.middle.map((note) => (
-                              <li
-                                key={note}
-                                className="text-sm text-muted-foreground"
-                              >
-                                {note}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div>
-                          <h3 className="font-medium">Base Notes</h3>
-                          <p className="mt-2 text-sm text-muted-foreground">
-                            The lasting foundation
-                          </p>
-                          <ul className="mt-4 space-y-2">
-                            {product.notes.base.map((note) => (
-                              <li
-                                key={note}
-                                className="text-sm text-muted-foreground"
-                              >
-                                {note}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    )} */}
+        {/* {activeTab === "notes" && product && (
+          <div className="grid gap-8 md:grid-cols-3">
+            <div>
+              <h3 className="font-medium">Top Notes</h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                The initial impression of the fragrance
+              </p>
+              <ul className="mt-4 space-y-2">
+                {product.notes.top.map((note) => (
+                  <li
+                    key={note}
+                    className="text-sm text-muted-foreground"
+                  >
+                    {note}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-medium">Middle Notes</h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                The heart of the fragrance
+              </p>
+              <ul className="mt-4 space-y-2">
+                {product.notes.middle.map((note) => (
+                  <li
+                    key={note}
+                    className="text-sm text-muted-foreground"
+                  >
+                    {note}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-medium">Base Notes</h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                The lasting foundation
+              </p>
+              <ul className="mt-4 space-y-2">
+                {product.notes.base.map((note) => (
+                  <li
+                    key={note}
+                    className="text-sm text-muted-foreground"
+                  >
+                    {note}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )} */}
 
         {activeTab === "reviews" && (
           <ProductReviews

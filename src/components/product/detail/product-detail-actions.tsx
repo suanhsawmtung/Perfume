@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useAuthRequired } from "@/providers/auth-required-provider";
 import { productQueryKeys } from "@/services/product/key";
 import { useToggleWishlist } from "@/services/wishlist/queries/useToggleWishlist";
 import { useCartStore } from "@/stores/_cart.store";
+import { useAuthStore } from "@/stores/auth.store";
 import type { ProductDetailType } from "@/types/product.type";
 import { Check, Heart, Minus, Plus, ShoppingBag } from "lucide-react";
 import { useState } from "react";
@@ -94,9 +96,11 @@ export function ProductDetailActions({
 
 export const ToggleWishlistButton = ({ product }: { product: ProductDetailType }) => {
     const toggleWishlistMutation = useToggleWishlist();
+    const authUser = useAuthStore((state) => state.authUser);
+    const { openAuthRequiredDialog } = useAuthRequired();
     const [searchParams] = useSearchParams();
 
-    const handleToggleWishlist = () => {
+    const toggleWishlist = () => {
         toggleWishlistMutation.mutate({
             id: product.id,
             action: product.isWishlist ? "remove" : "add",
@@ -104,6 +108,16 @@ export const ToggleWishlistButton = ({ product }: { product: ProductDetailType }
                 variant: searchParams.get("variant") || null,
             }),
         })
+    }
+
+    const handleClick = () => {
+        if (!authUser) {
+            openAuthRequiredDialog({
+                title: "Sign in to add to wishlist",
+                description: "You need to be logged in to add products to your wishlist.",
+            });
+        }
+        else toggleWishlist()
     }
 
     return (
@@ -115,7 +129,7 @@ export const ToggleWishlistButton = ({ product }: { product: ProductDetailType }
                 "shrink-0 transition-all duration-300",
                 product.isWishlist && "border-red-500 bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-600 dark:bg-red-950 dark:hover:bg-red-900",
             )}
-            onClick={handleToggleWishlist}
+            onClick={handleClick}
         >
             <Heart
                 className={cn(

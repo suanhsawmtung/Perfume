@@ -3,6 +3,7 @@ import type { UserType } from "@/types/user.type";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
+import { useCartStore } from "./cart.store";
 
 // Auth status types - represents the current step in the auth flow
 export type AuthStatus =
@@ -73,8 +74,9 @@ export const useAuthStore = create<AuthState>()(
       clearAuthUser: () => {
         set((state) => {
           state.authUser = null;
-        }),
-          queryClient.removeQueries() // no args = remove ALL cached queries
+        });
+        queryClient.removeQueries(); // no args = remove ALL cached queries
+        useCartStore.getState().clearCart();
       },
 
       // Clear all auth data
@@ -84,6 +86,7 @@ export const useAuthStore = create<AuthState>()(
           state.authFlow = null;
         })
         queryClient.removeQueries() // no args = remove ALL cached queries
+        useCartStore.getState().clearCart();
       }
     })),
     {

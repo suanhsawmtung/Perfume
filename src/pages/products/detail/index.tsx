@@ -4,7 +4,9 @@ import { ProductDetailImageCarousel } from "@/components/product/detail/product-
 import { ProductDetailInfo } from "@/components/product/detail/product-detail-info"
 import { ProductDetailNav } from "@/components/product/detail/product-detail-nav"
 import { ProductDetailTabs } from "@/components/product/detail/product-detail-tabs"
+import { AuthRequiredDialog } from "@/components/shared/auth-required-dialog"
 import ContentWrapper from "@/components/wrapper/content-wrapper"
+import { AuthRequiredProvider } from "@/providers/auth-required-provider"
 import { useGetProduct } from "@/services/product/queries/useGetProduct"
 import { useLoaderData } from "react-router"
 
@@ -18,24 +20,28 @@ export default function ProductDetailPage() {
       <ContentWrapper className="py-8 space-y-8">
         <ProductDetailNav productName={product.name} />
 
-        <div className="flex flex-col gap-12 lg:flex-row justify-between">
-          <ProductDetailImageCarousel
-            images={product.selectedVariant.images}
-            productName={product.name}
+        <AuthRequiredProvider>
+          <div className="flex flex-col gap-12 lg:flex-row justify-between">
+            <ProductDetailImageCarousel
+              images={product.selectedVariant.images}
+              productName={product.name}
+            />
+
+            <div className="flex flex-col space-y-8 w-full lg:w-1/2">
+              <ProductDetailInfo product={product} />
+
+              <ProductDetailActions product={product} />
+
+              <ProductDetailBenefits />
+            </div>
+          </div>
+
+          <ProductDetailTabs
+            product={product}
           />
 
-          <div className="flex flex-col space-y-8 w-full lg:w-1/2">
-            <ProductDetailInfo product={product} />
-
-            <ProductDetailActions product={product} />
-
-            <ProductDetailBenefits />
-          </div>
-        </div>
-
-        <ProductDetailTabs
-          product={product}
-        />
+          <AuthRequiredDialog />
+        </AuthRequiredProvider>
 
         {/* {relatedProducts.length > 0 && (
           <div className="mt-16 border-t border-border/50 pt-16">
