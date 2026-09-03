@@ -1,5 +1,5 @@
 import { Footer } from "@/components/layouts/footer";
-import { Navbar } from "@/components/layouts/header/_index";
+import { Navbar } from "@/components/layouts/header";
 import { Button } from "@/components/ui/button";
 import {
   Card,

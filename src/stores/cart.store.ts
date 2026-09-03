@@ -1,16 +1,18 @@
+import { queryClient } from "@/lib/query-client";
+import { cartQueryKeys } from "@/services/cart/key";
 import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
 import { immer } from "zustand/middleware/immer"
 
-export interface CartItem {
+export interface CartStorageItem {
     productVariantId: number;
     quantity: number
 }
 
-export type CheckoutStep = "cart" | "checkout" | "success"
+export type CheckoutStep = "cart" | "info" | "checkout" | "success"
 
-interface CartState {
-    items: CartItem[]
+export interface CartState {
+    items: CartStorageItem[]
     isOpen: boolean
     step: CheckoutStep
     addItem: ({
@@ -22,6 +24,7 @@ interface CartState {
     clearCart: () => void
     setIsOpen: (isOpen: boolean) => void
     setStep: (step: CheckoutStep) => void
+    // setItems: (items: CartStorageItem[]) => void
     getItemCount: () => number
 }
 
@@ -31,6 +34,11 @@ export const useCartStore = create<CartState>()(
             items: [],
             isOpen: false,
             step: "cart",
+            // setItems: (items: CartStorageItem[]) => {
+            //     set((state) => {
+            //         state.items = items
+            //     });
+            // },
             addItem: (item) => {
                 set((state) => {
                     const { id, quantity = 1 } = item;
@@ -38,6 +46,7 @@ export const useCartStore = create<CartState>()(
                     if (existingItem) {
                         existingItem.quantity += quantity
                     } else {
+                        queryClient.removeQueries({ queryKey: cartQueryKeys.lists });
                         state.items.push({ productVariantId: id, quantity })
                     }
                 })

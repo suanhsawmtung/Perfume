@@ -1,72 +1,72 @@
-import { Button } from "@/components/ui/button"
-import ContentWrapper from "@/components/wrapper/content-wrapper"
-import { ArrowLeft } from "lucide-react"
-import { useState } from "react"
-import { Link, useSearchParams } from "react-router"
-import { useGetInfiniteOrders } from "@/services/order/queries/useGetInfiniteOrders"
-import { DEFAULT_LIMIT } from "@/services/order/api"
-import type { OrderType } from "@/types/order.type"
-import { SearchInput } from "@/components/shared/search-input"
-import { OrderCard } from "@/components/order/order-card"
-import { useAuthStore } from "@/stores/auth.store"
-import { ReceiptSheet } from "@/components/order/receipt-sheet"
-import { PaymentProofDialog } from "@/components/order/payment-proof-dialog"
-import { SearchTabGroup } from "@/components/shared/search-tab-group"
-import { NoOrdersFoundCard } from "@/components/order/no-orders-found-card"
+import { NoOrdersFoundCard } from "@/components/order/no-orders-found-card";
+import { OrderCard } from "@/components/order/order-card";
+import { PaymentProofDialog } from "@/components/order/payment-proof-dialog";
+import { ReceiptSheet } from "@/components/order/receipt-sheet";
+import { SearchInput } from "@/components/shared/search-input";
+import { SearchTabGroup } from "@/components/shared/search-tab-group";
+import { Button } from "@/components/ui/button";
+import ContentWrapper from "@/components/wrapper/content-wrapper";
+import { DEFAULT_LIMIT } from "@/services/order/api";
+import { useGetInfiniteOrders } from "@/services/order/queries/useGetInfiniteOrders";
+import { useAuthStore } from "@/stores/auth.store";
+import type { OrderType } from "@/types/order.type";
+import { ArrowLeft } from "lucide-react";
+import { useState } from "react";
+import { Link, useSearchParams } from "react-router";
 
 export default function OrderHistoryPage() {
-  const [searchParams] = useSearchParams()
+  const [searchParams] = useSearchParams();
   const user = useAuthStore.getState().authUser;
 
   if (!user) {
     throw new Response("Unauthorized", { status: 401 });
   }
 
-  const [selectedOrder, setSelectedOrder] = useState<OrderType | null>(null)
-  const [receiptOpen, setReceiptOpen] = useState(false)
+  const [selectedOrder, setSelectedOrder] = useState<OrderType | null>(null);
+  const [receiptOpen, setReceiptOpen] = useState(false);
   const [paymentProofOpen, setPaymentProofOpen] = useState(false);
-  const [cancellingOrderCode, setCancellingOrderCode] = useState<string | null>(null)
+  const [cancellingOrderCode, setCancellingOrderCode] = useState<string | null>(
+    null,
+  );
 
-  const search = searchParams.get("search") || undefined
-  const condition = searchParams.get("condition") || undefined
+  const search = searchParams.get("search") || undefined;
+  const condition = searchParams.get("condition") || undefined;
 
   const params = {
     condition,
     search,
     limit: DEFAULT_LIMIT,
-  }
+  };
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-  } = useGetInfiniteOrders(user.id, params)
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useGetInfiniteOrders(user.id, params);
 
-  const orders = data?.pages.flatMap((page) => page.items) ?? []
+  const orders = data?.pages.flatMap((page) => page.items) ?? [];
 
   return (
-    <div className="min-h-screen bg-secondary/20">
+    <div className="bg-secondary/20 min-h-screen">
       <ContentWrapper className="py-8">
-        <div className="mb-8 flex flex-col gap-4 md:flex-row md:justify-between items-start md:items-end gap-4">
+        <div className="mb-8 flex flex-col items-start gap-4 md:flex-row md:items-end md:justify-between">
           <div className="space-y-2">
             <Link
               to="/profile"
-              className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground inline-flex items-center text-sm"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Profile
             </Link>
-            <h1 className="mt-2 font-serif text-3xl font-medium">Order History</h1>
+            <h1 className="mt-2 font-serif text-3xl font-medium">
+              Order History
+            </h1>
             {orders.length > 0 && (
               <p className="text-muted-foreground">
-                View and track {orders.length} of {data?.pages[0].totalCount} orders
+                View and track {orders.length} of {data?.pages[0].totalCount}{" "}
+                orders
               </p>
             )}
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-4 w-full md:w-auto">
+          <div className="flex w-full flex-col gap-4 md:w-auto lg:flex-row">
             <SearchTabGroup
               paramKey="condition"
               defaultValue="all"
@@ -78,7 +78,7 @@ export default function OrderHistoryPage() {
             />
             <SearchInput
               placeholder="Enter your order code..."
-              className="w-full md:w-72 h-10"
+              className="h-10 w-full md:w-72"
             />
           </div>
         </div>
@@ -86,7 +86,7 @@ export default function OrderHistoryPage() {
         <div className="space-y-6">
           {isLoading ? (
             <div className="flex justify-center py-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              <div className="border-primary h-8 w-8 animate-spin rounded-full border-b-2"></div>
             </div>
           ) : orders.length === 0 ? (
             <NoOrdersFoundCard />
@@ -112,7 +112,9 @@ export default function OrderHistoryPage() {
                     variant="outline"
                     className="w-full max-w-xs"
                   >
-                    {isFetchingNextPage ? "Loading more..." : "Load more orders"}
+                    {isFetchingNextPage
+                      ? "Loading more..."
+                      : "Load more orders"}
                   </Button>
                 </div>
               )}
@@ -132,8 +134,9 @@ export default function OrderHistoryPage() {
       <PaymentProofDialog
         open={paymentProofOpen}
         onOpenChange={setPaymentProofOpen}
-        selectedOrder={selectedOrder}
+        selectedOrderImage={selectedOrder?.image}
+        selectedOrderCode={selectedOrder?.code}
       />
-    </div >
-  )
+    </div>
+  );
 }

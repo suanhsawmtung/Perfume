@@ -3,7 +3,7 @@ import {
     useSuspenseQuery,
     type UseSuspenseQueryResult,
 } from "@tanstack/react-query";
-import type { OrderListResult, OrderQueryParams, OrderType } from "@/types/order.type";
+import type { OrderQueryParams, OrderType } from "@/types/order.type";
 import { fetchOrders } from "../api";
 import { orderQueryKeys } from "@/services/order/key";
 import type { CursorPaginationResultT } from "@/types";
