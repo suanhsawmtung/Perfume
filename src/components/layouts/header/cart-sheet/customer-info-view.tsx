@@ -12,16 +12,18 @@ import { SheetFooter } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import { formatPrice } from "@/lib/utils";
 import { useCartStore } from "@/stores/cart.store";
-import { type CheckoutFormValues } from "@/validations/checkout.validation";
+import { type PlaceOrderFormValues } from "@/types/order.type";
 import { ArrowLeft } from "lucide-react";
 import { type UseFormReturn } from "react-hook-form";
 
 export function CustomerInfoView({
   form,
   subtotal,
+  isSubmitting,
 }: {
-  form: UseFormReturn<CheckoutFormValues>;
+  form: UseFormReturn<PlaceOrderFormValues>;
   subtotal: number;
+  isSubmitting: boolean;
 }) {
   const { setStep, items } = useCartStore();
   const customerName = form.watch("customerName");
@@ -30,9 +32,9 @@ export function CustomerInfoView({
 
   const canContinue =
     items.length > 0 &&
-    customerName.trim().length > 0 &&
-    customerPhone.trim().length > 0 &&
-    customerAddress.trim().length > 0;
+    customerName?.trim().length > 0 &&
+    customerPhone?.trim().length > 0 &&
+    customerAddress?.trim().length > 0;
 
   const handleContinue = async () => {
     const isValid = await form.trigger([
@@ -52,6 +54,7 @@ export function CustomerInfoView({
           variant="ghost"
           size="sm"
           className="mb-4"
+          disabled={isSubmitting}
           onClick={() => setStep("cart")}
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
@@ -68,7 +71,11 @@ export function CustomerInfoView({
                 <FormItem>
                   <FormLabel>Customer Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g. John Doe" {...field} />
+                    <Input
+                      placeholder="e.g. John Doe"
+                      disabled={isSubmitting}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -84,6 +91,7 @@ export function CustomerInfoView({
                     <Input
                       placeholder="e.g. 0123456789"
                       type="tel"
+                      disabled={isSubmitting}
                       {...field}
                     />
                   </FormControl>
@@ -101,6 +109,7 @@ export function CustomerInfoView({
                     <Textarea
                       placeholder="e.g. 123 Main St"
                       className="min-h-[100px] resize-none"
+                      disabled={isSubmitting}
                       {...field}
                     />
                   </FormControl>
@@ -119,6 +128,7 @@ export function CustomerInfoView({
                     <Textarea
                       placeholder="e.g. Leave at the door"
                       className="min-h-[100px] resize-none"
+                      disabled={isSubmitting}
                       {...field}
                     />
                   </FormControl>
@@ -156,7 +166,7 @@ export function CustomerInfoView({
             type="button"
             className="w-full"
             size="lg"
-            disabled={!canContinue}
+            disabled={isSubmitting || !canContinue}
             onClick={handleContinue}
           >
             Continue to Payment

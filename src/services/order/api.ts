@@ -5,13 +5,15 @@ import type {
   OrderDetailType,
   OrderListResult,
   OrderQueryParams,
-  OrderType
+  OrderType,
 } from "@/types/order.type.ts";
 
 export const ADMIN_DEFAULT_LIMIT = 10;
 export const DEFAULT_LIMIT = 5;
 
-export async function fetchOrders(params: OrderQueryParams): Promise<CursorPaginationResultT<OrderType>> {
+export async function fetchOrders(
+  params: OrderQueryParams,
+): Promise<CursorPaginationResultT<OrderType>> {
   const { cursor, search, limit = DEFAULT_LIMIT, condition } = params;
   const queryParams: OrderQueryParams = {
     limit,
@@ -21,14 +23,23 @@ export async function fetchOrders(params: OrderQueryParams): Promise<CursorPagin
   };
 
   const response = await api.get("/orders", {
-    params: queryParams
+    params: queryParams,
   });
 
   return response.data?.data;
 }
 
-export async function fetchAdminOrders(params: OrderQueryParams): Promise<OrderListResult> {
-  const { offset = 0, search, limit = ADMIN_DEFAULT_LIMIT, status, paymentStatus, source } = params;
+export async function fetchAdminOrders(
+  params: OrderQueryParams,
+): Promise<OrderListResult> {
+  const {
+    offset = 0,
+    search,
+    limit = ADMIN_DEFAULT_LIMIT,
+    status,
+    paymentStatus,
+    source,
+  } = params;
   const queryParams: OrderQueryParams = {
     limit,
     offset,
@@ -63,7 +74,10 @@ export async function createOrder(params: FormData): Promise<{
   return response.data;
 }
 
-export async function updateOrder(code: string, params: FormData): Promise<{
+export async function updateOrder(
+  code: string,
+  params: FormData,
+): Promise<{
   success: boolean;
   message: string;
 }> {
@@ -71,10 +85,22 @@ export async function updateOrder(code: string, params: FormData): Promise<{
   return response.data;
 }
 
-export async function cancelOrder(code: string, params: CancelOrderValues): Promise<{
+export async function cancelOrder(
+  code: string,
+  params: CancelOrderValues,
+): Promise<{
   success: boolean;
   message: string;
 }> {
   const response = await api.patch(`/orders/${code}/cancel`, params);
+  return response.data;
+}
+
+export async function placeOrder(formData: FormData) {
+  const response = await api.post("/orders", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return response.data;
 }

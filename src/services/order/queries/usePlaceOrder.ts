@@ -4,19 +4,18 @@ import { inventoryQueryKeys } from "@/services/inventory/key";
 import { orderQueryKeys } from "@/services/order/key";
 import { productQueryKeys } from "@/services/product/key";
 import { useAuthStore } from "@/stores/auth.store";
-import type { CancelOrderValues } from "@/types/order.type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { cancelOrder } from "../api";
+import { placeOrder } from "../api";
 
-export function useCancelOrder() {
+export function usePlaceOrder() {
   const queryClient = useQueryClient();
   const user = useAuthStore((state) => state.authUser);
 
   return useMutation({
-    mutationFn: ({ code, data }: { code: string; data: CancelOrderValues }) => {
+    mutationFn: ({ data }: { data: FormData }) => {
       if (!user) throw new Error("Unauthorized");
-      return cancelOrder(code, data);
+      return placeOrder(data);
     },
     onSuccess: () => {
       if (!user) return;
@@ -39,10 +38,10 @@ export function useCancelOrder() {
       queryClient.invalidateQueries({
         queryKey: homeQueryKeys.all,
       });
-      toast.success("Order cancelled successfully");
+      toast.success("Order placed successfully");
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || "Failed to cancel order");
+      toast.error(error.response?.data?.message || "Failed to place order");
     },
   });
 }

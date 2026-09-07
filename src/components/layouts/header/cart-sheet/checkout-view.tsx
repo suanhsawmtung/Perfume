@@ -17,7 +17,7 @@ import { Separator } from "@/components/ui/separator";
 import { SheetFooter } from "@/components/ui/sheet";
 import { cn, formatPrice } from "@/lib/utils";
 import { useCartStore } from "@/stores/cart.store";
-import { type CheckoutFormValues } from "@/validations/checkout.validation";
+import type { PlaceOrderFormValues } from "@/types/order.type";
 import {
   ArrowLeft,
   Check,
@@ -33,18 +33,20 @@ import { type UseFormReturn } from "react-hook-form";
 export function CheckoutView({
   form,
   subtotal,
+  isSubmitting,
 }: {
-  form: UseFormReturn<CheckoutFormValues>;
+  form: UseFormReturn<PlaceOrderFormValues>;
   subtotal: number;
+  isSubmitting: boolean;
 }) {
-  const { setStep, clearCart, items } = useCartStore();
-  const [isProcessing, setIsProcessing] = useState(false);
+  const { setStep, items } = useCartStore();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageClick = useCallback(() => {
+    if (isSubmitting) return;
     fileInputRef.current?.click();
-  }, []);
+  }, [isSubmitting]);
 
   const handleImageChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,12 +62,13 @@ export function CheckoutView({
   const handleRemoveImage = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
+      if (isSubmitting) return;
       form.resetField("image");
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
     },
-    [form],
+    [form, isSubmitting],
   );
 
   const handlePreviewImage = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -100,34 +103,9 @@ export function CheckoutView({
   ] as const;
 
   const hasCustomerInfo = customerInfoFields.every(
-    (field) => form.getValues(field).trim().length > 0,
+    (field) => form.getValues(field)?.trim().length > 0,
   );
   const canPlaceOrder = items.length > 0 && hasCustomerInfo && !!imageFile;
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (items.length === 0) {
-      setStep("cart");
-      return;
-    }
-
-    const customerInfoIsValid = await form.trigger(customerInfoFields);
-    if (!customerInfoIsValid) {
-      setStep("info");
-      return;
-    }
-
-    const imageIsValid = await form.trigger("image");
-    if (!imageIsValid) return;
-
-    setIsProcessing(true);
-    setTimeout(() => {
-      setIsProcessing(false);
-      clearCart();
-      setStep("success");
-    }, 1500);
-  };
 
   return (
     <>
@@ -137,13 +115,14 @@ export function CheckoutView({
           variant="ghost"
           size="sm"
           className="mb-4"
+          disabled={isSubmitting}
           onClick={() => setStep("info")}
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to customer info
         </Button>
 
-        <PaymentMethod />
+        <PaymentMethod isSubmitting={isSubmitting} />
 
         <FormField
           control={form.control}
@@ -158,7 +137,7 @@ export function CheckoutView({
                     accept="image/jpeg, image/png, image/jpg"
                     onChange={handleImageChange}
                     className="hidden"
-                    // disabled={isSubmitting}
+                    disabled={isSubmitting}
                   />
 
                   {imageUrl ? (
@@ -188,6 +167,7 @@ export function CheckoutView({
                               size="icon-sm"
                               className="text-muted-foreground hover:text-foreground"
                               onClick={handlePreviewImage}
+                              disabled={isSubmitting}
                               aria-label="Preview selected image"
                             >
                               <Eye className="h-4 w-4" />
@@ -198,6 +178,7 @@ export function CheckoutView({
                               size="icon-sm"
                               className="text-muted-foreground hover:text-destructive"
                               onClick={handleRemoveImage}
+                              disabled={isSubmitting}
                               aria-label="Remove selected image"
                             >
                               <X className="h-4 w-4" />
@@ -210,6 +191,7 @@ export function CheckoutView({
                     <Button
                       type="button"
                       className="bg-accent hover:bg-accent/80 text-primary w-full"
+                      disabled={isSubmitting}
                     >
                       <div className="flex items-center justify-center gap-x-2">
                         <CloudUpload className="h-4 w-4" />
@@ -258,13 +240,12 @@ export function CheckoutView({
             className="w-full"
             size="lg"
             type="submit"
-            onClick={handleSubmit}
-            disabled={!canPlaceOrder || isProcessing}
+            disabled={isSubmitting || !canPlaceOrder}
           >
-            {isProcessing ? (
+            {isSubmitting ? (
               <>
                 <span className="border-background mr-2 h-4 w-4 animate-spin rounded-full border-2 border-t-transparent" />
-                Processing...
+                Placing Order...
               </>
             ) : (
               <>
@@ -279,7 +260,7 @@ export function CheckoutView({
   );
 }
 
-const PaymentMethod = () => {
+const PaymentMethod = ({ isSubmitting }: { isSubmitting: boolean }) => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     "kpay" | "ayapay"
   >("kpay");
@@ -310,11 +291,13 @@ const PaymentMethod = () => {
           <div
             key={id}
             onClick={() => {
+              if (isSubmitting) return;
               setSelectedPaymentMethod(id as "kpay" | "ayapay");
               setIsCopied(false);
             }}
             className={cn(
               "relative flex h-20 cursor-pointer items-center justify-center gap-y-1 rounded-lg border-2",
+              isSubmitting && "pointer-events-none opacity-50",
               selectedPaymentMethod === id
                 ? "border-primary bg-accent"
                 : "border-secondary hover:border-muted-foreground",
@@ -350,6 +333,7 @@ const PaymentMethod = () => {
                 type="button"
                 variant="outline"
                 size="icon"
+                disabled={isSubmitting}
                 onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                   e.preventDefault();
                   navigator.clipboard.writeText(

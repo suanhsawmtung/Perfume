@@ -1,11 +1,29 @@
-import { cancelOrderSchema, type orderFilterFormSchema, type orderFormSchema } from "@/validations/order.validation";
+import type { placeOrderSchema } from "@/validations/order.validation";
+import {
+  cancelOrderSchema,
+  type orderFilterFormSchema,
+  type orderFormSchema,
+} from "@/validations/order.validation";
 import type z from "zod";
 import type { BrandType } from "./brand.type";
 import type { PaymentMethod, PaymentStatus } from "./payment.type";
 import type { RefundStatus } from "./refund.type";
 
-export type OrderStatus = "PENDING" | "REJECTED" | "ACCEPTED" | "SHIPPED" | "DELIVERED" | "DONE" | "CANCELLED";
-export type OrderPaymentStatus = "UNPAID" | "PARTIALLY_PAID" | "PAID" | "FAILED" | "REFUNDED" | "PARTIALLY_REFUNDED";
+export type OrderStatus =
+  | "PENDING"
+  | "REJECTED"
+  | "ACCEPTED"
+  | "SHIPPED"
+  | "DELIVERED"
+  | "DONE"
+  | "CANCELLED";
+export type OrderPaymentStatus =
+  | "UNPAID"
+  | "PARTIALLY_PAID"
+  | "PAID"
+  | "FAILED"
+  | "REFUNDED"
+  | "PARTIALLY_REFUNDED";
 export type OrderSource = "CUSTOMER" | "ADMIN";
 
 export type PaymentType = {
@@ -20,7 +38,7 @@ export type PaymentType = {
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
-}
+};
 
 export interface RefundType {
   id: number;
@@ -119,7 +137,7 @@ export interface OrderItem {
       name: string;
       slug: string;
       brand: BrandType;
-    }
+    };
   };
 }
 
@@ -170,3 +188,4 @@ export interface CreateOrderParams {
 
 export type OrderFormValues = z.infer<typeof orderFormSchema>;
 export type CancelOrderValues = z.infer<typeof cancelOrderSchema>;
+export type PlaceOrderFormValues = z.infer<typeof placeOrderSchema>;

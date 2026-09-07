@@ -17,9 +17,15 @@ interface CartViewProps {
   itemMap: Map<number, CartItemType>;
   isPending: boolean;
   subtotal: number;
+  isSubmitting: boolean;
 }
 
-export function CartView({ itemMap, isPending, subtotal }: CartViewProps) {
+export function CartView({
+  itemMap,
+  isPending,
+  subtotal,
+  isSubmitting,
+}: CartViewProps) {
   const {
     updateQuantity,
     removeItem,
@@ -123,7 +129,7 @@ export function CartView({ itemMap, isPending, subtotal }: CartViewProps) {
                               quantity: item.quantity - 1,
                             });
                           }}
-                          disabled={item.quantity <= 1}
+                          disabled={isSubmitting || item.quantity <= 1}
                         >
                           <Minus className="h-3 w-3" />
                         </Button>
@@ -141,6 +147,7 @@ export function CartView({ itemMap, isPending, subtotal }: CartViewProps) {
                             });
                           }}
                           disabled={
+                            isSubmitting ||
                             item.quantity >= cartItem.stock - cartItem.reserved
                           }
                         >
@@ -151,6 +158,7 @@ export function CartView({ itemMap, isPending, subtotal }: CartViewProps) {
                         variant="ghost"
                         size="icon"
                         className="text-muted-foreground hover:text-destructive h-7 w-7"
+                        disabled={isSubmitting}
                         onClick={() => removeItem(item.productVariantId)}
                       >
                         <Trash2 className="h-4 w-4" />
@@ -202,7 +210,7 @@ export function CartView({ itemMap, isPending, subtotal }: CartViewProps) {
           <Button
             className="w-full"
             size="lg"
-            disabled={orderItems.length === 0}
+            disabled={isSubmitting || orderItems.length === 0}
             onClick={() => {
               if (orderItems.length > 0) setStep("info");
             }}
