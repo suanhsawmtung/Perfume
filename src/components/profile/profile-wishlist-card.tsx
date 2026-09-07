@@ -1,39 +1,42 @@
-import { Link } from "react-router"
-import { formatImagePath, formatPrice } from "@/lib/utils"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { EmptyState } from "@/components/profile/empty-state"
-import { Heart } from "lucide-react"
-
-type WishProduct = {
-  id: number
-  name: string
-  image: string | null
-  price: number
-  discount: number
-}
+import { EmptyState } from "@/components/profile/empty-state";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatImagePath, formatPrice } from "@/lib/utils";
+import type { MyProfileT } from "@/types/profile";
+import { Heart } from "lucide-react";
+import { Link } from "react-router";
 
 interface WishlistItemProps {
-  product: WishProduct
+  product: MyProfileT["wishlist"][number];
 }
 
 export function WishlistItem({ product }: WishlistItemProps) {
   return (
-    <Link to={`/products/${product.id}`} className="group">
-      <div className="relative aspect-square overflow-hidden rounded-lg bg-secondary/50">
+    <Link to={`/products/${product.slug}`} className="group">
+      <div className="bg-secondary/50 relative aspect-square overflow-hidden rounded-lg">
         <img
-          src={product.image ? formatImagePath(product.image, "product") : "placeholder.jpg"}
+          src={
+            product.image
+              ? formatImagePath(product.image, "product")
+              : "placeholder.jpg"
+          }
           alt={product.name}
-          className="object-cover w-full h-full transition-transform group-hover:scale-105"
+          className="h-full w-full object-cover transition-transform group-hover:scale-105"
         />
       </div>
-      <p className="mt-2 text-sm font-medium line-clamp-1">{product.name}</p>
-      <p className="text-sm text-muted-foreground">{formatPrice(product.price)}</p>
+      <p className="mt-2 line-clamp-1 text-sm font-medium">{product.name}</p>
+      <p className="text-muted-foreground text-sm">
+        {formatPrice(product.price)}
+      </p>
     </Link>
-  )
+  );
 }
 
-export function ProfileWishlistCard({ wishlistProducts }: { wishlistProducts: WishProduct[] }) {
+export function ProfileWishlistCard({
+  wishlistProducts,
+}: {
+  wishlistProducts: MyProfileT["wishlist"];
+}) {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
@@ -60,5 +63,5 @@ export function ProfileWishlistCard({ wishlistProducts }: { wishlistProducts: Wi
         )}
       </CardContent>
     </Card>
-  )
+  );
 }

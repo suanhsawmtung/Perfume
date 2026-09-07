@@ -18,6 +18,7 @@ export interface MyProfileT {
   wishlist: {
     id: number;
     name: string;
+    slug: string;
     image: string | null;
     price: number;
     discount: number;
