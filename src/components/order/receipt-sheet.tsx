@@ -22,7 +22,7 @@ function ReceiptHeaderComponent({ order }: ReceiptSectionProps) {
   return (
     <div className="flex items-start justify-between">
       <div>
-        <h3 className="font-serif text-2xl font-bold">NOIR</h3>
+        <h3 className="font-serif text-2xl font-bold">AZUE</h3>
         <p className="text-muted-foreground text-xs tracking-widest">
           PERFUMES
         </p>
@@ -144,8 +144,8 @@ function ReceiptTotals({ order }: ReceiptSectionProps) {
 function ReceiptFooter() {
   return (
     <div className="text-muted-foreground mt-8 text-center text-xs">
-      <p>Thank you for shopping with NOIR Perfumes!</p>
-      <p className="mt-1">www.noirperfumes.com | support@noirperfumes.com</p>
+      <p>Thank you for shopping with AZUE Perfumes!</p>
+      <p className="mt-1">www.azueperfumes.com | support@azueperfumes.com</p>
     </div>
   );
 }

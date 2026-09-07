@@ -52,9 +52,9 @@
 
 // export default Footer;
 
-import ContentWrapper from "@/components/wrapper/content-wrapper"
-import { Link } from "react-router"
-import NewsLetterForm from "./news-letter-form"
+import ContentWrapper from "@/components/wrapper/content-wrapper";
+import { Link } from "react-router";
+import NewsLetterForm from "./news-letter-form";
 
 const footerLinks = {
   shop: [
@@ -75,18 +75,20 @@ const footerLinks = {
     { href: "/returns", label: "Returns" },
     { href: "/track-order", label: "Track Order" },
   ],
-}
+};
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/40 bg-secondary/30">
+    <footer className="border-border/40 bg-secondary/30 border-t">
       <ContentWrapper className="py-12">
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <Link to="/" className="inline-block">
-              <span className="text-2xl font-semibold tracking-tight">NOIR</span>
+              <span className="text-2xl font-semibold tracking-tight">
+                AZUE
+              </span>
             </Link>
-            <p className="mt-4 max-w-xs text-sm text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground mt-4 max-w-xs text-sm leading-relaxed">
               Discover the art of fragrance. Premium perfumes crafted for those
               who appreciate the finer things in life.
             </p>
@@ -96,7 +98,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider">
+            <h3 className="mb-4 text-sm font-semibold tracking-wider uppercase">
               Shop
             </h3>
             <ul className="space-y-3">
@@ -104,7 +106,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     to={link.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    className="text-muted-foreground hover:text-foreground text-sm transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -114,7 +116,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider">
+            <h3 className="mb-4 text-sm font-semibold tracking-wider uppercase">
               Company
             </h3>
             <ul className="space-y-3">
@@ -122,7 +124,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     to={link.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    className="text-muted-foreground hover:text-foreground text-sm transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -132,7 +134,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider">
+            <h3 className="mb-4 text-sm font-semibold tracking-wider uppercase">
               Support
             </h3>
             <ul className="space-y-3">
@@ -140,7 +142,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     to={link.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    className="text-muted-foreground hover:text-foreground text-sm transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -150,20 +152,21 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border/40 pt-8 md:flex-row">
-          <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} NOIR Perfumes. All rights reserved.
+        <div className="border-border/40 mt-12 flex flex-col items-center justify-between gap-4 border-t pt-8 md:flex-row">
+          <p className="text-muted-foreground text-xs">
+            &copy; {new Date().getFullYear()} AZUE Perfumes. All rights
+            reserved.
           </p>
           <div className="flex gap-6">
             <Link
               to="/privacy"
-              className="text-xs text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground text-xs"
             >
               Privacy Policy
             </Link>
             <Link
               to="/terms"
-              className="text-xs text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground text-xs"
             >
               Terms of Service
             </Link>
@@ -171,6 +174,5 @@ export function Footer() {
         </div>
       </ContentWrapper>
     </footer>
-  )
+  );
 }
-

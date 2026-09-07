@@ -1,35 +1,35 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
-import ContentWrapper from "@/components/wrapper/content-wrapper"
-import { cn, getProductListPageHref } from "@/lib/utils"
-import { useAuthStore } from "@/stores/auth.store"
-import { useCartStore } from "@/stores/cart.store"
-import { Menu, ShoppingBag } from "lucide-react"
-import { Link, useLocation } from "react-router"
-import AuthDropdown from "./auth-dropdown"
-import { ThemeToggle } from "./theme-toggle"
-import { usePreferenceStore } from "@/stores/preference.store"
+} from "@/components/ui/sheet";
+import ContentWrapper from "@/components/wrapper/content-wrapper";
+import { cn, getProductListPageHref } from "@/lib/utils";
+import { useAuthStore } from "@/stores/auth.store";
+import { useCartStore } from "@/stores/cart.store";
+import { usePreferenceStore } from "@/stores/preference.store";
+import { Menu, ShoppingBag } from "lucide-react";
+import { Link, useLocation } from "react-router";
+import AuthDropdown from "./auth-dropdown";
+import { ThemeToggle } from "./theme-toggle";
 
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/products", label: "Products" },
   { href: "/blogs", label: "Blogs" },
-]
+];
 
 export function Navbar() {
   const { pathname } = useLocation();
   const authUser = useAuthStore((state) => state.authUser);
   const gender = usePreferenceStore((state) => state.gender);
-  const { setIsOpen, getItemCount } = useCartStore()
+  const { setIsOpen, getItemCount } = useCartStore();
   const itemCount = getItemCount();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="border-border/40 bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
       <ContentWrapper className="flex h-16 items-center justify-between">
         <Sheet>
           <SheetTrigger asChild className="lg:hidden">
@@ -40,16 +40,20 @@ export function Navbar() {
           </SheetTrigger>
           <SheetContent side="left" className="w-72">
             <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-            <nav className="flex flex-col gap-4 pt-20 px-6">
+            <nav className="flex flex-col gap-4 px-6 pt-20">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
-                  to={link.href === "/products" ? getProductListPageHref(gender) : link.href}
+                  to={
+                    link.href === "/products"
+                      ? getProductListPageHref(gender)
+                      : link.href
+                  }
                   className={cn(
-                    "text-lg font-medium transition-colors hover:text-foreground/80",
+                    "hover:text-foreground/80 text-lg font-medium transition-colors",
                     pathname === link.href
                       ? "text-foreground"
-                      : "text-muted-foreground"
+                      : "text-muted-foreground",
                   )}
                 >
                   {link.label}
@@ -60,19 +64,23 @@ export function Navbar() {
         </Sheet>
 
         <Link to="/" className="flex items-center gap-2">
-          <span className="text-xl font-semibold tracking-tight">NOIR</span>
+          <span className="text-xl font-semibold tracking-tight">AZUE</span>
         </Link>
 
         <nav className="hidden lg:flex lg:items-center lg:gap-8">
           {navLinks.map((link) => (
             <Link
               key={link.href}
-              to={link.href === "/products" ? getProductListPageHref(gender) : link.href}
+              to={
+                link.href === "/products"
+                  ? getProductListPageHref(gender)
+                  : link.href
+              }
               className={cn(
-                "text-sm font-medium tracking-wide transition-colors hover:text-foreground/80",
+                "hover:text-foreground/80 text-sm font-medium tracking-wide transition-colors",
                 pathname === link.href
                   ? "text-foreground"
-                  : "text-muted-foreground"
+                  : "text-muted-foreground",
               )}
             >
               {link.label}
@@ -95,7 +103,7 @@ export function Navbar() {
           >
             <ShoppingBag className="h-5 w-5" />
             {itemCount > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-foreground text-[10px] font-medium text-background">
+              <span className="bg-foreground text-background absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-medium">
                 {itemCount > 9 ? "9+" : itemCount}
               </span>
             )}
@@ -104,5 +112,5 @@ export function Navbar() {
         </div>
       </ContentWrapper>
     </header>
-  )
+  );
 }
