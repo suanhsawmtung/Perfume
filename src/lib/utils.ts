@@ -1,5 +1,9 @@
 import { baseImageUrl, currency } from "@/config/env";
-import type { OrderPaymentStatus, OrderSource, OrderStatus } from "@/types/order.type";
+import type {
+  OrderPaymentStatus,
+  OrderSource,
+  OrderStatus,
+} from "@/types/order.type";
 import type { PaymentStatus } from "@/types/payment.type";
 import type { PostStatus } from "@/types/post.type";
 import type { Concentration, Gender } from "@/types/product.type";
@@ -118,14 +122,24 @@ export function isPostStatus(
 export function isRefundStatus(
   value: string | null | undefined,
 ): value is RefundStatus {
-  return value === "PENDING" || value === "SUCCESS" || value === "FAILED" || value === "VOIDED";
+  return (
+    value === "PENDING" ||
+    value === "SUCCESS" ||
+    value === "FAILED" ||
+    value === "VOIDED"
+  );
 }
 
 // Type guard to validate if a string is a valid PaymentStatus
 export function isPaymentStatus(
   value: string | null | undefined,
 ): value is PaymentStatus {
-  return value === "PENDING" || value === "SUCCESS" || value === "FAILED" || value === "VOIDED";
+  return (
+    value === "PENDING" ||
+    value === "SUCCESS" ||
+    value === "FAILED" ||
+    value === "VOIDED"
+  );
 }
 
 // Type guard to validate if a string is a valid Status
@@ -138,7 +152,9 @@ export function isRole(value: string | null | undefined): value is Role {
   return value === "USER" || value === "ADMIN" || value === "AUTHOR";
 }
 
-export function isReviewStatus(value: string | null | undefined): value is "publish" | "unpublish" {
+export function isReviewStatus(
+  value: string | null | undefined,
+): value is "publish" | "unpublish" {
   return value === "publish" || value === "unpublish";
 }
 
@@ -207,7 +223,9 @@ export function getOrderStatusVariant(status: OrderStatus) {
 }
 
 // Get payment status variant for badge
-export function getPaymentStatusVariant(status: OrderPaymentStatus | PaymentStatus) {
+export function getPaymentStatusVariant(
+  status: OrderPaymentStatus | PaymentStatus,
+) {
   switch (status) {
     case "UNPAID":
       return "default";
@@ -267,21 +285,23 @@ export const getOrderStatusColor = (status: string) => {
   switch (status.toUpperCase()) {
     case "DELIVERED":
     case "DONE":
-      return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+      return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
     case "SHIPPED":
     case "ACCEPTED":
-      return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+      return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200";
     case "PENDING":
-      return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+      return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
     case "REJECTED":
     case "CANCELLED":
-      return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+      return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
     default:
-      return "bg-secondary text-muted-foreground"
+      return "bg-secondary text-muted-foreground";
   }
-}
+};
 
-export function getTransactionDirectionVariant(direction: TransactionDirection) {
+export function getTransactionDirectionVariant(
+  direction: TransactionDirection,
+) {
   return direction === "IN" ? "outline" : "destructive";
 }
 
@@ -375,10 +395,10 @@ export function isOrderPaymentStatus(
 }
 
 export const isOrderSource = (
-  value: string | null | undefined
+  value: string | null | undefined,
 ): value is OrderSource => {
   return value === "ADMIN" || value === "CUSTOMER";
-}
+};
 
 export const getGrade = (points: number) => {
   if (points >= 4000) return "PLATINUM";
@@ -414,7 +434,8 @@ export function pluralize(count: number, singular: string, plural?: string) {
 }
 
 export const toTitleCase = (str: string) =>
-  str.split(" ")
+  str
+    .split(" ")
     .map((word) => {
       if (!word) return "";
       return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
@@ -422,10 +443,91 @@ export const toTitleCase = (str: string) =>
     .join(" ");
 
 export const getProductListPageHref = (gender: string | null) => {
-  return (gender === "MALE" || gender === "FEMALE")
+  return gender === "MALE" || gender === "FEMALE"
     ? `/products?gender=${gender}`
     : `/products`;
 };
+
+export function getProductDetailDocumentTitle(
+  name: string,
+  size: number,
+): string {
+  return `${name} ${size} ml | Azue Perfume`;
+}
+
+export function getProductListingDocumentTitle({
+  brand,
+  gender,
+  concentration,
+}: {
+  brand?: string;
+  gender?: Gender;
+  concentration?: Concentration;
+}): string {
+  const parts: string[] = [];
+
+  if (brand) {
+    parts.push(toTitleCase(brand.split("-").join(" ")));
+  }
+
+  if (gender) {
+    const genderText = {
+      MALE: "Men's",
+      FEMALE: "Women's",
+      UNISEX: "Unisex",
+    }[gender];
+
+    parts.push(genderText);
+  }
+
+  if (concentration) {
+    parts.push(concentration);
+  }
+
+  if (parts.length === 0) {
+    return "Perfumes | Azue Perfume";
+  }
+
+  // If only gender is selected, e.g. "Men's Perfumes"
+  if (!brand && !concentration) {
+    return `${parts.join(" ")} Perfumes | Azue Perfume`;
+  }
+
+  // If only brand is selected, e.g. "Versace Perfumes"
+  if (brand && !gender && !concentration) {
+    return `${brand} Perfumes | Azue Perfume`;
+  }
+
+  return `${parts.join(" ")} | Azue Perfume`;
+}
+
+export function getMyReviewsDocumentTitle({
+  status,
+}: {
+  status: "publish" | "unpublish" | undefined;
+}) {
+  if (status === "publish") {
+    return "Published Reviews | Azue Perfume";
+  }
+  if (status === "unpublish") {
+    return "Pending Reviews | Azue Perfume";
+  }
+  return "My Reviews | Azue Perfume";
+}
+
+export function getMyOrdersDocumentTitle({
+  condition,
+}: {
+  condition: "active" | "inactive" | undefined;
+}) {
+  if (condition === "active") {
+    return "Active Orders | Azue Perfume";
+  }
+  if (condition === "inactive") {
+    return "Inactive Orders | Azue Perfume";
+  }
+  return "My Orders | Azue Perfume";
+}
 
 export const sleep = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));

@@ -8,7 +8,7 @@ import BlogPage from "@/pages/blogs";
 import BlogDetailPage from "@/pages/blogs/detail";
 import ErrorPage from "@/pages/error";
 import HomePage from "@/pages/home";
-import { RootLayout } from "@/pages/layout";
+import { GuestLayout } from "@/pages/layout";
 import ProductPage from "@/pages/products";
 import ProductDetailPage from "@/pages/products/detail";
 import { createBrowserRouter } from "react-router";
@@ -47,7 +47,6 @@ import { action as adminUpdateProductVariantAction } from "@/pages/admin/product
 import { loader as adminEditProductVariantLoader } from "@/pages/admin/products/variants/update/loader";
 import AdminSettingsPage from "@/pages/admin/settings";
 import { loader as adminSettingsLoader } from "@/pages/admin/settings/loader";
-import { loader as settingsLoader } from "@/pages/settings/loader";
 import AdminUsersPage from "@/pages/admin/users";
 import AdminUserCreateDialog from "@/pages/admin/users/create";
 import { action as adminCreateUserAction } from "@/pages/admin/users/create/action";
@@ -69,15 +68,16 @@ import { action as signUpAction } from "@/pages/auth/sign-up/action";
 import { loader as signUpLoader } from "@/pages/auth/sign-up/loader";
 import { action as verifyOtpAction } from "@/pages/auth/verify-otp/action";
 import { loader as verifyOtpLoader } from "@/pages/auth/verify-otp/loader";
+import { loader as blogLoader } from "@/pages/blogs/detail/loader";
+import { loader as blogsLoader } from "@/pages/blogs/loader";
 import { loader as homeLoader } from "@/pages/home/loader";
-import { loader as rootLoader } from "@/pages/loader";
+import { loader as guestLoader } from "@/pages/loader";
 import { action as productAction } from "@/pages/products/detail/action";
 import { loader as productLoader } from "@/pages/products/detail/loader";
 import { loader as productsLoader } from "@/pages/products/loader";
-import { loader as blogsLoader } from "@/pages/blogs/loader";
-import { loader as blogLoader } from "@/pages/blogs/detail/loader";
-import { loader as profileLoader } from "@/pages/profile/loader";
 import { loader as profileLayoutLoader } from "@/pages/profile/layout-loader";
+import { loader as profileLoader } from "@/pages/profile/loader";
+import { loader as settingsLoader } from "@/pages/settings/loader";
 
 import AdminBrandsPage from "@/pages/admin/brands";
 import AdminBrandCreateDialog from "@/pages/admin/brands/create";
@@ -113,7 +113,6 @@ import AdminReviewDetailPage from "@/pages/admin/reviews/detail";
 import { loader as adminReviewDetailLoader } from "@/pages/admin/reviews/detail/loader";
 import { loader as adminReviewsLoader } from "@/pages/admin/reviews/loader";
 
-
 import AdminInventoriesPage from "@/pages/admin/inventories";
 import AdminInventoryCreatePage from "@/pages/admin/inventories/create";
 import { action as adminInventoryCreateAction } from "@/pages/admin/inventories/create/action";
@@ -147,423 +146,461 @@ import { action as adminUpdateTransactionAction } from "@/pages/admin/transactio
 import { loader as adminEditTransactionLoader } from "@/pages/admin/transactions/update/loader";
 import ProfilePage from "@/pages/profile";
 import OrderHistoryPage from "@/pages/profile/orders";
+import ReviewPage from "@/pages/profile/reviews";
 import WishlistPage from "@/pages/profile/wishlist";
 import SettingsPage from "@/pages/settings";
-import ReviewPage from "@/pages/profile/reviews";
+import { RootLayout } from "./pages/root-layout";
 
 export const router = createBrowserRouter([
   {
-    path: "/",
-    ErrorBoundary: ErrorPage,
     Component: RootLayout,
-    loader: rootLoader,
     children: [
       {
-        index: true,
-        Component: HomePage,
-        loader: homeLoader,
-      },
-      {
-        path: "profile",
-        loader: profileLayoutLoader,
+        path: "/",
+        ErrorBoundary: ErrorPage,
+        Component: GuestLayout,
+        loader: guestLoader,
         children: [
           {
             index: true,
-            Component: ProfilePage,
-            loader: profileLoader
+            Component: HomePage,
+            loader: homeLoader,
+            handle: {
+              title: "Azue Perfume | Discover Your Signature Scent",
+            },
           },
           {
-            path: "reviews",
-            Component: ReviewPage
+            path: "profile",
+            loader: profileLayoutLoader,
+            children: [
+              {
+                index: true,
+                Component: ProfilePage,
+                loader: profileLoader,
+                handle: {
+                  title: "Profile | Azue Perfume",
+                },
+              },
+              {
+                path: "reviews",
+                Component: ReviewPage,
+              },
+              {
+                path: "wishlists",
+                Component: WishlistPage,
+                handle: {
+                  title: "My Wishlists | Azue Perfume",
+                },
+              },
+              {
+                path: "orders",
+                Component: OrderHistoryPage,
+              },
+            ],
           },
           {
-            path: "wishlists",
-            Component: WishlistPage
+            path: "settings",
+            Component: SettingsPage,
+            loader: settingsLoader,
+            handle: {
+              title: "Settings | Azue Perfume",
+            },
+          },
+          {
+            path: "logout",
+            action: logoutAction,
+          },
+          {
+            path: "blogs",
+            children: [
+              {
+                index: true,
+                Component: BlogPage,
+                loader: blogsLoader,
+                handle: {
+                  title: "Perfume Journal | Azue Perfume",
+                },
+              },
+              {
+                path: ":slug",
+                Component: BlogDetailPage,
+                loader: blogLoader,
+              },
+            ],
+          },
+          {
+            path: "products",
+            children: [
+              {
+                index: true,
+                Component: ProductPage,
+                loader: productsLoader,
+              },
+              {
+                path: ":slug",
+                Component: ProductDetailPage,
+                loader: productLoader,
+                action: productAction,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        Component: AuthLayout,
+        loader: authLoader,
+        children: [
+          {
+            path: "/sign-in",
+            Component: SignInPage,
+            action: signInAction,
+            handle: {
+              title: "Sign In | Azue Perfume",
+            },
+          },
+          {
+            path: "/sign-up",
+            Component: SignUpPage,
+            loader: signUpLoader,
+            action: signUpAction,
+            handle: {
+              title: "Sign Up | Azue Perfume",
+            },
+          },
+          {
+            path: "/verify-otp",
+            Component: VerifyOtpPage,
+            loader: verifyOtpLoader,
+            action: verifyOtpAction,
+            handle: {
+              title: "Verify OTP | Azue Perfume",
+            },
+          },
+          {
+            path: "/verify-password-otp",
+            Component: VerifyOtpPage,
+            loader: verifyOtpLoader,
+            action: verifyOtpAction,
+            handle: {
+              title: "Verify Password OTP | Azue Perfume",
+            },
+          },
+          {
+            path: "/forgot-password",
+            Component: ForgotPasswordPage,
+            loader: forgotPasswordLoader,
+            action: forgotPasswordAction,
+            handle: {
+              title: "Forgot Password | Azue Perfume",
+            },
+          },
+          {
+            path: "/reset-password",
+            Component: ResetPasswordPage,
+            loader: resetPasswordLoader,
+            action: resetPasswordAction,
+            handle: {
+              title: "Reset Password | Azue Perfume",
+            },
+          },
+        ],
+      },
+      {
+        path: "/admin",
+        ErrorBoundary: ErrorPage,
+        Component: AdminLayout,
+        loader: adminLoader,
+        children: [
+          {
+            index: true,
+            Component: AdminDashboardPage,
+            loader: adminDashboardLoader,
+          },
+          {
+            path: "posts",
+            children: [
+              {
+                index: true,
+                Component: AdminPostsPage,
+                loader: adminPostsLoader,
+              },
+              {
+                path: "create",
+                Component: AdminPostCreatePage,
+                action: adminCreatePostAction,
+              },
+              {
+                path: ":slug",
+                Component: AdminPostDetailPage,
+                loader: adminPostDetailLoader,
+              },
+              {
+                path: ":slug/edit",
+                Component: AdminPostEditPage,
+                loader: adminEditPostLoader,
+                action: adminUpdatePostAction,
+              },
+            ],
+          },
+          {
+            path: "products",
+            children: [
+              {
+                index: true,
+                Component: AdminProductsPage,
+                loader: adminProductsLoader,
+              },
+              {
+                path: "create",
+                Component: AdminProductCreatePage,
+                action: adminCreateProductAction,
+              },
+              {
+                path: ":slug",
+                Component: AdminProductDetailPage,
+                loader: adminProductDetailLoader,
+              },
+              {
+                path: ":slug/edit",
+                Component: AdminProductEditPage,
+                loader: adminEditProductLoader,
+                action: adminUpdateProductAction,
+              },
+              {
+                path: ":slug/variants",
+                Component: AdminProductVariantsPage,
+                loader: adminProductVariantsLoader,
+              },
+              {
+                path: ":slug/variants/create",
+                Component: AdminProductVariantCreatePage,
+                action: adminCreateProductVariantAction,
+              },
+              {
+                path: ":slug/variants/:variantSlug/edit",
+                Component: AdminProductVariantEditPage,
+                loader: adminEditProductVariantLoader,
+                action: adminUpdateProductVariantAction,
+              },
+              {
+                path: ":slug/variants/:variantSlug",
+                Component: AdminProductVariantDetailPage,
+                loader: adminProductVariantDetailLoader,
+              },
+            ],
+          },
+          {
+            path: "brands",
+            Component: AdminBrandsPage,
+            loader: adminBrandsLoader,
+            children: [
+              {
+                path: "create",
+                Component: AdminBrandCreateDialog,
+                action: adminCreateBrandAction,
+              },
+              {
+                path: ":slug/edit",
+                Component: AdminBrandEditDialog,
+                loader: adminEditBrandLoader,
+                action: adminUpdateBrandAction,
+              },
+              {
+                path: ":slug/delete",
+                Component: AdminBrandDeleteDialog,
+                loader: adminDeleteBrandLoader,
+                action: adminDeleteBrandAction,
+              },
+            ],
+          },
+          {
+            path: "categories",
+            Component: AdminCategoriesPage,
+            loader: adminCategoriesLoader,
+            children: [
+              {
+                path: "create",
+                Component: AdminCategoryCreateDialog,
+                action: adminCreateCategoryAction,
+              },
+              {
+                path: ":slug/edit",
+                Component: AdminCategoryEditDialog,
+                loader: adminEditCategoryLoader,
+                action: adminUpdateCategoryAction,
+              },
+              {
+                path: ":slug/delete",
+                Component: AdminCategoryDeleteDialog,
+                loader: adminDeleteCategoryLoader,
+                action: adminDeleteCategoryAction,
+              },
+            ],
+          },
+          {
+            path: "users",
+            Component: AdminUsersPage,
+            loader: adminUsersLoader,
+            children: [
+              {
+                path: "create",
+                Component: AdminUserCreateDialog,
+                action: adminCreateUserAction,
+              },
+              {
+                path: ":username/edit",
+                Component: AdminUserEditDialog,
+                loader: adminEditUserLoader,
+                action: adminUpdateUserAction,
+              },
+              {
+                path: ":username/delete",
+                Component: AdminUserDeleteDialog,
+                loader: adminDeleteUserLoader,
+                action: adminDeleteUserAction,
+              },
+            ],
           },
           {
             path: "orders",
-            Component: OrderHistoryPage,
+            children: [
+              {
+                index: true,
+                Component: AdminOrdersPage,
+                loader: adminOrdersLoader,
+              },
+              {
+                path: ":code",
+                Component: AdminOrderDetailPage,
+                loader: adminOrderDetailLoader,
+              },
+              {
+                path: ":code/edit",
+                Component: AdminOrderUpdatePage,
+                loader: adminUpdateOrderLoader,
+                action: adminUpdateOrderAction,
+              },
+              {
+                path: "create",
+                Component: AdminOrderCreatePage,
+                action: adminCreateOrderAction,
+              },
+            ],
+          },
+          {
+            path: "reviews",
+            children: [
+              {
+                index: true,
+                Component: AdminReviewsPage,
+                loader: adminReviewsLoader,
+              },
+              {
+                path: ":id",
+                Component: AdminReviewDetailPage,
+                loader: adminReviewDetailLoader,
+              },
+            ],
+          },
+          {
+            path: "refunds",
+            children: [
+              {
+                index: true,
+                Component: AdminRefundsPage,
+                loader: adminRefundsLoader,
+              },
+              {
+                path: "create",
+                Component: AdminRefundCreatePage,
+                action: adminRefundCreateAction,
+              },
+              {
+                path: ":id",
+                Component: AdminRefundDetailPage,
+                loader: adminRefundDetailLoader,
+              },
+              {
+                path: ":id/edit",
+                Component: AdminRefundUpdatePage,
+                action: adminUpdateRefundAction,
+                loader: adminEditRefundLoader,
+              },
+            ],
+          },
+          {
+            path: "payments",
+            children: [
+              {
+                index: true,
+                Component: AdminPaymentsPage,
+                loader: adminPaymentsLoader,
+              },
+              {
+                path: "create",
+                Component: AdminPaymentCreatePage,
+                action: adminPaymentCreateAction,
+              },
+              {
+                path: ":id",
+                Component: AdminPaymentDetailPage,
+                loader: adminPaymentDetailLoader,
+              },
+              {
+                path: ":id/edit",
+                Component: AdminPaymentUpdatePage,
+                action: adminUpdatePaymentAction,
+                loader: adminEditPaymentLoader,
+              },
+            ],
+          },
+          {
+            path: "transactions",
+            children: [
+              {
+                index: true,
+                Component: AdminTransactionsPage,
+                loader: adminTransactionsLoader,
+              },
+              {
+                path: ":id",
+                Component: AdminTransactionDetailPage,
+                loader: adminTransactionDetailLoader,
+              },
+              {
+                path: ":id/edit",
+                Component: AdminTransactionEditPage,
+                loader: adminEditTransactionLoader,
+                action: adminUpdateTransactionAction,
+              },
+              {
+                path: "create",
+                Component: AdminTransactionCreatePage,
+                action: adminTransactionCreateAction,
+              },
+            ],
+          },
+          {
+            path: "inventories",
+            children: [
+              {
+                index: true,
+                Component: AdminInventoriesPage,
+                loader: adminInventoriesLoader,
+              },
+              {
+                path: "create",
+                Component: AdminInventoryCreatePage,
+                action: adminInventoryCreateAction,
+              },
+            ],
+          },
+          {
+            path: "settings",
+            Component: AdminSettingsPage,
+            loader: adminSettingsLoader,
           },
         ],
-      },
-      {
-        path: "settings",
-        Component: SettingsPage,
-        loader: settingsLoader,
-      },
-      {
-        path: "logout",
-        action: logoutAction,
-      },
-      {
-        path: "blogs",
-        children: [
-          {
-            index: true,
-            Component: BlogPage,
-            loader: blogsLoader
-          },
-          {
-            path: ":slug",
-            Component: BlogDetailPage,
-            loader: blogLoader
-          },
-        ],
-      },
-      {
-        path: "products",
-        children: [
-          {
-            index: true,
-            Component: ProductPage,
-            loader: productsLoader,
-          },
-          {
-            path: ":slug",
-            Component: ProductDetailPage,
-            loader: productLoader,
-            action: productAction,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    Component: AuthLayout,
-    loader: authLoader,
-    children: [
-      {
-        path: "/sign-in",
-        Component: SignInPage,
-        action: signInAction,
-      },
-      {
-        path: "/sign-up",
-        Component: SignUpPage,
-        loader: signUpLoader,
-        action: signUpAction,
-      },
-      {
-        path: "/verify-otp",
-        Component: VerifyOtpPage,
-        loader: verifyOtpLoader,
-        action: verifyOtpAction,
-      },
-      {
-        path: "/verify-password-otp",
-        Component: VerifyOtpPage,
-        loader: verifyOtpLoader,
-        action: verifyOtpAction,
-      },
-      {
-        path: "/forgot-password",
-        Component: ForgotPasswordPage,
-        loader: forgotPasswordLoader,
-        action: forgotPasswordAction,
-      },
-      {
-        path: "/reset-password",
-        Component: ResetPasswordPage,
-        loader: resetPasswordLoader,
-        action: resetPasswordAction,
-      },
-    ],
-  },
-  {
-    path: "/admin",
-    ErrorBoundary: ErrorPage,
-    Component: AdminLayout,
-    loader: adminLoader,
-    children: [
-      {
-        index: true,
-        Component: AdminDashboardPage,
-        loader: adminDashboardLoader,
-      },
-      {
-        path: "posts",
-        children: [
-          {
-            index: true,
-            Component: AdminPostsPage,
-            loader: adminPostsLoader,
-
-          },
-          {
-            path: "create",
-            Component: AdminPostCreatePage,
-            action: adminCreatePostAction,
-          },
-          {
-            path: ":slug",
-            Component: AdminPostDetailPage,
-            loader: adminPostDetailLoader,
-          },
-          {
-            path: ":slug/edit",
-            Component: AdminPostEditPage,
-            loader: adminEditPostLoader,
-            action: adminUpdatePostAction,
-          },
-        ],
-      },
-      {
-        path: "products",
-        children: [
-          {
-            index: true,
-            Component: AdminProductsPage,
-            loader: adminProductsLoader,
-          },
-          {
-            path: "create",
-            Component: AdminProductCreatePage,
-            action: adminCreateProductAction,
-          },
-          {
-            path: ":slug",
-            Component: AdminProductDetailPage,
-            loader: adminProductDetailLoader,
-          },
-          {
-            path: ":slug/edit",
-            Component: AdminProductEditPage,
-            loader: adminEditProductLoader,
-            action: adminUpdateProductAction,
-          },
-          {
-            path: ":slug/variants",
-            Component: AdminProductVariantsPage,
-            loader: adminProductVariantsLoader,
-          },
-          {
-            path: ":slug/variants/create",
-            Component: AdminProductVariantCreatePage,
-            action: adminCreateProductVariantAction,
-          },
-          {
-            path: ":slug/variants/:variantSlug/edit",
-            Component: AdminProductVariantEditPage,
-            loader: adminEditProductVariantLoader,
-            action: adminUpdateProductVariantAction,
-          },
-          {
-            path: ":slug/variants/:variantSlug",
-            Component: AdminProductVariantDetailPage,
-            loader: adminProductVariantDetailLoader,
-          },
-        ]
-      },
-      {
-        path: "brands",
-        Component: AdminBrandsPage,
-        loader: adminBrandsLoader,
-        children: [
-          {
-            path: "create",
-            Component: AdminBrandCreateDialog,
-            action: adminCreateBrandAction,
-          },
-          {
-            path: ":slug/edit",
-            Component: AdminBrandEditDialog,
-            loader: adminEditBrandLoader,
-            action: adminUpdateBrandAction,
-          },
-          {
-            path: ":slug/delete",
-            Component: AdminBrandDeleteDialog,
-            loader: adminDeleteBrandLoader,
-            action: adminDeleteBrandAction,
-          },
-        ],
-      },
-      {
-        path: "categories",
-        Component: AdminCategoriesPage,
-        loader: adminCategoriesLoader,
-        children: [
-          {
-            path: "create",
-            Component: AdminCategoryCreateDialog,
-            action: adminCreateCategoryAction,
-          },
-          {
-            path: ":slug/edit",
-            Component: AdminCategoryEditDialog,
-            loader: adminEditCategoryLoader,
-            action: adminUpdateCategoryAction,
-          },
-          {
-            path: ":slug/delete",
-            Component: AdminCategoryDeleteDialog,
-            loader: adminDeleteCategoryLoader,
-            action: adminDeleteCategoryAction,
-          },
-        ],
-      },
-      {
-        path: "users",
-        Component: AdminUsersPage,
-        loader: adminUsersLoader,
-        children: [
-          {
-            path: "create",
-            Component: AdminUserCreateDialog,
-            action: adminCreateUserAction,
-          },
-          {
-            path: ":username/edit",
-            Component: AdminUserEditDialog,
-            loader: adminEditUserLoader,
-            action: adminUpdateUserAction,
-          },
-          {
-            path: ":username/delete",
-            Component: AdminUserDeleteDialog,
-            loader: adminDeleteUserLoader,
-            action: adminDeleteUserAction,
-          },
-        ],
-      },
-      {
-        path: "orders",
-        children: [
-          {
-            index: true,
-            Component: AdminOrdersPage,
-            loader: adminOrdersLoader,
-          },
-          {
-            path: ":code",
-            Component: AdminOrderDetailPage,
-            loader: adminOrderDetailLoader,
-          },
-          {
-            path: ":code/edit",
-            Component: AdminOrderUpdatePage,
-            loader: adminUpdateOrderLoader,
-            action: adminUpdateOrderAction,
-          },
-          {
-            path: "create",
-            Component: AdminOrderCreatePage,
-            action: adminCreateOrderAction,
-          },
-        ],
-      },
-      {
-        path: "reviews",
-        children: [
-          {
-            index: true,
-            Component: AdminReviewsPage,
-            loader: adminReviewsLoader,
-          },
-          {
-            path: ":id",
-            Component: AdminReviewDetailPage,
-            loader: adminReviewDetailLoader,
-          },
-        ],
-      },
-      {
-        path: "refunds",
-        children: [
-          {
-            index: true,
-            Component: AdminRefundsPage,
-            loader: adminRefundsLoader,
-          },
-          {
-            path: "create",
-            Component: AdminRefundCreatePage,
-            action: adminRefundCreateAction,
-          },
-          {
-            path: ":id",
-            Component: AdminRefundDetailPage,
-            loader: adminRefundDetailLoader,
-          },
-          {
-            path: ":id/edit",
-            Component: AdminRefundUpdatePage,
-            action: adminUpdateRefundAction,
-            loader: adminEditRefundLoader,
-          },
-        ],
-      },
-      {
-        path: "payments",
-        children: [
-          {
-            index: true,
-            Component: AdminPaymentsPage,
-            loader: adminPaymentsLoader,
-          },
-          {
-            path: "create",
-            Component: AdminPaymentCreatePage,
-            action: adminPaymentCreateAction,
-          },
-          {
-            path: ":id",
-            Component: AdminPaymentDetailPage,
-            loader: adminPaymentDetailLoader,
-          },
-          {
-            path: ":id/edit",
-            Component: AdminPaymentUpdatePage,
-            action: adminUpdatePaymentAction,
-            loader: adminEditPaymentLoader,
-          },
-        ],
-      },
-      {
-        path: "transactions",
-        children: [
-          {
-            index: true,
-            Component: AdminTransactionsPage,
-            loader: adminTransactionsLoader,
-          },
-          {
-            path: ":id",
-            Component: AdminTransactionDetailPage,
-            loader: adminTransactionDetailLoader,
-          },
-          {
-            path: ":id/edit",
-            Component: AdminTransactionEditPage,
-            loader: adminEditTransactionLoader,
-            action: adminUpdateTransactionAction,
-          },
-          {
-            path: "create",
-            Component: AdminTransactionCreatePage,
-            action: adminTransactionCreateAction,
-          },
-        ],
-      },
-      {
-        path: "inventories",
-        children: [
-          {
-            index: true,
-            Component: AdminInventoriesPage,
-            loader: adminInventoriesLoader,
-          },
-          {
-            path: "create",
-            Component: AdminInventoryCreatePage,
-            action: adminInventoryCreateAction,
-          },
-        ],
-      },
-      {
-        path: "settings",
-        Component: AdminSettingsPage,
-        loader: adminSettingsLoader,
       },
     ],
   },

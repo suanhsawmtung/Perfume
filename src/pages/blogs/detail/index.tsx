@@ -1,11 +1,12 @@
-import SecureContent from "@/components/blog/secure-content"
-import { Button } from "@/components/ui/button"
-import ContentWrapper from "@/components/wrapper/content-wrapper"
-import { formatDate, formatImagePath, formatName } from "@/lib/utils"
-import { useGetPost } from "@/services/post/queries/useGetPost"
-import { ArrowLeft, ImageIcon, Link2 } from "lucide-react"
-import { Link, useLoaderData } from "react-router"
-import { toast } from "sonner"
+import SecureContent from "@/components/blog/secure-content";
+import { Button } from "@/components/ui/button";
+import ContentWrapper from "@/components/wrapper/content-wrapper";
+import { formatDate, formatImagePath, formatName } from "@/lib/utils";
+import { useGetPost } from "@/services/post/queries/useGetPost";
+import { ArrowLeft, ImageIcon, Link2 } from "lucide-react";
+import { useEffect } from "react";
+import { Link, useLoaderData } from "react-router";
+import { toast } from "sonner";
 
 export default function BlogDetailPage() {
   const { slug } = useLoaderData();
@@ -13,9 +14,15 @@ export default function BlogDetailPage() {
   const { data: blog } = useGetPost(slug);
 
   const copyLink = async () => {
-    await navigator.clipboard.writeText(window.location.href)
-    toast.success("Blog link copied!")
-  }
+    await navigator.clipboard.writeText(window.location.href);
+    toast.success("Blog link copied!");
+  };
+
+  useEffect(() => {
+    document.title = blog.title
+      ? `${blog.title} | Azue Perfume`
+      : "Article | Azue Perfume";
+  }, [blog.title]);
 
   return (
     <div className="min-h-screen">
@@ -25,44 +32,48 @@ export default function BlogDetailPage() {
             <img
               src={formatImagePath(blog.image, "post")}
               alt={blog.title}
-              className="object-cover w-full h-full"
+              className="h-full w-full object-cover"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-secondary/20">
-              <ImageIcon className="h-8 w-8 text-muted-foreground/30" />
+            <div className="bg-secondary/20 flex h-full w-full items-center justify-center">
+              <ImageIcon className="text-muted-foreground/30 h-8 w-8" />
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
+          <div className="from-background via-background/20 absolute inset-0 bg-gradient-to-t to-transparent" />
         </div>
 
         <ContentWrapper>
-          <div className="relative -mt-32 mx-auto max-w-3xl">
+          <div className="relative mx-auto -mt-32 max-w-3xl">
             <Link
               to="/blogs"
-              className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground mb-6 inline-flex items-center gap-2 text-sm"
             >
               <ArrowLeft className="h-4 w-4" />
               Back to Journal
             </Link>
 
-            <div className="rounded-lg bg-background p-8 shadow-lg md:p-12">
-              <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            <div className="bg-background rounded-lg p-8 shadow-lg md:p-12">
+              <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
                 {blog.category.name}
               </span>
-              <h1 className="mt-4 font-serif text-3xl font-medium leading-tight text-balance md:text-4xl lg:text-5xl">
+              <h1 className="mt-4 font-serif text-3xl leading-tight font-medium text-balance md:text-4xl lg:text-5xl">
                 {blog.title}
               </h1>
 
-              <div className="mt-6 flex items-center justify-between border-b border-border/50 pb-6">
+              <div className="border-border/50 mt-6 flex items-center justify-between border-b pb-6">
                 <div className="flex items-center gap-4">
-                  <div className="h-10 w-10 rounded-full bg-secondary" />
+                  <div className="bg-secondary h-10 w-10 rounded-full" />
                   <div>
-                    <p className="text-sm font-medium">{formatName({
-                      firstName: blog.author.firstName,
-                      lastName: blog.author.lastName,
-                      username: blog.author.username,
-                    })}</p>
-                    <p className="text-xs text-muted-foreground">{formatDate(blog.publishedAt as string)}</p>
+                    <p className="text-sm font-medium">
+                      {formatName({
+                        firstName: blog.author.firstName,
+                        lastName: blog.author.lastName,
+                        username: blog.author.username,
+                      })}
+                    </p>
+                    <p className="text-muted-foreground text-xs">
+                      {formatDate(blog.publishedAt as string)}
+                    </p>
                   </div>
                 </div>
 
@@ -93,6 +104,5 @@ export default function BlogDetailPage() {
         </ContentWrapper>
       )} */}
     </div>
-  )
+  );
 }
-

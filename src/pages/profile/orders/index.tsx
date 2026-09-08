@@ -6,12 +6,13 @@ import { SearchInput } from "@/components/shared/search-input";
 import { SearchTabGroup } from "@/components/shared/search-tab-group";
 import { Button } from "@/components/ui/button";
 import ContentWrapper from "@/components/wrapper/content-wrapper";
+import { getMyOrdersDocumentTitle } from "@/lib/utils";
 import { DEFAULT_LIMIT } from "@/services/order/api";
 import { useGetInfiniteOrders } from "@/services/order/queries/useGetInfiniteOrders";
 import { useAuthStore } from "@/stores/auth.store";
 import type { OrderType } from "@/types/order.type";
 import { ArrowLeft } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 
 export default function OrderHistoryPage() {
@@ -42,6 +43,12 @@ export default function OrderHistoryPage() {
     useGetInfiniteOrders(user.id, params);
 
   const orders = data?.pages.flatMap((page) => page.items) ?? [];
+
+  useEffect(() => {
+    document.title = getMyOrdersDocumentTitle({
+      condition: condition as "active" | "inactive" | undefined,
+    });
+  }, [condition]);
 
   return (
     <div className="bg-secondary/20 min-h-screen">
