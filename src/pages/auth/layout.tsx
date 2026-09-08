@@ -1,5 +1,4 @@
 import House from "@/assets/images/house.webp";
-import LogoIcon from "@/components/icons/logo-icon";
 import { Link, Outlet } from "react-router";
 
 const AuthLayout = () => {
@@ -9,8 +8,8 @@ const AuthLayout = () => {
         <div className="absolute top-0 left-0 my-auto flex h-16 w-full items-center pl-4 lg:max-w-5xl lg:pl-16 xl:max-w-7xl">
           <Link to="/">
             <div className="flex items-center gap-x-2">
-              <LogoIcon className="text-primary size-8" aria-hidden={true} />
-              <h1 className="text-xl font-semibold">Furniture Shop</h1>
+              {/* <LogoIcon className="text-primary size-8" aria-hidden={true} /> */}
+              <h1 className="text-xl font-semibold">AZUE Perfume</h1>
               <span className="sr-only">Home</span>
             </div>
           </Link>
