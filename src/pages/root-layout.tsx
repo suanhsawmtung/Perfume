@@ -1,28 +1,40 @@
-import { useEffect } from "react";
+import { SEO, type SEOProps } from "@/components/shared/seo";
 import { Outlet, useMatches } from "react-router";
+
+type Metadata = SEOProps;
+
+type RouteHandle = {
+  metadata?: Metadata;
+};
+
+const resolveMetadata = (handle: RouteHandle): SEOProps | undefined => {
+  if (
+    typeof handle !== "object" ||
+    handle === null ||
+    !("metadata" in handle)
+  ) {
+    return undefined;
+  }
+
+  const metadata = (handle as RouteHandle).metadata;
+
+  if (!metadata) return undefined;
+
+  return metadata;
+};
 
 export const RootLayout = () => {
   const matches = useMatches();
 
-  useEffect(() => {
-    const title = [...matches]
-      .reverse()
-      .map(({ handle }) => {
-        if (
-          typeof handle === "object" &&
-          handle !== null &&
-          "title" in handle &&
-          typeof handle.title === "string"
-        ) {
-          return handle.title;
-        }
+  const metadata = [...matches]
+    .reverse()
+    .map(({ handle }) => resolveMetadata(handle as RouteHandle))
+    .find((metadata): metadata is SEOProps => Boolean(metadata));
 
-        return undefined;
-      })
-      .find((title): title is string => Boolean(title));
-
-    if (title) document.title = title;
-  }, [matches]);
-
-  return <Outlet />;
+  return (
+    <>
+      {metadata && <SEO {...metadata} />}
+      <Outlet />
+    </>
+  );
 };

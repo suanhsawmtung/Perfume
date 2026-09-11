@@ -11,32 +11,33 @@ import type { loader } from "./loader";
 export default function BlogsPage() {
   const { params } = useLoaderData<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
-  
+
   const { data } = useListPosts(params);
 
   const isHero = data.items.length !== 2;
-  const gridPosts = isHero ? data.items.slice(1) : data.items
+  const gridPosts = isHero ? data.items.slice(1) : data.items;
 
-  const gridColsClass =
-    !isHero ? "md:grid-cols-2"
-      : gridPosts.length === 2
-        ? "md:grid-cols-2"
-        : "md:grid-cols-2 lg:grid-cols-3"
+  const gridColsClass = !isHero
+    ? "md:grid-cols-2"
+    : gridPosts.length === 2
+      ? "md:grid-cols-2"
+      : "md:grid-cols-2 lg:grid-cols-3";
 
-  const resultText = data.total === 0 
-    ? "Showing 0 articles" 
-    : `Showing ${data.items.length} of ${data.total} articles`;
+  const resultText =
+    data.total === 0
+      ? "Showing 0 articles"
+      : `Showing ${data.items.length} of ${data.total} articles`;
 
   return (
     <div className="min-h-screen">
-      <div className="border-b border-border/40 bg-secondary/20">
+      <div className="border-border/40 bg-secondary/20 border-b">
         <ContentWrapper className="py-16 text-center">
           <h1 className="font-serif text-4xl font-medium md:text-5xl">
             The Journal
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-muted-foreground leading-relaxed">
-            Discover the world of fragrance through our curated stories, guides,
-            and insights from perfume experts.
+          <p className="text-muted-foreground mx-auto mt-4 max-w-2xl leading-relaxed">
+            Discover the world of fragrance through our curated stories, helpful
+            guides, expert insights, and inspiration for every scent lover.
           </p>
         </ContentWrapper>
       </div>
@@ -58,9 +59,9 @@ export default function BlogsPage() {
 
             {gridPosts.length > 0 && (
               <div className={cn("grid gap-8", gridColsClass)}>
-                {gridPosts.map((post) =>
-                  <NBlogCard key={post.id} post={post} /> 
-                )}
+                {gridPosts.map((post) => (
+                  <NBlogCard key={post.id} post={post} />
+                ))}
               </div>
             )}
           </div>

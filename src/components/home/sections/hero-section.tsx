@@ -1,9 +1,10 @@
-import { Button } from "@/components/ui/button"
-import ContentWrapper from "@/components/wrapper/content-wrapper"
-import { getProductListPageHref } from "@/lib/utils"
-import { usePreferenceStore } from "@/stores/preference.store"
-import { ArrowRight, RefreshCcw, ShieldCheck, Truck } from "lucide-react"
-import { Link } from "react-router"
+import HeroImage from "@/assets/images/azue-perfume-house-hero-image.jpeg";
+import { Button } from "@/components/ui/button";
+import ContentWrapper from "@/components/wrapper/content-wrapper";
+import { getProductListPageHref } from "@/lib/utils";
+import { usePreferenceStore } from "@/stores/preference.store";
+import { ArrowRight, RefreshCcw, ShieldCheck, Truck } from "lucide-react";
+import { Link } from "react-router";
 
 const HERO_FEATURES = [
   {
@@ -21,31 +22,31 @@ const HERO_FEATURES = [
     title: "Easy Returns",
     subtitle: "& Exchanges",
   },
-]
+];
 
 export function HeroSection() {
-  const gender = usePreferenceStore((state) => state.gender)
+  const gender = usePreferenceStore((state) => state.gender);
 
   return (
-    <section className="relative min-h-[94vh] lg:min-h-[91vh] overflow-hidden">
+    <section className="relative min-h-[94vh] overflow-hidden lg:min-h-[91vh]">
       <div className="absolute inset-0">
         <img
-          src="https://images.unsplash.com/photo-1615634260167-c8cdede054de?w=1920&q=80"
+          src={HeroImage}
           alt="Luxury perfume bottles"
-          className="object-cover w-full h-full"
+          className="h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/70 to-transparent" />
+        <div className="from-background/95 via-background/70 absolute inset-0 bg-gradient-to-r to-transparent" />
       </div>
 
-      <ContentWrapper className="relative flex min-h-[94vh] lg:min-h-[91vh] items-center">
+      <ContentWrapper className="relative flex min-h-[94vh] items-center lg:min-h-[91vh]">
         <div className="max-w-2xl">
-          <span className="inline-block text-xs font-medium uppercase tracking-[0.3em] text-muted-foreground">
+          <span className="text-muted-foreground inline-block text-xs font-medium tracking-[0.3em] uppercase">
             New Collection 2024
           </span>
-          <h1 className="mt-4 font-serif text-5xl font-medium leading-tight tracking-tight text-balance md:text-6xl lg:text-7xl">
+          <h1 className="mt-4 font-serif text-5xl leading-tight font-medium tracking-tight text-balance md:text-6xl lg:text-7xl">
             Discover Your Signature Scent
           </h1>
-          <p className="mt-6 max-w-lg text-lg text-muted-foreground leading-relaxed">
+          <p className="text-muted-foreground mt-6 max-w-lg text-lg leading-relaxed">
             Immerse yourself in a world of exquisite fragrances. Each perfume is
             crafted with the finest ingredients to create unforgettable
             experiences.
@@ -84,17 +85,20 @@ export function HeroSection() {
           </div> */}
 
           {/* Hero Info Section */}
-          <div className="mt-16 flex sm:justify-start justify-between flex-wrap items-center gap-x-2 sm:gap-x-12 gap-y-8 border-t border-border/40 pt-10">
+          <div className="border-border/40 mt-16 flex flex-wrap items-center justify-between gap-x-2 gap-y-8 border-t pt-10 sm:justify-start sm:gap-x-12">
             {HERO_FEATURES.map((feature, index) => (
-              <div key={index} className="flex flex-col sm:flex-row items-center gap-4 group">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-secondary/50 text-foreground transition-all duration-300 group-hover:bg-foreground group-hover:text-background">
+              <div
+                key={index}
+                className="group flex flex-col items-center gap-4 sm:flex-row"
+              >
+                <div className="bg-secondary/50 text-foreground group-hover:bg-foreground group-hover:text-background flex h-12 w-12 shrink-0 items-center justify-center rounded-full transition-all duration-300">
                   <feature.icon className="h-5 w-5" strokeWidth={1.5} />
                 </div>
-                <div className="space-y-0.5 sm:text-start text-center">
+                <div className="space-y-0.5 text-center sm:text-start">
                   <p className="text-sm font-semibold tracking-wide">
                     {feature.title}
                   </p>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                  <p className="text-muted-foreground text-xs tracking-wider uppercase">
                     {feature.subtitle}
                   </p>
                 </div>
@@ -104,5 +108,5 @@ export function HeroSection() {
         </div>
       </ContentWrapper>
     </section>
-  )
+  );
 }

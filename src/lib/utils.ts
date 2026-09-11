@@ -485,20 +485,10 @@ export function getProductListingDocumentTitle({
   }
 
   if (parts.length === 0) {
-    return "Perfumes | Azue Perfume";
+    return "Perfume Collections | Azue Perfume";
   }
 
-  // If only gender is selected, e.g. "Men's Perfumes"
-  if (!brand && !concentration) {
-    return `${parts.join(" ")} Perfumes | Azue Perfume`;
-  }
-
-  // If only brand is selected, e.g. "Versace Perfumes"
-  if (brand && !gender && !concentration) {
-    return `${brand} Perfumes | Azue Perfume`;
-  }
-
-  return `${parts.join(" ")} | Azue Perfume`;
+  return `${parts.join(" ")} Perfumes | Azue Perfume`;
 }
 
 export function getMyReviewsDocumentTitle({

@@ -1,4 +1,7 @@
-import type { ProductFilterFormSchema, productSchema } from "@/validations/product.validation";
+import type {
+  ProductFilterFormSchema,
+  productSchema,
+} from "@/validations/product.validation";
 import type z from "zod";
 
 // Product enums (based on backend $Enums)
@@ -181,6 +184,7 @@ export interface ProductDetailType {
     stock: number;
     reserved: number;
     isPrimary: boolean;
+    sku: string;
     images: {
       path: string;
       isPrimary: boolean;

@@ -8,7 +8,7 @@ import BlogPage from "@/pages/blogs";
 import BlogDetailPage from "@/pages/blogs/detail";
 import ErrorPage from "@/pages/error";
 import HomePage from "@/pages/home";
-import { GuestLayout } from "@/pages/layout";
+import { Layout } from "@/pages/layout";
 import ProductPage from "@/pages/products";
 import ProductDetailPage from "@/pages/products/detail";
 import { createBrowserRouter } from "react-router";
@@ -149,7 +149,16 @@ import OrderHistoryPage from "@/pages/profile/orders";
 import ReviewPage from "@/pages/profile/reviews";
 import WishlistPage from "@/pages/profile/wishlist";
 import SettingsPage from "@/pages/settings";
+import { baseUrl } from "./config/env";
+import { DEFAULT_BRAND_IMAGE } from "./constants/metadata.constant";
 import { RootLayout } from "./pages/root-layout";
+
+const privateMetadata = (title: string) => ({
+  metadata: {
+    title,
+    noIndex: true,
+  },
+});
 
 export const router = createBrowserRouter([
   {
@@ -158,7 +167,7 @@ export const router = createBrowserRouter([
       {
         path: "/",
         ErrorBoundary: ErrorPage,
-        Component: GuestLayout,
+        Component: Layout,
         loader: guestLoader,
         children: [
           {
@@ -166,35 +175,64 @@ export const router = createBrowserRouter([
             Component: HomePage,
             loader: homeLoader,
             handle: {
-              title: "Azue Perfume | Discover Your Signature Scent",
+              metadata: {
+                title: "Azue Perfume | Discover Your Signature Scent",
+                description:
+                  "Explore exquisite fragrances from trusted perfume brands and discover your signature scent at Azue Perfume.",
+                canonical: "/",
+                og: {
+                  title: "Azue Perfume | Discover Your Signature Scent",
+                  description:
+                    "Explore exquisite fragrances from trusted perfume brands and discover your signature scent at Azue Perfume.",
+                  image: DEFAULT_BRAND_IMAGE,
+                  type: "website",
+                },
+                twitter: {
+                  title: "Azue Perfume | Discover Your Signature Scent",
+                  description:
+                    "Explore exquisite fragrances from trusted perfume brands and discover your signature scent at Azue Perfume.",
+                  image: DEFAULT_BRAND_IMAGE,
+                },
+                jsonLd: [
+                  {
+                    "@type": "Organization",
+                    name: "Azue Perfume",
+                    url: baseUrl,
+                  },
+                  {
+                    "@type": "WebSite",
+                    name: "Azue Perfume",
+                    url: baseUrl,
+                  },
+                ],
+              },
             },
           },
           {
             path: "profile",
             loader: profileLayoutLoader,
+            handle: privateMetadata("Profile | Azue Perfume"),
             children: [
               {
                 index: true,
                 Component: ProfilePage,
                 loader: profileLoader,
-                handle: {
-                  title: "Profile | Azue Perfume",
-                },
+                handle: privateMetadata("Profile | Azue Perfume"),
               },
               {
                 path: "reviews",
                 Component: ReviewPage,
+                handle: privateMetadata("My Reviews | Azue Perfume"),
               },
               {
                 path: "wishlists",
                 Component: WishlistPage,
-                handle: {
-                  title: "My Wishlists | Azue Perfume",
-                },
+                handle: privateMetadata("My Wishlist | Azue Perfume"),
               },
               {
                 path: "orders",
                 Component: OrderHistoryPage,
+                handle: privateMetadata("My Orders | Azue Perfume"),
               },
             ],
           },
@@ -202,9 +240,7 @@ export const router = createBrowserRouter([
             path: "settings",
             Component: SettingsPage,
             loader: settingsLoader,
-            handle: {
-              title: "Settings | Azue Perfume",
-            },
+            handle: privateMetadata("Settings | Azue Perfume"),
           },
           {
             path: "logout",
@@ -218,7 +254,25 @@ export const router = createBrowserRouter([
                 Component: BlogPage,
                 loader: blogsLoader,
                 handle: {
-                  title: "Perfume Journal | Azue Perfume",
+                  metadata: {
+                    title: "Perfume Journal | Azue Perfume",
+                    description:
+                      "Discover the world of fragrance through our curated stories, helpful guides, expert insights, and inspiration for every scent lover.",
+                    canonical: "/blogs",
+                    og: {
+                      title: "Perfume Journal | Azue Perfume",
+                      description:
+                        "Discover the world of fragrance through our curated stories, helpful guides, expert insights, and inspiration for every scent lover.",
+                      image: DEFAULT_BRAND_IMAGE,
+                      type: "website",
+                    },
+                    twitter: {
+                      title: "Perfume Journal | Azue Perfume",
+                      description:
+                        "Discover the world of fragrance through our curated stories, helpful guides, expert insights, and inspiration for every scent lover.",
+                      image: DEFAULT_BRAND_IMAGE,
+                    },
+                  },
                 },
               },
               {
@@ -254,54 +308,42 @@ export const router = createBrowserRouter([
             path: "/sign-in",
             Component: SignInPage,
             action: signInAction,
-            handle: {
-              title: "Sign In | Azue Perfume",
-            },
+            handle: privateMetadata("Sign In | Azue Perfume"),
           },
           {
             path: "/sign-up",
             Component: SignUpPage,
             loader: signUpLoader,
             action: signUpAction,
-            handle: {
-              title: "Sign Up | Azue Perfume",
-            },
+            handle: privateMetadata("Sign Up | Azue Perfume"),
           },
           {
             path: "/verify-otp",
             Component: VerifyOtpPage,
             loader: verifyOtpLoader,
             action: verifyOtpAction,
-            handle: {
-              title: "Verify OTP | Azue Perfume",
-            },
+            handle: privateMetadata("Verify OTP | Azue Perfume"),
           },
           {
             path: "/verify-password-otp",
             Component: VerifyOtpPage,
             loader: verifyOtpLoader,
             action: verifyOtpAction,
-            handle: {
-              title: "Verify Password OTP | Azue Perfume",
-            },
+            handle: privateMetadata("Verify Password OTP | Azue Perfume"),
           },
           {
             path: "/forgot-password",
             Component: ForgotPasswordPage,
             loader: forgotPasswordLoader,
             action: forgotPasswordAction,
-            handle: {
-              title: "Forgot Password | Azue Perfume",
-            },
+            handle: privateMetadata("Forgot Password | Azue Perfume"),
           },
           {
             path: "/reset-password",
             Component: ResetPasswordPage,
             loader: resetPasswordLoader,
             action: resetPasswordAction,
-            handle: {
-              title: "Reset Password | Azue Perfume",
-            },
+            handle: privateMetadata("Reset Password | Azue Perfume"),
           },
         ],
       },
@@ -310,82 +352,102 @@ export const router = createBrowserRouter([
         ErrorBoundary: ErrorPage,
         Component: AdminLayout,
         loader: adminLoader,
+        handle: privateMetadata("Admin | Azue Perfume"),
         children: [
           {
             index: true,
             Component: AdminDashboardPage,
             loader: adminDashboardLoader,
+            handle: privateMetadata("Dashboard | Azue Perfume"),
           },
           {
             path: "posts",
+            handle: privateMetadata("Posts | Azue Perfume"),
             children: [
               {
                 index: true,
                 Component: AdminPostsPage,
                 loader: adminPostsLoader,
+                handle: privateMetadata("Posts | Azue Perfume"),
               },
               {
                 path: "create",
                 Component: AdminPostCreatePage,
                 action: adminCreatePostAction,
+                handle: privateMetadata("Create Post | Azue Perfume"),
               },
               {
                 path: ":slug",
                 Component: AdminPostDetailPage,
                 loader: adminPostDetailLoader,
+                handle: privateMetadata("Post Details | Azue Perfume"),
               },
               {
                 path: ":slug/edit",
                 Component: AdminPostEditPage,
                 loader: adminEditPostLoader,
                 action: adminUpdatePostAction,
+                handle: privateMetadata("Edit Post | Azue Perfume"),
               },
             ],
           },
           {
             path: "products",
+            handle: privateMetadata("Products | Azue Perfume"),
             children: [
               {
                 index: true,
                 Component: AdminProductsPage,
                 loader: adminProductsLoader,
+                handle: privateMetadata("Products | Azue Perfume"),
               },
               {
                 path: "create",
                 Component: AdminProductCreatePage,
                 action: adminCreateProductAction,
+                handle: privateMetadata("Create Product | Azue Perfume"),
               },
               {
                 path: ":slug",
                 Component: AdminProductDetailPage,
                 loader: adminProductDetailLoader,
+                handle: privateMetadata("Product Details | Azue Perfume"),
               },
               {
                 path: ":slug/edit",
                 Component: AdminProductEditPage,
                 loader: adminEditProductLoader,
                 action: adminUpdateProductAction,
+                handle: privateMetadata("Edit Product | Azue Perfume"),
               },
               {
                 path: ":slug/variants",
                 Component: AdminProductVariantsPage,
                 loader: adminProductVariantsLoader,
+                handle: privateMetadata("Product Variants | Azue Perfume"),
               },
               {
                 path: ":slug/variants/create",
                 Component: AdminProductVariantCreatePage,
                 action: adminCreateProductVariantAction,
+                handle: privateMetadata(
+                  "Create Product Variant | Azue Perfume",
+                ),
               },
               {
                 path: ":slug/variants/:variantSlug/edit",
                 Component: AdminProductVariantEditPage,
                 loader: adminEditProductVariantLoader,
                 action: adminUpdateProductVariantAction,
+                handle: privateMetadata("Edit Product Variant | Azue Perfume"),
               },
               {
                 path: ":slug/variants/:variantSlug",
                 Component: AdminProductVariantDetailPage,
                 loader: adminProductVariantDetailLoader,
+                handle: privateMetadata(
+                  "Product Variant Details | Azue Perfume",
+                ),
               },
             ],
           },
@@ -393,23 +455,27 @@ export const router = createBrowserRouter([
             path: "brands",
             Component: AdminBrandsPage,
             loader: adminBrandsLoader,
+            handle: privateMetadata("Brands | Azue Perfume"),
             children: [
               {
                 path: "create",
                 Component: AdminBrandCreateDialog,
                 action: adminCreateBrandAction,
+                handle: privateMetadata("Create Brand | Azue Perfume"),
               },
               {
                 path: ":slug/edit",
                 Component: AdminBrandEditDialog,
                 loader: adminEditBrandLoader,
                 action: adminUpdateBrandAction,
+                handle: privateMetadata("Edit Brand | Azue Perfume"),
               },
               {
                 path: ":slug/delete",
                 Component: AdminBrandDeleteDialog,
                 loader: adminDeleteBrandLoader,
                 action: adminDeleteBrandAction,
+                handle: privateMetadata("Delete Brand | Azue Perfume"),
               },
             ],
           },
@@ -417,23 +483,27 @@ export const router = createBrowserRouter([
             path: "categories",
             Component: AdminCategoriesPage,
             loader: adminCategoriesLoader,
+            handle: privateMetadata("Categories | Azue Perfume"),
             children: [
               {
                 path: "create",
                 Component: AdminCategoryCreateDialog,
                 action: adminCreateCategoryAction,
+                handle: privateMetadata("Create Category | Azue Perfume"),
               },
               {
                 path: ":slug/edit",
                 Component: AdminCategoryEditDialog,
                 loader: adminEditCategoryLoader,
                 action: adminUpdateCategoryAction,
+                handle: privateMetadata("Edit Category | Azue Perfume"),
               },
               {
                 path: ":slug/delete",
                 Component: AdminCategoryDeleteDialog,
                 loader: adminDeleteCategoryLoader,
                 action: adminDeleteCategoryAction,
+                handle: privateMetadata("Delete Category | Azue Perfume"),
               },
             ],
           },
@@ -441,157 +511,187 @@ export const router = createBrowserRouter([
             path: "users",
             Component: AdminUsersPage,
             loader: adminUsersLoader,
+            handle: privateMetadata("Users | Azue Perfume"),
             children: [
               {
                 path: "create",
                 Component: AdminUserCreateDialog,
                 action: adminCreateUserAction,
+                handle: privateMetadata("Create User | Azue Perfume"),
               },
               {
                 path: ":username/edit",
                 Component: AdminUserEditDialog,
                 loader: adminEditUserLoader,
                 action: adminUpdateUserAction,
+                handle: privateMetadata("Edit User | Azue Perfume"),
               },
               {
                 path: ":username/delete",
                 Component: AdminUserDeleteDialog,
                 loader: adminDeleteUserLoader,
                 action: adminDeleteUserAction,
+                handle: privateMetadata("Delete User | Azue Perfume"),
               },
             ],
           },
           {
             path: "orders",
+            handle: privateMetadata("Orders | Azue Perfume"),
             children: [
               {
                 index: true,
                 Component: AdminOrdersPage,
                 loader: adminOrdersLoader,
+                handle: privateMetadata("Orders | Azue Perfume"),
               },
               {
                 path: ":code",
                 Component: AdminOrderDetailPage,
                 loader: adminOrderDetailLoader,
+                handle: privateMetadata("Order Details | Azue Perfume"),
               },
               {
                 path: ":code/edit",
                 Component: AdminOrderUpdatePage,
                 loader: adminUpdateOrderLoader,
                 action: adminUpdateOrderAction,
+                handle: privateMetadata("Edit Order | Azue Perfume"),
               },
               {
                 path: "create",
                 Component: AdminOrderCreatePage,
                 action: adminCreateOrderAction,
+                handle: privateMetadata("Create Order | Azue Perfume"),
               },
             ],
           },
           {
             path: "reviews",
+            handle: privateMetadata("Reviews | Azue Perfume"),
             children: [
               {
                 index: true,
                 Component: AdminReviewsPage,
                 loader: adminReviewsLoader,
+                handle: privateMetadata("Reviews | Azue Perfume"),
               },
               {
                 path: ":id",
                 Component: AdminReviewDetailPage,
                 loader: adminReviewDetailLoader,
+                handle: privateMetadata("Review Details | Azue Perfume"),
               },
             ],
           },
           {
             path: "refunds",
+            handle: privateMetadata("Refunds | Azue Perfume"),
             children: [
               {
                 index: true,
                 Component: AdminRefundsPage,
                 loader: adminRefundsLoader,
+                handle: privateMetadata("Refunds | Azue Perfume"),
               },
               {
                 path: "create",
                 Component: AdminRefundCreatePage,
                 action: adminRefundCreateAction,
+                handle: privateMetadata("Create Refund | Azue Perfume"),
               },
               {
                 path: ":id",
                 Component: AdminRefundDetailPage,
                 loader: adminRefundDetailLoader,
+                handle: privateMetadata("Refund Details | Azue Perfume"),
               },
               {
                 path: ":id/edit",
                 Component: AdminRefundUpdatePage,
                 action: adminUpdateRefundAction,
                 loader: adminEditRefundLoader,
+                handle: privateMetadata("Edit Refund | Azue Perfume"),
               },
             ],
           },
           {
             path: "payments",
+            handle: privateMetadata("Payments | Azue Perfume"),
             children: [
               {
                 index: true,
                 Component: AdminPaymentsPage,
                 loader: adminPaymentsLoader,
+                handle: privateMetadata("Payments | Azue Perfume"),
               },
               {
                 path: "create",
                 Component: AdminPaymentCreatePage,
                 action: adminPaymentCreateAction,
+                handle: privateMetadata("Create Payment | Azue Perfume"),
               },
               {
                 path: ":id",
                 Component: AdminPaymentDetailPage,
                 loader: adminPaymentDetailLoader,
+                handle: privateMetadata("Payment Details | Azue Perfume"),
               },
               {
                 path: ":id/edit",
                 Component: AdminPaymentUpdatePage,
                 action: adminUpdatePaymentAction,
                 loader: adminEditPaymentLoader,
+                handle: privateMetadata("Edit Payment | Azue Perfume"),
               },
             ],
           },
           {
             path: "transactions",
+            handle: privateMetadata("Transactions | Azue Perfume"),
             children: [
               {
                 index: true,
                 Component: AdminTransactionsPage,
                 loader: adminTransactionsLoader,
+                handle: privateMetadata("Transactions | Azue Perfume"),
               },
               {
                 path: ":id",
                 Component: AdminTransactionDetailPage,
                 loader: adminTransactionDetailLoader,
+                handle: privateMetadata("Transaction Details | Azue Perfume"),
               },
               {
                 path: ":id/edit",
                 Component: AdminTransactionEditPage,
                 loader: adminEditTransactionLoader,
                 action: adminUpdateTransactionAction,
+                handle: privateMetadata("Edit Transaction | Azue Perfume"),
               },
               {
                 path: "create",
                 Component: AdminTransactionCreatePage,
                 action: adminTransactionCreateAction,
+                handle: privateMetadata("Create Transaction | Azue Perfume"),
               },
             ],
           },
           {
             path: "inventories",
+            handle: privateMetadata("Inventories | Azue Perfume"),
             children: [
               {
                 index: true,
                 Component: AdminInventoriesPage,
                 loader: adminInventoriesLoader,
+                handle: privateMetadata("Inventories | Azue Perfume"),
               },
               {
                 path: "create",
                 Component: AdminInventoryCreatePage,
                 action: adminInventoryCreateAction,
+                handle: privateMetadata("Create Inventory | Azue Perfume"),
               },
             ],
           },
@@ -599,6 +699,7 @@ export const router = createBrowserRouter([
             path: "settings",
             Component: AdminSettingsPage,
             loader: adminSettingsLoader,
+            handle: privateMetadata("Admin Settings | Azue Perfume"),
           },
         ],
       },
