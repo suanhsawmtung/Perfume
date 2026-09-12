@@ -1,0 +1,23 @@
+User-agent: *
+
+# Private customer pages
+Disallow: /profile
+Disallow: /profile/
+Disallow: /settings
+Disallow: /settings/
+
+# Authentication pages
+Disallow: /sign-in
+Disallow: /sign-up
+Disallow: /verify-otp
+Disallow: /verify-password-otp
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /logout
+
+# Admin panel
+Disallow: /admin
+Disallow: /admin/
+
+# Sitemap
+# Sitemap will be added later
