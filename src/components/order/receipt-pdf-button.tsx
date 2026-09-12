@@ -158,11 +158,16 @@ export function ReceiptPDFButton({ order }: { order: OrderType }) {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(9);
     doc.setTextColor(100);
-    doc.text("Thank you for shopping with AZUE Perfumes!", pageWidth / 2, 270, {
-      align: "center",
-    });
     doc.text(
-      "www.azueperfumes.com | support@azueperfumes.com",
+      "Thank you for shopping with AZUE Perfume House!",
+      pageWidth / 2,
+      270,
+      {
+        align: "center",
+      },
+    );
+    doc.text(
+      "www.azueperfumehouse.com | support@azueperfumehouse.com",
       pageWidth / 2,
       277,
       { align: "center" },

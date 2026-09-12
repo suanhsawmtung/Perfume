@@ -18,7 +18,7 @@ export function ProductDetailSEO({ product }: ProductDetailSEOProps) {
     : DEFAULT_BRAND_IMAGE;
   const title = product.name
     ? getProductDetailDocumentTitle(product.name, selectedVariant.size)
-    : "Perfume | Azue Perfume";
+    : "Perfume | Azue Perfume House";
   const description = product.description || FALLBACK_DESCRIPTION;
 
   return (

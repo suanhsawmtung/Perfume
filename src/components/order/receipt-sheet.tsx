@@ -24,7 +24,7 @@ function ReceiptHeaderComponent({ order }: ReceiptSectionProps) {
       <div>
         <h3 className="font-serif text-2xl font-bold">AZUE</h3>
         <p className="text-muted-foreground text-xs tracking-widest">
-          PERFUMES
+          PERFUME HOUSE
         </p>
       </div>
       <div className="text-right">
@@ -144,8 +144,10 @@ function ReceiptTotals({ order }: ReceiptSectionProps) {
 function ReceiptFooter() {
   return (
     <div className="text-muted-foreground mt-8 text-center text-xs">
-      <p>Thank you for shopping with AZUE Perfumes!</p>
-      <p className="mt-1">www.azueperfumes.com | support@azueperfumes.com</p>
+      <p>Thank you for shopping with AZUE Perfume House!</p>
+      <p className="mt-1">
+        www.azueperfumehouse.com | support@azueperfumehouse.com
+      </p>
     </div>
   );
 }

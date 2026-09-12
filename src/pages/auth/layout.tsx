@@ -9,7 +9,7 @@ const AuthLayout = () => {
           <Link to="/">
             <div className="flex items-center gap-x-2">
               {/* <LogoIcon className="text-primary size-8" aria-hidden={true} /> */}
-              <h1 className="text-xl font-semibold">AZUE Perfume</h1>
+              <h1 className="text-xl font-semibold">AZUE Perfume House</h1>
               <span className="sr-only">Home</span>
             </div>
           </Link>

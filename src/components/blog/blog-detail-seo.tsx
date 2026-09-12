@@ -13,8 +13,8 @@ type BlogDetailSEOProps = {
 
 export function BlogDetailSEO({ blog }: BlogDetailSEOProps) {
   const title = blog.title
-    ? `${blog.title} | Azue Perfume`
-    : "Article | Azue Perfume";
+    ? `${blog.title} | Azue Perfume House`
+    : "Article | Azue Perfume House";
   const description = blog.excerpt || FALLBACK_DESCRIPTION;
   const image = blog.image
     ? formatImagePath(blog.image, "post")

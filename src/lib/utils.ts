@@ -452,7 +452,7 @@ export function getProductDetailDocumentTitle(
   name: string,
   size: number,
 ): string {
-  return `${name} ${size} ml | Azue Perfume`;
+  return `${name} ${size} ml | Azue Perfume House`;
 }
 
 export function getProductListingDocumentTitle({
@@ -485,10 +485,10 @@ export function getProductListingDocumentTitle({
   }
 
   if (parts.length === 0) {
-    return "Perfume Collections | Azue Perfume";
+    return "Perfume Collections | Azue Perfume House";
   }
 
-  return `${parts.join(" ")} Perfumes | Azue Perfume`;
+  return `${parts.join(" ")} Perfumes | Azue Perfume House`;
 }
 
 export function getMyReviewsDocumentTitle({
@@ -497,12 +497,12 @@ export function getMyReviewsDocumentTitle({
   status: "publish" | "unpublish" | undefined;
 }) {
   if (status === "publish") {
-    return "Published Reviews | Azue Perfume";
+    return "Published Reviews | Azue Perfume House";
   }
   if (status === "unpublish") {
-    return "Pending Reviews | Azue Perfume";
+    return "Pending Reviews | Azue Perfume House";
   }
-  return "My Reviews | Azue Perfume";
+  return "My Reviews | Azue Perfume House";
 }
 
 export function getMyOrdersDocumentTitle({
@@ -511,12 +511,12 @@ export function getMyOrdersDocumentTitle({
   condition: "active" | "inactive" | undefined;
 }) {
   if (condition === "active") {
-    return "Active Orders | Azue Perfume";
+    return "Active Orders | Azue Perfume House";
   }
   if (condition === "inactive") {
-    return "Inactive Orders | Azue Perfume";
+    return "Inactive Orders | Azue Perfume House";
   }
-  return "My Orders | Azue Perfume";
+  return "My Orders | Azue Perfume House";
 }
 
 export const sleep = (ms: number) =>

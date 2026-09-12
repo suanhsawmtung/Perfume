@@ -100,7 +100,7 @@ export function Footer() {
 
         <div className="border-border/40 mt-12 flex flex-col items-center justify-between gap-4 border-t pt-8 md:flex-row">
           <p className="text-muted-foreground text-xs">
-            &copy; {new Date().getFullYear()} AZUE Perfumes. All rights
+            &copy; {new Date().getFullYear()} AZUE Perfume House. All rights
             reserved.
           </p>
           <div className="flex gap-6">
