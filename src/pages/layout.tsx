@@ -3,7 +3,7 @@ import { Navbar } from "@/components/layouts/header";
 import { CartSheet } from "@/components/layouts/header/cart-sheet";
 import { Outlet } from "react-router";
 
-export const Layout = () => {
+export const CustomerLayout = () => {
   return (
     <div className="flex min-h-screen flex-col font-serif">
       <Navbar />

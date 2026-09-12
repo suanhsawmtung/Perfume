@@ -8,7 +8,7 @@ import BlogPage from "@/pages/blogs";
 import BlogDetailPage from "@/pages/blogs/detail";
 import ErrorPage from "@/pages/error";
 import HomePage from "@/pages/home";
-import { Layout } from "@/pages/layout";
+import { CustomerLayout } from "@/pages/layout";
 import ProductPage from "@/pages/products";
 import ProductDetailPage from "@/pages/products/detail";
 import { createBrowserRouter } from "react-router";
@@ -71,7 +71,7 @@ import { loader as verifyOtpLoader } from "@/pages/auth/verify-otp/loader";
 import { loader as blogLoader } from "@/pages/blogs/detail/loader";
 import { loader as blogsLoader } from "@/pages/blogs/loader";
 import { loader as homeLoader } from "@/pages/home/loader";
-import { loader as guestLoader } from "@/pages/loader";
+import { loader as customerLoader } from "@/pages/loader";
 import { action as productAction } from "@/pages/products/detail/action";
 import { loader as productLoader } from "@/pages/products/detail/loader";
 import { loader as productsLoader } from "@/pages/products/loader";
@@ -167,8 +167,8 @@ export const router = createBrowserRouter([
       {
         path: "/",
         ErrorBoundary: ErrorPage,
-        Component: Layout,
-        loader: guestLoader,
+        Component: CustomerLayout,
+        loader: customerLoader,
         children: [
           {
             index: true,
