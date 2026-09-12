@@ -22,7 +22,6 @@ export function PaymentProofDialog({
   selectedOrderCode,
   selectedOrderImage,
 }: PaymentProofDialogProps) {
-  console.log(selectedOrderImage);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogPortal>
