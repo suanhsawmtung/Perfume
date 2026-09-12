@@ -18,16 +18,13 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { appEnv } from "@/config/env";
 import { useResendOtp } from "@/services/auth/queries/useResendOtp";
 import { useAuthStore } from "@/stores/auth.store";
 import type { AuthActionResponse } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  useActionData,
-  useNavigation,
-  useSubmit
-} from "react-router";
+import { useActionData, useNavigation, useSubmit } from "react-router";
 import z from "zod";
 
 const verifyOtpSchema = z.object({
@@ -88,6 +85,12 @@ const VerifyOtpPage = () => {
           <CardDescription>
             Enter the 6-digit code sent to your email.
           </CardDescription>
+          {appEnv !== "production" && (
+            <p className="text-muted-foreground mt-2 text-xs">
+              Note: In non-production environments, you can use the OTP{" "}
+              <strong>123456</strong> for testing purposes.
+            </p>
+          )}
         </CardHeader>
         <CardContent className="space-y-6">
           <Form {...form}>
@@ -164,7 +167,7 @@ const VerifyOtpPage = () => {
               variant="link"
               onClick={onResendSubmit}
               disabled={resendOtpMutation.isPending || isSubmitting}
-              className="cursor-pointer underline underline-offset-4 disabled:opacity-50 p-0"
+              className="cursor-pointer p-0 underline underline-offset-4 disabled:opacity-50"
             >
               {resendOtpMutation.isPending ? "Resending..." : "Resend"}
             </Button>

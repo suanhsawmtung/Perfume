@@ -17,6 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { appEnv } from "@/config/env";
 import type { AuthActionResponse } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -73,6 +74,12 @@ const SignInPage = () => {
           <CardDescription>
             Enter your email and password below to sign in.
           </CardDescription>
+          {appEnv !== "production" && (
+            <CardDescription>
+              Note: To log in as an admin for testing purposes, use{" "}
+              <strong>admin@example.com</strong> and <strong>admin123</strong>.
+            </CardDescription>
+          )}
         </CardHeader>
         <CardContent>
           <Form {...form}>
