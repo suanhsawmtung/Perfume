@@ -1,3 +1,4 @@
+import { LogoutConfirmationDialog } from "@/components/shared/logout-confirmation-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,7 +9,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { formatImagePath, formatUserDisplayName, getUserInitials } from "@/lib/utils";
+import {
+  formatImagePath,
+  formatUserDisplayName,
+  getUserInitials,
+} from "@/lib/utils";
 import type { AuthUser } from "@/stores/auth.store";
 import {
   ArrowLeftIcon,
@@ -18,16 +23,14 @@ import {
   SettingsIcon,
   User,
 } from "lucide-react";
-import { Form, Link, useLocation, useNavigation } from "react-router";
+import { Link, useLocation } from "react-router";
 
 interface Props {
   user: AuthUser | null;
 }
 
 const AuthDropdown = ({ user }: Props) => {
-  const navigation = useNavigation();
   const location = useLocation();
-  const isLoggingOut = navigation.state === "submitting";
   const isAdminRoute = location.pathname.startsWith("/admin");
   const isAdmin = user?.role === "ADMIN" || user?.role === "AUTHOR";
 
@@ -64,8 +67,13 @@ const AuthDropdown = ({ user }: Props) => {
               <AvatarFallback>{getUserInitials(user)}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
-              <h5 className="font-bold truncate max-w-[18ch]">{formatUserDisplayName(user)}</h5>
-              <p className="text-muted-foreground truncate max-w-[20ch]" title={user.email}>
+              <h5 className="max-w-[18ch] truncate font-bold">
+                {formatUserDisplayName(user)}
+              </h5>
+              <p
+                className="text-muted-foreground max-w-[20ch] truncate"
+                title={user.email}
+              >
                 {user.email}
               </p>
             </div>
@@ -110,20 +118,19 @@ const AuthDropdown = ({ user }: Props) => {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <Form method="post" action="/logout">
-          <DropdownMenuItem asChild>
+        <DropdownMenuItem asChild>
+          <LogoutConfirmationDialog>
             <button
-              type="submit"
-              disabled={isLoggingOut}
-              className="w-full cursor-pointer"
+              type="button"
+              className="hover:bg-accent hover:text-accent-foreground w-full cursor-pointer rounded-sm px-2 py-1.5 text-sm"
             >
               <div className="flex items-center gap-x-2">
-                <LogOutIcon />
-                {isLoggingOut ? "Logging out..." : "Log out"}
+                <LogOutIcon size={16} />
+                Log out
               </div>
             </button>
-          </DropdownMenuItem>
-        </Form>
+          </LogoutConfirmationDialog>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
